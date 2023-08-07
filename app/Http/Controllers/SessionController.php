@@ -36,9 +36,9 @@ class SessionController extends Controller
           }
     }
     public function logout()
-   {
-       Auth::logout();
-       session()->flash('logout','logout Successfully....');
-       return redirect()->route('login');
-   }
+    {
+        Auth::logout();
+        session()->flash('logout','logout Successfully....');
+        return redirect()->route('login');
+    }
 }

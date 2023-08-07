@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Mail\AdminRegisterMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
@@ -52,5 +55,45 @@ class AdminController extends Controller
     ]);
     Mail::to($data['email'])->send(new AdminRegisterMail($user,$password));
     return redirect()->route('login')->with('admin_register','Your Password is send in your register Email id');
+    }
+
+    public function admin_profile()
+    {
+        $profile = Auth::user();
+        return view('admin.profile', compact('profile'));
+    }
+
+    public function admin_profile_picture(Request $request)
+     {
+        $id = Auth::user()->id;
+        $post = User::find($id);
+        $data = $request->validate([
+            'image' => ['required', 'mimes:jpeg,png,jpg,gif,svg' ]
+        ]);
+
+        if($post)
+       {
+
+         if($request->hasfile('image'))
+          {
+            $file_path = 'upload/admin/profile_picture';
+
+            if(File::exists(public_path($file_path . '/' . $post->image)))
+               {
+                 File::delete(public_path($file_path . '/' . $post->image));
+               }
+
+               $file_name = Carbon::now()->timestamp;
+               $file_extension = $request['image']->getClientOriginalExtension();
+               $request['image']->move($file_path, $file_name.'.'.$file_extension);
+               $data['image'] = $file_name.'.'.$file_extension;
+
+               $post->update([
+                'image' => $file_name.'.'.$file_extension,
+               ]);
+          }
+
+       }
+        return redirect()->back()->with('admin_picture','Profile Picture updated Successfully');
     }
 }

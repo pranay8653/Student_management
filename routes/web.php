@@ -42,7 +42,8 @@ Route::middleware('auth:web')->group(function(){
 
     Route::group(['middleware' => ['checkuser:admin']],function(){
         Route::view('/dashboard',['admin.dashboard'])->name('admin.dashboard');
-
+        Route::get('/admin/profile',[AdminController::class,'admin_profile'])->name('admin.profile');
+        Route::put('/admin/profile/picture',[AdminController::class,'admin_profile_picture'])->name('admin.profile.picture');
 
     });
 });
