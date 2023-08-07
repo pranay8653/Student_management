@@ -8,9 +8,16 @@
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
                     <h2 class="card-title mb-3 text-dark" ><span style="color:rgb(240, 77, 180)">Personal Information</span></h2>
+
+
                     @if(session('admin_picture'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{session('admin_picture')}}
+                        </div>
+                    @endif
+                    @if(session('admin_profile_update'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{session('admin_profile_update')}}
                         </div>
                     @endif
                     <div class="row">
@@ -87,7 +94,7 @@
                             <a href="{{ route('change.password') }}" class="btn btn-info ml-3"> <i class="fa fa-unlock" aria-hidden="true"> Change Password</i> </a>
                         </div>
                         <div class="btn-group mr-2" role="group" aria-label="Second group">
-                            <a href="" class="btn btn-success ml-3">Edit Profile</a>
+                            <a href="{{ route('admin.profile.edit') }}" class="btn btn-success ml-3">Edit Profile</a>
                         </div>
                     </div>
                 </div>

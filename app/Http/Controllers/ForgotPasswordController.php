@@ -52,7 +52,6 @@ class ForgotPasswordController extends Controller
         $token = DB::table('password_resets')->where('token', $request['token'])->first();
         if($user=User::where('email',$token->email)->first()){
             $user->password = Hash::make($data['password']);
-            // dd($user->password);
             $user->save();
             DB::table('password_resets')->where('email',$user->email)->delete();
         }
@@ -66,7 +65,7 @@ class ForgotPasswordController extends Controller
       return view('change_password');
     }
 
-    public function save_change_password(Request $request)
+    public function admin_save_change_password(Request $request)
     {
         $data = $request->validate([
             'current_password'       => ['required', 'string'],

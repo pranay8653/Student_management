@@ -96,4 +96,32 @@ class AdminController extends Controller
        }
         return redirect()->back()->with('admin_picture','Profile Picture updated Successfully');
     }
+
+    public function admin_profile_edit()
+    {
+        $profile = Auth::user();
+        return view('admin.profile_edit', compact('profile'));
+    }
+
+    public function admin_profile_update(Request $request)
+    {
+        $data = $request->validate([
+            'first_name' => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'last_name'  => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'phone'      => ['required', 'integer', 'digits:10', 'regex:/^[0-9]{10}$/'],
+            'address'    => ['required','regex:/^[A-Za-z: A-Za-z0-9(A-Za-z0-9)\S][^~!@#$%^]{3,300}$/'],
+            'dob'        => ['required'],
+            'gender'     => ['required'],
+        ],
+    [
+        'first_name'        => 'Please Enter First Name Within 50 Character',
+        'last_name'         =>  'Please Enter Last Name Name Within 50 Character',
+        'phone'             =>  'Please Enter 10 Digits Valid Phone number',
+        'address'           =>  'Please Enter Address within 3-300 But not Used ~!@#$%^ character',
+        'dob'               =>  'Please Enter Date Of Birth ',
+        'gender'            =>  'Please Enter Gender',
+    ]);
+        $admin_profile = User::find(Auth::id())->update($data);
+        return redirect()->route('admin.profile')->with('admin_profile_update', 'Profile Update Successfully....');
+    }
 }

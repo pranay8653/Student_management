@@ -31,19 +31,20 @@ Route::post('/post_reset',[ForgotPasswordController::class,'post_reset'])->name(
 
 
 
-// Admin
+// Admin Registration
 Route::get('/admin_register',[AdminController::class, 'index'])->name('admin.register');
 Route::post('/save_register',[AdminController::class, 'admin_save_data'])->name('admin.save.register');
 
 Route::middleware('auth:web')->group(function(){
     Route::get('/change_password', [ForgotPasswordController::class,'change_password'])->name('change.password');
-    Route::post('/update_change_password', [ForgotPasswordController::class,'save_change_password'])->name('save.change.password');
     Route::get('/logout',[SessionController::class, 'logout'])->name('logout');
 
     Route::group(['middleware' => ['checkuser:admin']],function(){
         Route::view('/dashboard',['admin.dashboard'])->name('admin.dashboard');
+        Route::post('/update_change_password', [ForgotPasswordController::class,'admin_save_change_password'])->name('save.change.password');
         Route::get('/admin/profile',[AdminController::class,'admin_profile'])->name('admin.profile');
         Route::put('/admin/profile/picture',[AdminController::class,'admin_profile_picture'])->name('admin.profile.picture');
-
+        Route::get('/admin/profile/edit',[AdminController::class,'admin_profile_edit'])->name('admin.profile.edit');
+        Route::put('/admin/profile/edit',[AdminController::class,'admin_profile_update'])->name('admin.profile.update');
     });
 });
