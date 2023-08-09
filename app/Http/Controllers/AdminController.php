@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AdminRegisterMail;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -124,4 +125,58 @@ class AdminController extends Controller
         $admin_profile = User::find(Auth::id())->update($data);
         return redirect()->route('admin.profile')->with('admin_profile_update', 'Profile Update Successfully....');
     }
+
+    public function create_department(Request $request)
+     {
+        $search = $request['search'] ?? "";
+
+         if($search != "")
+          {
+            $dept = Department::where('d_name','LIKE', "%$search%")->paginate(5);
+          }
+        else
+          {
+            $dept = Department::paginate(5);
+          }
+        $d_count = Department::count();
+        return view('department.department',compact('dept','d_count','search'));
+     }
+
+     public function save_department(Request $request)
+     {
+        $data = $request->validate([
+            'd_name' => ['required','string','min:3','max:150','unique:departments,d_name']
+        ],[
+            'd_name.required' => 'Please Enter a Name',
+            'd_name.unique' => 'The name has already been taken. Please Check And Donot enter same data',
+        ]);
+        Department::create($data);
+        return redirect()->route('departments')->with('department','Department Created Succsfully');
+     }
+
+    public function edit_department(Request $request, $id)
+    {
+        $dept = Department::find($id);
+        return view('department.department_edit',compact('dept'));
+    }
+
+    public function update_department(Request $request, $id)
+     {
+
+        $data = $request->validate([
+            'd_name' => ['required','string','min:3','max:150','unique:departments']
+        ]);
+        $dept = Department::find($id)->update($data);
+        return redirect()->route('departments')->with('department_edit','Department Edit Successfully....');
+     }
+
+    public function department_delete($id)
+     {
+        $dept = Department::find($id);
+        if(!is_null($dept))
+         {
+            $dept->delete();
+         }
+        return redirect()->route('departments')->with('delete_department', 'Department Deleted Successfully......');
+     }
 }

@@ -26,7 +26,7 @@ class SessionController extends Controller
               if(Auth::user()->role == 'admin')
                {
                   session()->flash('after_login','login Successfully....');
-                   return view('admin.dashboard');
+                   return redirect()->route('admin.dashboard');
                }
 
           }

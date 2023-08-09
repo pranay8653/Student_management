@@ -45,6 +45,11 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/profile',[AdminController::class,'admin_profile'])->name('admin.profile');
         Route::put('/admin/profile/picture',[AdminController::class,'admin_profile_picture'])->name('admin.profile.picture');
         Route::get('/admin/profile/edit',[AdminController::class,'admin_profile_edit'])->name('admin.profile.edit');
-        Route::put('/admin/profile/edit',[AdminController::class,'admin_profile_update'])->name('admin.profile.update');
+        Route::put('/admin/profile/update',[AdminController::class,'admin_profile_update'])->name('admin.profile.update');
+        Route::get('/admin/department',[AdminController::class,'create_department'])->name('departments');
+        Route::post('/admin/save/department',[AdminController::class,'save_department'])->name('save.department');
+        Route::get('/admin/edit/department/{id}',[AdminController::class,'edit_department'])->name('edit.department');
+        Route::put('/admin/update/department/{id}',[AdminController::class,'update_department'])->name('update.department');
+        Route::get('/admin/delete/department/{id}',[AdminController::class,'department_delete'])->name('delete.department');
     });
 });
