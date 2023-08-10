@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 // Route::view('/test',['admin.test']); this route checking for middleware
-Route::view('/login',['login'])->name('login');
+Route::view('/',['login'])->name('login');
 Route::post('/save_login',[SessionController::class, 'login'])->name('post.login');
 
 //Forgot Password

@@ -7,6 +7,7 @@
         <div class="col-md-6 mx-auto">
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
+                    <a href="{{ route('departments') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     <h2 class="card-title mb-3 text-dark" ><span style="color:rgb(240, 77, 180)">Edit Department Information</span></h2>
                     @if ($errors->any())
                     <div class="alert alert-danger">

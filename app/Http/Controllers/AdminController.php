@@ -165,6 +165,9 @@ class AdminController extends Controller
 
         $data = $request->validate([
             'd_name' => ['required','string','min:3','max:150','unique:departments']
+        ],[
+            'd_name.required' => 'Please Enter a Name',
+            'd_name.unique' => 'The name has already been taken. Please Check And Donot enter same data',
         ]);
         $dept = Department::find($id)->update($data);
         return redirect()->route('departments')->with('department_edit','Department Edit Successfully....');
