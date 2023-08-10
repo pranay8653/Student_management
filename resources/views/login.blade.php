@@ -16,7 +16,7 @@
                         <div class="col-lg-12">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome </h1>
+                                    <h1 class="h4 text-gray-900 mb-4" style="font-family: 'Lucida Handwriting', cursive;">Educare Coaching Centre </h1>
                                 </div>
                                 <form action="{{ route('post.login') }}" class="user" class="sign-up-form" method="post">
                                     @csrf
