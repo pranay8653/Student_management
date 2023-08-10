@@ -49,13 +49,14 @@
 
 
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
+                                        <label class="cardformlabel" for="email" style="color:blue">Enter Email-id/Mobile Number</label>
+                                        <input type="text" class="form-control form-control-user"
                                             id="exampleInputEmail" aria-describedby="emailHelp"
-                                            placeholder="Enter Email Address..." name="email">
+                                            placeholder="Enter Your Email or Phone Number..." name="username" value={{ old('username') }}>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password" name="password">
+                                            id="exampleInputPassword" placeholder="Password" name="password" value={{ old('password') }}>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary btn-user btn-block"> Login</button>

@@ -9,17 +9,26 @@ class SessionController extends Controller
 {
     public function login(Request $request)
     {
-      $data = $request->validate([
-          'email'         => ['required', 'string'],
-          'password'      => ['required', 'string' ],
-      ],[
-          'email'            => 'Please Enter Valid Email id!',
-          'password.required'         => 'Please Enter Password!',
-      ]);
-      $login_credentials = [
-          'email'     => $request->email,
-          'password'  => $request->password
-              ];
+        $data = $request->validate([
+            'username' => ['required', 'string', 'max:200'],
+            'password' => ['required', 'string', 'max:16', 'min:8'],
+        ]);
+
+      if(is_numeric($request->username))
+       {
+
+        $login_credentials = [
+            'phone'     => $request->username,
+            'password'  => $request->password
+                ];
+       }
+    else
+       {
+            $login_credentials = [
+            'email'     => $request->username,
+            'password'  => $request->password
+                ];
+       }
     //   dd($login_credentials);
           if(Auth::attempt( $login_credentials ))
           {
@@ -32,7 +41,7 @@ class SessionController extends Controller
           }
           else
           {
-          return back()->withErrors(['password' => 'You Entered Wrong password']);
+          return back()->withErrors(['password' => 'Please Enter Valid User id And Password']);
           }
     }
     public function logout()
