@@ -3,6 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\TeacherController;
+use App\Models\Department;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +53,18 @@ Route::middleware('auth:web')->group(function(){
         Route::post('/admin/save/department',[AdminController::class,'save_department'])->name('save.department');
         Route::get('/admin/edit/department/{id}',[AdminController::class,'edit_department'])->name('edit.department');
         Route::put('/admin/update/department/{id}',[AdminController::class,'update_department'])->name('update.department');
-        Route::get('/admin/delete/department/{id}',[AdminController::class,'department_delete'])->name('delete.department');
+        // Route::get('/admin/delete/department/{id}',[AdminController::class,'department_delete'])->name('delete.department');
+
+        //teacher
+        Route::get('/admin/create/teacher',[TeacherController::class,'teacher'])->name('create.teacher');
+        Route::post('/admin/save/teacher',[TeacherController::class,'teacher_save_data'])->name('save.teacher');
+        Route::get('/admin/show/teacher',[TeacherController::class,'show_teacher'])->name('show.teacher');
     });
 });
+
+
+//this function checking for Eloquent: Relationships
+// Route::get('/check', function () {
+// $dep = department::with('users')->get() ;
+// return $dep;
+// });
