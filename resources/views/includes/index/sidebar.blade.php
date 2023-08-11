@@ -27,6 +27,12 @@
             <span>Department</span></a>
     </li>
 
+    <li class="nav-item @yield('teachers')">
+        <a class="nav-link" href="{{ route('show.teacher') }}">
+            <i class="fa fa-user-circle" aria-hidden="true"></i>
+            <span>Teachers</span></a>
+    </li>
+
     {{-- <!-- Divider -->
     <hr class="sidebar-divider">
 

@@ -13,6 +13,7 @@
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
+
                         {{-- <div class="col-lg-6 d-none d-lg-block bg-password-image"></div> --}}
                         <div class="col-lg-12">
                             <div class="p-5">
@@ -21,7 +22,15 @@
                                     <p class="mb-4">We get it, stuff happens. Just enter your email address below
                                         and we'll send you a link to reset your password!</p>
                                 </div>
-
+                                @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error  )
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        @endif
                                 <form action="{{ route('save.forgot.password') }}" method="POST" class="user" >
                                     @csrf
                                     <div class="form-group">
