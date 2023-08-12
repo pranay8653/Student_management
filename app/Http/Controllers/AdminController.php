@@ -136,8 +136,8 @@ class AdminController extends Controller
         'gender'            =>  'Please Enter Gender',
     ]);
         $auth_id = Auth::id();
-        $name = Auth::user()->first_name;
-        $admin_id = Admin::where('first_name',$name)->first()->id;
+        $a_email = Auth::user()->email;
+        $admin_id = Admin::where('email',$a_email)->first()->id;
 
         // Update users Table
         $user = User::find($auth_id)->update([
@@ -145,7 +145,7 @@ class AdminController extends Controller
             'last_name'     => $data['last_name'],
             'phone'         => $data['phone'],
         ]);
-        
+
         // Update admins table
         $admin = Admin::find($admin_id)->update([
             'first_name'    => $data['first_name'],
@@ -156,7 +156,6 @@ class AdminController extends Controller
             'gender'        => $data['gender'],
         ]);
 
-        // $admin_profile = User::find(Auth::id())->update($data);
         return redirect()->route('admin.profile')->with('admin_profile_update', 'Profile Update Successfully....');
     }
 

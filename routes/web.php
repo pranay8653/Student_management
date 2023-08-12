@@ -60,6 +60,7 @@ Route::middleware('auth:web')->group(function(){
         Route::post('/admin/save/teacher',[TeacherController::class,'teacher_save_data'])->name('save.teacher');
         Route::get('/admin/show/teacher',[TeacherController::class,'show_teacher'])->name('show.teacher');
         Route::get('/admin/edit/teacher/{id}',[TeacherController::class,'edit_teacher'])->name('edit.teacher');
+        Route::put('/admin/update/teacher/{id}',[TeacherController::class,'update_teacher'])->name('update.teacher');
     });
 });
 
