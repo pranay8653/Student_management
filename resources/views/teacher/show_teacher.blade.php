@@ -18,6 +18,11 @@
         {{session('teacher_update')}}
     </div>
 @endif
+@if(session('teacher_delete'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session('teacher_delete')}}
+    </div>
+@endif
 
 <div class="container-fluid">
 
@@ -71,7 +76,7 @@
                                    <td>{{ $items->department->d_name }} </td>
                                   <td style="color: #002b80; font-family: 'Bebas Neue', cursive;">
                                     <a href="{{ route('edit.teacher',['id' => $items->id]) }}" class="btn btn-warning" >Edit </a>
-                                    <a href="#" class="btn btn-danger" >Delete </a>
+                                    <a href="{{ route('delete.teacher',['id' => $items->id]) }}" class="btn btn-danger" >Delete </a>
                                   </td>
                                </tr>
                                @endforeach

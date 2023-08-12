@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
@@ -147,5 +148,17 @@ class TeacherController extends Controller
 
         Mail::to($data['email'])->send(new AdminModifyTeacherMail($teacher_id,$dept_name));
         return redirect()->route('show.teacher')->with('teacher_update', 'Teacher Account Updated Successfully And Details Are Send Registered Email Account');
+     }
+
+     public function teacher_delete($id)
+     {
+        // First Deleted users table data
+        $data = Teacher::find($id)->email;
+        $user = User::where('email', $data)->first()->delete();
+
+        // Before deleted users data.Then delete teacher table
+        $t_id = Teacher::find($id);
+        $t_id->delete();
+        return redirect()->route('show.teacher')->with('teacher_delete', 'Deleted Teacher Successfully......');
      }
 }
