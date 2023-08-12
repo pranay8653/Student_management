@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminModifyTeacherMail;
 use App\Mail\RegisterMail;
 use App\Models\Department;
 use App\Models\Teacher;
@@ -10,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
-
-
 class TeacherController extends Controller
 {
     public function teacher()
@@ -99,8 +98,6 @@ class TeacherController extends Controller
 
     public function update_teacher(Request $request, $id)
      {
-
-        // dd($t_user_id);
         $data = $request->validate([
             'first_name'       => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
             'last_name'        => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
@@ -144,7 +141,11 @@ class TeacherController extends Controller
             'phone'         => $data['phone'],
         ]);
 
+        // Below code are Find Department Name
+        $dep_id = Teacher::find($id)->department_id;
+        $dept_name = Department::where('id',$dep_id)->first()->d_name;
 
-        return redirect()->route('show.teacher')->with('teacher_update', 'Teacher Account Updated Successfully....');
+        Mail::to($data['email'])->send(new AdminModifyTeacherMail($teacher_id,$dept_name));
+        return redirect()->route('show.teacher')->with('teacher_update', 'Teacher Account Updated Successfully And Details Are Send Registered Email Account');
      }
 }

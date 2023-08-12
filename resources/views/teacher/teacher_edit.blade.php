@@ -96,7 +96,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-user btn-block">Register Account </button>
+                            <button type="submit" class="btn btn-primary btn-user btn-block">Update Account </button>
                         </form>
 
                         <hr>
