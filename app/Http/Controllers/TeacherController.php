@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\AdminRegisterMail;
+use App\Mail\RegisterMail;
 use App\Models\Department;
 use App\Models\Teacher;
 use App\Models\User;
@@ -43,20 +43,29 @@ class TeacherController extends Controller
       // create a random password
       $password = Str::random(10);
 
-     $user = User::create([
-         'first_name'        =>$request['first_name'],
-         'last_name'         =>$request['last_name'],
-         'email'             =>$request['email'],
-         'phone'             =>$request['phone'],
-         'address'           =>$request['address'],
-         'dob'               =>$request['dob'],
-         'gender'            =>$request['gender'],
-         'password'          => Hash::make($password),
-         'role'              => 'teacher',
-         'department_id'     =>$request['department_id'],
-     ]);
-     Mail::to($data['email'])->send(new AdminRegisterMail($user,$password));
-     return redirect()->route('login')->with('admin_register','Your Password is send in your register Email id');
+      // create data teachers table
+    $user = Teacher::create([
+        'first_name'        =>$request['first_name'],
+        'last_name'         =>$request['last_name'],
+        'email'             =>$request['email'],
+        'phone'             =>$request['phone'],
+        'address'           =>$request['address'],
+        'dob'               =>$request['dob'],
+        'gender'            =>$request['gender'],
+        'department_id'     =>$request['department_id'],
+    ]);
+
+    // create data User table
+    $user = User::create([
+        'first_name'        =>$request['first_name'],
+        'last_name'         =>$request['last_name'],
+        'email'             =>$request['email'],
+        'phone'             =>$request['phone'],
+        'password'          => Hash::make($password),
+        'role'              => 'teacher',
+    ]);
+     Mail::to($data['email'])->send(new RegisterMail($user,$password));
+     return redirect()->route('show.teacher')->with('teacher_registration','Registration Successful. Password & Others Details Are send In Your Registered Email Id');
      }
 
     public function show_teacher(Request $request)
@@ -64,15 +73,15 @@ class TeacherController extends Controller
         $search = $request['search'] ?? "";
         if($search != ""   )
         {
-            $teacher = User::where('role','teacher')->where('first_name','LIKE', "%$search%")->orwhere('last_name','LIKE', "%$search%")->orwhere('email','LIKE', "%$search%")->paginate(5);
+            $teacher = Teacher::where('first_name','LIKE', "%$search%")->orwhere('last_name','LIKE', "%$search%")->orwhere('email','LIKE', "%$search%")->orwhere('phone','LIKE', "%$search%")->orwhere('address','LIKE', "%$search%")->orwhere('dob','LIKE', "%$search%")->orwhere('gender','LIKE', "%$search%")->paginate(5);
         }
         else
         {
-            $teacher = User::where('role','teacher')->paginate(5);
+            $teacher = Teacher::with('department')->paginate(4);
         }
-        $count =  User::where('role','teacher')->count();
-        $dept = Department::select('id','d_name')->get();
-        return view('teacher.show_teacher',compact('teacher','count','search' ));
+        $count =  Teacher::count();
+        // $dept = Department::select('id','d_name')->get();
+        return view('teacher.show_teacher',compact('teacher','count'));
      }
 
 }

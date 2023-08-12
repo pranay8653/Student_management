@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\AdminRegisterMail;
+use App\Mail\RegisterMail;
+use App\Models\Admin;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -43,7 +44,8 @@ class AdminController extends Controller
      // create a random password
      $password = Str::random(10);
 
-    $user = User::create([
+    // create data admin table
+    $user = Admin::create([
         'first_name'        =>$request['first_name'],
         'last_name'         =>$request['last_name'],
         'email'             =>$request['email'],
@@ -51,17 +53,27 @@ class AdminController extends Controller
         'address'           =>$request['address'],
         'dob'               =>$request['dob'],
         'gender'            =>$request['gender'],
+    ]);
+
+    // create data User table
+    $user = User::create([
+        'first_name'        =>$request['first_name'],
+        'last_name'         =>$request['last_name'],
+        'email'             =>$request['email'],
+        'phone'             =>$request['phone'],
         'password'          => Hash::make($password),
         'role'              => 'admin',
     ]);
-    Mail::to($data['email'])->send(new AdminRegisterMail($user,$password));
+    Mail::to($data['email'])->send(new RegisterMail($user,$password));
     return redirect()->route('login')->with('admin_register','Your Password is send in your register Email id');
     }
 
     public function admin_profile()
     {
         $profile = Auth::user();
-        return view('admin.profile', compact('profile'));
+        $name = Auth::user()->first_name;
+        $admin_data = Admin::where('first_name',$name)->first();
+        return view('admin.profile', compact('profile','admin_data'));
     }
 
     public function admin_profile_picture(Request $request)
@@ -100,8 +112,9 @@ class AdminController extends Controller
 
     public function admin_profile_edit()
     {
-        $profile = Auth::user();
-        return view('admin.profile_edit', compact('profile'));
+        $name = Auth::user()->first_name;
+        $admin_data = Admin::where('first_name',$name)->first();
+        return view('admin.profile_edit', compact('admin_data'));
     }
 
     public function admin_profile_update(Request $request)
@@ -122,7 +135,28 @@ class AdminController extends Controller
         'dob'               =>  'Please Enter Date Of Birth ',
         'gender'            =>  'Please Enter Gender',
     ]);
-        $admin_profile = User::find(Auth::id())->update($data);
+        $auth_id = Auth::id();
+        $name = Auth::user()->first_name;
+        $admin_id = Admin::where('first_name',$name)->first()->id;
+
+        // Update users Table
+        $user = User::find($auth_id)->update([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+            'phone'         => $data['phone'],
+        ]);
+        
+        // Update admins table
+        $admin = Admin::find($admin_id)->update([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+            'phone'         => $data['phone'],
+            'address'       => $data['address'],
+            'dob'           => $data['dob'],
+            'gender'        => $data['gender'],
+        ]);
+
+        // $admin_profile = User::find(Auth::id())->update($data);
         return redirect()->route('admin.profile')->with('admin_profile_update', 'Profile Update Successfully....');
     }
 

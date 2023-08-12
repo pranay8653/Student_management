@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AdminRegisterMail extends Mailable
+class RegisterMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $user, $password;
@@ -45,7 +45,7 @@ class AdminRegisterMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mails.admin_registered_mail',
+            view: 'mails.registertion_mail',
             with: [
                 'user'  => $this->user,
                 'password' => $this->password,
