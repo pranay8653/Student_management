@@ -26,24 +26,24 @@
                     <div class="row" >
                         <div class=" col-md-6 mb-3">
                             <label class="cardformlabel" for="name" style="color:blue">First Name </label>
-                            <input type="text" class="form-control form-control-user" value="{{ $profile->first_name }}" name="first_name" id="FirstName" >
+                            <input type="text" class="form-control form-control-user" value="{{ $admin_data->first_name }}" name="first_name" id="FirstName" >
                             <span id="firstnameerror" class="text-danger"></span>
                         </div>
                         <div class=" col-md-6 mb-3">
                             <label class="cardformlabel" for="name" style="color:blue">Last Name </label>
-                            <input type="text" class="form-control form-control-user" value=" {{ $profile->last_name }} " name="last_name" id="LastName" >
+                            <input type="text" class="form-control form-control-user" value=" {{ $admin_data->last_name }} " name="last_name" id="LastName" >
                             <span id="lastnameerror" class="text-danger  "></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="cardformlabel" for="email" style="color:blue">Email</label>
-                            <h4>{{ $profile->email }}</h4>
+                            <h4>{{ $admin_data->email }}</h4>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="contact" class="cardformlabel" style="color:blue">Contact</label>
-                            <input type="text" class="form-control form-control-user" value="{{ $profile->phone }}" id="PhoneNumber" name="phone" onkeypress="return isNumber(event)" required>
+                            <input type="text" class="form-control form-control-user" value="{{ $admin_data->phone }}" id="PhoneNumber" name="phone" onkeypress="return isNumber(event)" required>
                         </div>
                     </div>
                     <div class="row">
@@ -51,7 +51,7 @@
                             <label class="cardformlabel" for="email" style="color:blue">Address</label>
                             <label for="aadress"> </label>
                                 <textarea type="text" class="form-control form-control-user" id="Address" cols="30" rows="3"
-                                placeholder="Enter Your Address" name="address">{{ $profile->address }}</textarea>
+                                placeholder="Enter Your Address" name="address">{{ $admin_data->address }}</textarea>
                                 <span id="addresserror" class="text-danger"></span>
                         </div>
                     </div>
@@ -61,11 +61,11 @@
                             <div class="form-group">
                                 <label for="">Gender: </label>
                              <div class="col-sm-6 mb-3 mb-sm-0">
-                                 <input type="radio" name="gender" value="male" {{ $profile->gender == 'male' ? 'checked' : '' }} >
+                                 <input type="radio" name="gender" value="male" {{ $admin_data->gender == 'male' ? 'checked' : '' }} >
                                  <label for="male ">Male</label><br>
-                                 <input type="radio" name="gender"  value="female" {{ $profile->gender == 'female' ? 'checked' : '' }}>
+                                 <input type="radio" name="gender"  value="female" {{ $admin_data->gender == 'female' ? 'checked' : '' }}>
                                  <label for="female ">Female</label><br>
-                                 <input type="radio" name="gender"  value="others" {{ $profile->gender == 'others' ? 'checked' : '' }}>
+                                 <input type="radio" name="gender"  value="others" {{ $admin_data->gender == 'others' ? 'checked' : '' }}>
                                  <label for="others">Other</label>
                              </div>
                             </div>
@@ -75,14 +75,14 @@
                         <div class="col-md-6 mb-3">
                             <label for="contact" class="cardformlabel" style="color:blue">Date Of Birth</label>
                             <input type="date" class="form-control form-control-user"
-                                        id="dob" name="dob" id="dob" value="{{ $profile->dob }}">
+                                        id="dob" name="dob" id="dob" value="{{ $admin_data->dob }}">
                                         <span id="doberror" class="text-danger  "></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-12">
                             <label class="cardformlabel" for="email" style="color:blue">Age</label>
-                            <h4>{{ \Carbon\Carbon::parse($profile->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }}</h4>
+                            <h4>{{ \Carbon\Carbon::parse($admin_data->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }}</h4>
                         </div>
                     </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

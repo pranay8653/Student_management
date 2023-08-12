@@ -8,6 +8,11 @@
         {{session('department_edit')}}
     </div>
 @endif
+@if(session('teacher_registration'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session('teacher_registration')}}
+    </div>
+@endif
 
 <div class="container-fluid">
 
@@ -29,8 +34,8 @@
                                     <th>Phone Number</th>
                                     <th>Address</th>
                                     <th>Date Of Birth</th>
+                                    <th>Age</th>
                                     <th>Gender</th>
-                                    <th>Role</th>
                                     <th>Department</th>
                                     <th>Action</th>
                                 </tr>
@@ -42,8 +47,8 @@
                                     <th>Phone Number</th>
                                     <th>Address</th>
                                     <th>Date Of Birth</th>
+                                    <th>Age</th>
                                     <th>Gender</th>
-                                    <th>Role</th>
                                     <th>Department</th>
                                     <th>Action</th>
                                 </tr>
@@ -56,8 +61,8 @@
                                    <td>{{ $items->phone }} </td>
                                    <td>{{ $items->address }} </td>
                                    <td>{{ $items->dob }} </td>
+                                   <td>{{ \Carbon\Carbon::parse($items->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }} </td>
                                    <td>{{ $items->gender }} </td>
-                                   <td>{{ $items->role }} </td>
                                    <td>{{ $items->department->d_name }} </td>
                                   <td style="color: #002b80; font-family: 'Bebas Neue', cursive;">
                                     <a href="#" class="btn btn-warning" >Edit </a>

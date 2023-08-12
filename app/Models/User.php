@@ -23,12 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'address',
-        'image',
-        'gender',
-        'dob',
         'role',
-        'department_id'
+        'image',
     ];
 
     /**
@@ -50,8 +46,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function department()
-    {
-       return $this->belongsTo(Department::class);
-    }
 }
