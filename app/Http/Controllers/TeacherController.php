@@ -73,7 +73,13 @@ class TeacherController extends Controller
         $search = $request['search'] ?? "";
         if($search != ""   )
         {
-            $teacher = Teacher::where('first_name','LIKE', "%$search%")->orwhere('last_name','LIKE', "%$search%")->orwhere('email','LIKE', "%$search%")->orwhere('phone','LIKE', "%$search%")->orwhere('address','LIKE', "%$search%")->orwhere('dob','LIKE', "%$search%")->orwhere('gender','LIKE', "%$search%")->paginate(5);
+            $teacher = Teacher::where('first_name','LIKE', "%$search%")
+            ->orwhere('last_name','LIKE', "%$search%")
+            ->orwhere('email','LIKE', "%$search%")
+            ->orwhere('phone','LIKE', "%$search%")
+            ->orwhere('address','LIKE', "%$search%")
+            ->orwhere('dob','LIKE', "%$search%")
+            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
         }
         else
         {

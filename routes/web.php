@@ -59,6 +59,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/create/teacher',[TeacherController::class,'teacher'])->name('create.teacher');
         Route::post('/admin/save/teacher',[TeacherController::class,'teacher_save_data'])->name('save.teacher');
         Route::get('/admin/show/teacher',[TeacherController::class,'show_teacher'])->name('show.teacher');
+        Route::get('/admin/edit/teacher/{id}',[TeacherController::class,'edit_teacher'])->name('edit.teacher');
     });
 });
 
