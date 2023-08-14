@@ -64,6 +64,8 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/delete/teacher/{id}',[TeacherController::class,'teacher_delete'])->name('delete.teacher');
         Route::get('/admin/teacher/export',[TeacherController::class,'export_teacher'])->name('export.teacher');
         Route::get('/admin/teacher/pdf', [TeacherController::class, 'teacher_list_pdf'])->name('teacher.pdf.list');
+        Route::get('/admin/teacher/particular/lists/{id}', [TeacherController::class, 'perticular_list'])->name('teacher.particular.list');
+        Route::get('/admin/teacher/particular/lists/pdf/{id}', [TeacherController::class, 'perticular_list_pdf'])->name('teacher.particular.list.pdf');
     });
 });
 

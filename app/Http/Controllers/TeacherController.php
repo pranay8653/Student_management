@@ -91,8 +91,9 @@ class TeacherController extends Controller
             $teacher = Teacher::with('department')->paginate(4);
         }
         $count =  Teacher::count();
-        // $dept = Department::select('id','d_name')->get();
-        return view('teacher.show_teacher',compact('teacher','count'));
+        $dept = Department::get();
+        $dept_count = Department::count();
+        return view('teacher.show_teacher',compact('teacher','count','dept','dept_count'));
      }
 
     public function edit_teacher($id)
@@ -177,6 +178,37 @@ class TeacherController extends Controller
         $teacher = Teacher::with('department')->get();
         $count =  Teacher::count();
         $pdf = PDF::loadView('teacher.teacherpdf',compact('teacher','count'));
+        return $pdf->download('teacher.pdf');
+     }
+
+    public function perticular_list(Request $request,$id)
+     {
+        $department = Department::find($id);
+         $search = $request['search'] ?? "";
+        if($search != ""   )
+        {
+            $teacher = Teacher::where('first_name','LIKE', "%$search%")
+            ->orwhere('last_name','LIKE', "%$search%")
+            ->orwhere('email','LIKE', "%$search%")
+            ->orwhere('phone','LIKE', "%$search%")
+            ->orwhere('address','LIKE', "%$search%")
+            ->orwhere('dob','LIKE', "%$search%")
+            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+        }
+        else
+        {
+        $teacher = $department->teachers()->paginate(4);
+        }
+        $teacher_count = $department->teachers()->count();
+        return view('teacher.perticular_list',compact('department','teacher','teacher_count'));
+     }
+
+    public function perticular_list_pdf(Request $request, $id)
+     {
+        $department = Department::find($id);
+        $teacher = $department->teachers()->get();
+        $count = $department->teachers()->count();
+        $pdf = PDF::loadView('teacher.perticular_list_pdf',compact('teacher','count','department'));
         return $pdf->download('teacher.pdf');
      }
 }
