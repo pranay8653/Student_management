@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 class TeacherController extends Controller
 {
     public function teacher()
@@ -170,4 +171,12 @@ class TeacherController extends Controller
       {
         return Excel::download(new ExportTeacher, 'Teacher.xlsx');
       }
+
+    public function teacher_list_pdf()
+     {
+        $teacher = Teacher::with('department')->get();
+        $count =  Teacher::count();
+        $pdf = PDF::loadView('teacher.teacherpdf',compact('teacher','count'));
+        return $pdf->download('teacher.pdf');
+     }
 }

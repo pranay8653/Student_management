@@ -54,6 +54,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/edit/department/{id}',[AdminController::class,'edit_department'])->name('edit.department');
         Route::put('/admin/update/department/{id}',[AdminController::class,'update_department'])->name('update.department');
         // Route::get('/admin/delete/department/{id}',[AdminController::class,'department_delete'])->name('delete.department');
+
         //teacher
         Route::get('/admin/create/teacher',[TeacherController::class,'teacher'])->name('create.teacher');
         Route::post('/admin/save/teacher',[TeacherController::class,'teacher_save_data'])->name('save.teacher');
@@ -62,6 +63,7 @@ Route::middleware('auth:web')->group(function(){
         Route::put('/admin/update/teacher/{id}',[TeacherController::class,'update_teacher'])->name('update.teacher');
         Route::get('/admin/delete/teacher/{id}',[TeacherController::class,'teacher_delete'])->name('delete.teacher');
         Route::get('/admin/teacher/export',[TeacherController::class,'export_teacher'])->name('export.teacher');
+        Route::get('/admin/teacher/pdf', [TeacherController::class, 'teacher_list_pdf'])->name('teacher.pdf.list');
     });
 });
 

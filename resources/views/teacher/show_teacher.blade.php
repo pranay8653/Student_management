@@ -31,6 +31,7 @@
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ route('teacher.pdf.list') }}" class="btn btn-outline-success m-2">Export PDF File</a>
                         <a href="{{ route('export.teacher') }}" class="btn btn-outline-secondary m-2">Export Excel Sheet</a>
                         <a href="{{ route('create.teacher') }}" class="btn btn-outline-info m-2">Add Teacher</a>
                     </div>
