@@ -61,6 +61,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/edit/teacher/{id}',[TeacherController::class,'edit_teacher'])->name('edit.teacher');
         Route::put('/admin/update/teacher/{id}',[TeacherController::class,'update_teacher'])->name('update.teacher');
         Route::get('/admin/delete/teacher/{id}',[TeacherController::class,'teacher_delete'])->name('delete.teacher');
+        Route::get('/admin/teacher/export',[TeacherController::class,'export_teacher'])->name('export.teacher');
     });
 });
 

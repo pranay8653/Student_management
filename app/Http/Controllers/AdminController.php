@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\RegisterMail;
+use App\Mail\AdminRegisterEmail;
 use App\Models\Admin;
 use App\Models\Department;
 use App\Models\User;
@@ -64,7 +64,7 @@ class AdminController extends Controller
         'password'          => Hash::make($password),
         'role'              => 'admin',
     ]);
-    Mail::to($data['email'])->send(new RegisterMail($user,$password));
+    Mail::to($data['email'])->send(new AdminRegisterEmail($user,$password));
     return redirect()->route('login')->with('admin_register','Your Password is send in your register Email id');
     }
 

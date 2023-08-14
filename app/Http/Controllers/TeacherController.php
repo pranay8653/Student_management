@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportTeacher;
 use App\Mail\AdminModifyTeacherMail;
 use App\Mail\RegisterMail;
 use App\Models\Department;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
+use Maatwebsite\Excel\Facades\Excel;
 class TeacherController extends Controller
 {
     public function teacher()
@@ -64,9 +65,12 @@ class TeacherController extends Controller
         'password'          => Hash::make($password),
         'role'              => 'teacher',
     ]);
-     Mail::to($data['email'])->send(new RegisterMail($user,$password));
-     return redirect()->route('show.teacher')->with('teacher_registration','Registration Successful. Password & Others Details Are send In Your Registered Email Id');
-     }
+    // Send Department name via Email
+    $dept_name = Department::where('id',$request['department_id'])->first()->d_name;
+
+    Mail::to($data['email'])->send(new RegisterMail($user,$password,$dept_name));
+    return redirect()->route('show.teacher')->with('teacher_registration','Registration Successful. Password & Others Details Are send In Your Registered Email Id');
+    }
 
     public function show_teacher(Request $request)
      {
@@ -161,4 +165,9 @@ class TeacherController extends Controller
         $t_id->delete();
         return redirect()->route('show.teacher')->with('teacher_delete', 'Deleted Teacher Successfully......');
      }
+
+     public function export_teacher()
+      {
+        return Excel::download(new ExportTeacher, 'Teacher.xlsx');
+      }
 }
