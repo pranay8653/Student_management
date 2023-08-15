@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Exports\ExportTeacher;
 use App\Mail\AdminModifyTeacherMail;
+use App\Mail\ChangeNewPasswordMail;
 use App\Mail\RegisterMail;
 use App\Models\Department;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+
 class TeacherController extends Controller
 {
     public function teacher()
@@ -22,8 +27,8 @@ class TeacherController extends Controller
         return view('teacher.register',compact('dept'));
      }
 
-     public function teacher_save_data(Request $request)
-     {
+    public function teacher_save_data(Request $request)
+    {
          $data = $request->validate([
              'first_name'       => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
              'last_name'        => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
@@ -156,8 +161,8 @@ class TeacherController extends Controller
         return redirect()->route('show.teacher')->with('teacher_update', 'Teacher Account Updated Successfully And Details Are Send Registered Email Account');
      }
 
-     public function teacher_delete($id)
-     {
+    public function teacher_delete($id)
+    {
         // First Deleted users table data
         $data = Teacher::find($id)->email;
         $user = User::where('email', $data)->first()->delete();
@@ -165,13 +170,13 @@ class TeacherController extends Controller
         // Before deleted users data.Then delete teacher table
         $t_id = Teacher::find($id);
         $t_id->delete();
-        return redirect()->route('show.teacher')->with('teacher_delete', 'Deleted Teacher Successfully......');
-     }
+    return redirect()->route('show.teacher')->with('teacher_delete', 'Deleted Teacher Successfully......');
+    }
 
-     public function export_teacher()
-      {
+    public function export_teacher()
+    {
         return Excel::download(new ExportTeacher, 'Teacher.xlsx');
-      }
+    }
 
     public function teacher_list_pdf()
      {
@@ -211,4 +216,117 @@ class TeacherController extends Controller
         $pdf = PDF::loadView('teacher.perticular_list_pdf',compact('teacher','count','department'));
         return $pdf->download('teacher.pdf');
      }
+
+    public function teacher_profile()
+    {
+        $profile = Auth::user();
+        $name = Auth::user()->first_name;
+        $teacher_data = teacher::where('first_name',$name)->first();
+        return view('teacher.profile', compact('profile','teacher_data'));
+    }
+
+    public function teacher_profile_picture(Request $request)
+    {
+        $id = Auth::user()->id;
+        $post = User::find($id);
+        $data = $request->validate([
+            'image' => ['required', 'mimes:jpeg,png,jpg,gif,svg' ]
+        ]);
+
+        if($post)
+       {
+
+         if($request->hasfile('image'))
+          {
+            $file_path = 'upload/teacher/profile_picture';
+
+            if(File::exists(public_path($file_path . '/' . $post->image)))
+               {
+                 File::delete(public_path($file_path . '/' . $post->image));
+               }
+
+               $file_name = Carbon::now()->timestamp;
+               $file_extension = $request['image']->getClientOriginalExtension();
+               $request['image']->move($file_path, $file_name.'.'.$file_extension);
+               $data['image'] = $file_name.'.'.$file_extension;
+
+               $post->update([
+                'image' => $file_name.'.'.$file_extension,
+               ]);
+          }
+
+       }
+        return redirect()->back()->with('admin_picture','Profile Picture updated Successfully');
+    }
+
+    public function teacher_profile_edit()
+    {
+        $name = Auth::user()->first_name;
+        $teacher_data = teacher::where('first_name',$name)->first();
+        return view('teacher.profile_edit', compact('teacher_data'));
+    }
+
+    public function teacher_profile_update(Request $request)
+    {
+        $data = $request->validate([
+            'first_name' => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'last_name'  => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'address'    => ['required','regex:/^[A-Za-z: A-Za-z0-9(A-Za-z0-9)\S][^~!@#$%^]{3,300}$/'],
+            'dob'        => ['required'],
+            'gender'     => ['required'],
+        ],
+        [
+            'first_name'        => 'Please Enter First Name Within 50 Character',
+            'last_name'         =>  'Please Enter Last Name Name Within 50 Character',
+            'address'           =>  'Please Enter Address within 3-300 But not Used ~!@#$%^ character',
+            'dob'               =>  'Please Enter Date Of Birth ',
+            'gender'            =>  'Please Enter Gender',
+        ]);
+
+        $auth_id = Auth::id();
+        $a_email = Auth::user()->email;
+        $admin_id = teacher::where('email',$a_email)->first()->id;
+
+        // Update users Table
+        $user = User::find($auth_id)->update([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+        ]);
+
+        // Update admins table
+        $admin = teacher::find($admin_id)->update([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+            'address'       => $data['address'],
+            'dob'           => $data['dob'],
+            'gender'        => $data['gender'],
+        ]);
+
+        return redirect()->route('teacher.profile')->with('admin_profile_update', 'Profile Update Successfully....');
+    }
+
+    public function change_password()
+    {
+      return view('teacher.change_password');
+    }
+
+    public function teacher_save_change_password(Request $request)
+    {
+        $data = $request->validate([
+            'current_password'       => ['required', 'string'],
+            'new_password'           => ['required', 'string', 'max:16', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'],
+        ]);
+
+        $user = User::find(Auth::id());
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors('Current password does not match!');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password_confirmation)
+        ]);
+        // session()->flash('new_password','The password is changed....');
+        Mail::to($user['email'])->send(new ChangeNewPasswordMail($user,$data['new_password']));
+        return redirect()->route('teacher.dashboard')->with('change_password','Your Password Has Changed.The New Change Password Is Send Your Registered Email id. Please Logout Your Site And Continue Your Work');
+    }
 }

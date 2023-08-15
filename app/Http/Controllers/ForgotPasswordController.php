@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AfterSaveForgotChangePasswordMail;
-use App\Mail\ChangeNewPasswordMail;
 use App\Mail\ForgotPasswordMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
@@ -58,30 +56,5 @@ class ForgotPasswordController extends Controller
         /** @var User $user, $email */
         Mail::to($user['email'])->send(new AfterSaveForgotChangePasswordMail($user,$data['password']));
         return redirect()->route('login')->with('new_password','The New password will send Your register email id');
-    }
-
-    public function change_password()
-    {
-      return view('change_password');
-    }
-
-    public function admin_save_change_password(Request $request)
-    {
-        $data = $request->validate([
-            'current_password'       => ['required', 'string'],
-            'new_password'           => ['required', 'string', 'max:16', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'],
-        ]);
-
-        $user = User::find(Auth::id());
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors('Current password does not match!');
-        }
-
-        $user->update([
-            'password' => Hash::make($request->new_password_confirmation)
-        ]);
-        // session()->flash('new_password','The password is changed....');
-        Mail::to($user['email'])->send(new ChangeNewPasswordMail($user,$data['new_password']));
-        return redirect()->route('admin.dashboard')->with('change_password','The New Change Password Is Send Your Registered Email id. Please Logout Your Site And Continue Your Work');
     }
 }

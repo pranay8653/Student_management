@@ -14,11 +14,12 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            {{-- <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> --}}
+
                             <div class="col-lg-12">
                                 <div class="p-5">
+                                    <a href="{{ route('admin.profile') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Change Password</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Admin Password Change </h1>
                                     </div>
 
                                     @if(session('forgot_otp'))
@@ -27,9 +28,9 @@
                                             </div>
                                         @endif
 
-                                    <form action="{{ route('save.change.password') }}" class="sign-up-form" method="post" name="myForm" onsubmit="return validation()">
+                                    <form action="{{ route('admin.update.password') }}" class="sign-up-form" method="post" name="myForm" onsubmit="return validation()">
                                         @csrf
-
+                                        @method('PUT')
                                         @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul>

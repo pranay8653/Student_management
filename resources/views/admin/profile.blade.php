@@ -95,7 +95,7 @@
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                         <div class="btn-group mr-2" role="group" aria-label="First group">
 
-                            <a href="{{ route('change.password') }}" class="btn btn-info ml-3"> <i class="fa fa-unlock" aria-hidden="true"> Change Password</i> </a>
+                            <a href="{{ route('admin.change.password') }}" class="btn btn-info ml-3"> <i class="fa fa-unlock" aria-hidden="true"> Change Password</i> </a>
                         </div>
                         <div class="btn-group mr-2" role="group" aria-label="Second group">
                             <a href="{{ route('admin.profile.edit') }}" class="btn btn-success ml-3">Edit Profile</a>

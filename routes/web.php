@@ -4,20 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TeacherController;
-use App\Models\Department;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -32,19 +20,18 @@ Route::post('/post_forgot',[ForgotPasswordController::class,'post_forgot'])->nam
 Route::get('/reset_password',[ForgotPasswordController::class,'reset'])->name('reset.password');
 Route::post('/post_reset',[ForgotPasswordController::class,'post_reset'])->name('reset.forgot.password');
 
-
-
 // Admin Registration
 Route::get('/admin_register',[AdminController::class, 'index'])->name('admin.register');
 Route::post('/save_register',[AdminController::class, 'admin_save_data'])->name('admin.save.register');
 
 Route::middleware('auth:web')->group(function(){
-    Route::get('/change_password', [ForgotPasswordController::class,'change_password'])->name('change.password');
     Route::get('/logout',[SessionController::class, 'logout'])->name('logout');
 
+    // Only Access Admin
     Route::group(['middleware' => ['checkuser:admin']],function(){
         Route::view('/dashboard',['admin.dashboard'])->name('admin.dashboard');
-        Route::post('/update_change_password', [ForgotPasswordController::class,'admin_save_change_password'])->name('save.change.password');
+        Route::get('/admin/change_password', [AdminController::class,'change_password'])->name('admin.change.password');
+        Route::put('/update_change_password', [AdminController::class,'admin_save_change_password'])->name('admin.update.password');
         Route::get('/admin/profile',[AdminController::class,'admin_profile'])->name('admin.profile');
         Route::put('/admin/profile/picture',[AdminController::class,'admin_profile_picture'])->name('admin.profile.picture');
         Route::get('/admin/profile/edit',[AdminController::class,'admin_profile_edit'])->name('admin.profile.edit');
@@ -66,6 +53,17 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/teacher/pdf', [TeacherController::class, 'teacher_list_pdf'])->name('teacher.pdf.list');
         Route::get('/admin/teacher/particular/lists/{id}', [TeacherController::class, 'perticular_list'])->name('teacher.particular.list');
         Route::get('/admin/teacher/particular/lists/pdf/{id}', [TeacherController::class, 'perticular_list_pdf'])->name('teacher.particular.list.pdf');
+    });
+
+    // Access Both Admin & Teacher
+    Route::group(['middleware' => ['checkuser:teacher']],function(){
+        Route::view('/teacher/dashboard',['teacher.dashboard'])->name('teacher.dashboard');
+        Route::get('/teacher/profile',[TeacherController::class,'teacher_profile'])->name('teacher.profile');
+        Route::put('/teacher/profile/picture',[TeacherController::class,'teacher_profile_picture'])->name('teacher.profile.picture');
+        Route::get('/teacher/profile/edit',[TeacherController::class,'teacher_profile_edit'])->name('teacher.profile.edit');
+        Route::put('/teacher/profile/update',[TeacherController::class,'teacher_profile_update'])->name('teacher.profile.update');
+        Route::get('/teacher/change_password', [TeacherController::class,'change_password'])->name('teacher.change.password');
+        Route::put('/teacher/update_password', [TeacherController::class,'teacher_save_change_password'])->name('teacher.update.password');
     });
 });
 
