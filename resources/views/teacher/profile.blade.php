@@ -1,5 +1,5 @@
 @extends('layout.application')
-@section('page_title', 'Admin profile')
+@section('page_title', 'Teacher profile')
 @section('content')
 
 <div class="container-fluid">
@@ -25,8 +25,8 @@
                             <label class="cardformlabel" for="Profile" style="color:blue">Your Profile Picture</label>
                             <div class="row">
                                 <div class="col-sm-12 mr-2">
-                                    <img src="{{ asset('upload/admin/profile_picture/'.$profile->image) }}" class="img-fluid" alt="Admin Profile piture">
-                                    <form action="{{ route('admin.profile.picture') }}" method="POST" enctype="multipart/form-data">
+                                    <img src="{{ asset('upload/teacher/profile_picture/'.$profile->image) }}" class="img-fluid" alt="Teacher Profile piture">
+                                    <form action="{{ route('teacher.profile.picture') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     @if ($errors->any())
@@ -66,24 +66,24 @@
                     <div class="row">
                         <div class="col-md-12 mb-12">
                             <label class="cardformlabel" for="email" style="color:blue">Address</label>
-                            <h4>{{ $profile->address }}</h4>
+                            <h4>{{ $teacher_data->address }}</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="cardformlabel" for="email" style="color:blue">Contact</label>
-                            <h4>{{ $profile->gender }}</h4>
+                            <h4>{{ $teacher_data->gender }}</h4>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="contact" class="cardformlabel" style="color:blue">Date Of Birth</label>
-                            <h4>{{ $profile->dob }}</h4>
+                            <h4>{{ $teacher_data->dob }}</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-12">
                             <label class="cardformlabel" for="email" style="color:blue">Age</label>
-                            <h4>{{ \Carbon\Carbon::parse($profile->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }}</h4>
+                            <h4>{{ \Carbon\Carbon::parse($teacher_data->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }}</h4>
                         </div>
                     </div>
                     <hr>
@@ -91,10 +91,10 @@
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                         <div class="btn-group mr-2" role="group" aria-label="First group">
 
-                            <a href="{{ route('change.password') }}" class="btn btn-info ml-3"> <i class="fa fa-unlock" aria-hidden="true"> Change Password</i> </a>
+                            <a href="{{ route('teacher.change.password') }}" class="btn btn-info ml-3"> <i class="fa fa-unlock" aria-hidden="true"> Change Password</i> </a>
                         </div>
                         <div class="btn-group mr-2" role="group" aria-label="Second group">
-                            <a href="{{ route('admin.profile.edit') }}" class="btn btn-success ml-3">Edit Profile</a>
+                            <a href="{{ route('teacher.profile.edit') }}" class="btn btn-success ml-3">Edit Profile</a>
                         </div>
                     </div>
                 </div>

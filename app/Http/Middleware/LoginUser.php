@@ -24,6 +24,10 @@ class LoginUser
             {
                 return $next($request);
             }
+            elseif($role == 'teacher' && $user->role == 'teacher' || $user->role == 'admin')
+            {
+                return $next($request);
+            }
         }
         return redirect()->route('login');
     }

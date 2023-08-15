@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+use App\Models\Teacher;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,20 +10,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegisterMail extends Mailable
+class AdminModifyTeacherMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user, $password ,$dept_name;
+    public $teacher_id, $dept_name;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, $password, $dept_name)
+    public function __construct(Teacher $teacher_id, $dept_name)
     {
-        $this->user = $user;
-        $this->password = $password;
-        $this->dept_name = $dept_name;
+        $this->teacher_id  = $teacher_id;
+        $this->dept_name  = $dept_name;
     }
 
     /**
@@ -34,7 +33,7 @@ class RegisterMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Registration Mail',
+            subject: 'Admin Modify Teacher Mail',
         );
     }
 
@@ -46,11 +45,10 @@ class RegisterMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mails.registertion_mail',
-            with: [
-                'user'  => $this->user,
-                'password' => $this->password,
-                'dept_name' => $this->dept_name,
+            view: 'Mails.AdminModifyTeacherMail',
+            with:   [
+                'teacher_id'    => $this->teacher_id,
+                'dept_name'     => $this->dept_name,
             ],
         );
     }

@@ -10,20 +10,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegisterMail extends Mailable
+class AdminRegisterEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user, $password ,$dept_name;
+    public $user, $password ;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, $password, $dept_name)
+    public function __construct(User $user, $password)
     {
-        $this->user = $user;
-        $this->password = $password;
-        $this->dept_name = $dept_name;
+            $this->user = $user;
+            $this->password = $password;
     }
 
     /**
@@ -34,7 +33,7 @@ class RegisterMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Registration Mail',
+            subject: 'Admin Register Email',
         );
     }
 
@@ -46,11 +45,10 @@ class RegisterMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mails.registertion_mail',
+            view: 'mails.Admin_register_email',
             with: [
                 'user'  => $this->user,
                 'password' => $this->password,
-                'dept_name' => $this->dept_name,
             ],
         );
     }

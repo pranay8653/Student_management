@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\RegisterMail;
+use App\Mail\AdminRegisterEmail;
+use App\Mail\ChangeNewPasswordMail;
 use App\Models\Admin;
 use App\Models\Department;
 use App\Models\User;
@@ -23,7 +24,7 @@ class AdminController extends Controller
 
     public function admin_save_data(Request $request)
     {
-        $data = $request->validate([
+     $data = $request->validate([
             'first_name' => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
             'last_name'  => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
             'email'      => ['required','string', 'email', 'max:200', 'unique:users,email','regex:/^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,4}$/'],
@@ -64,7 +65,7 @@ class AdminController extends Controller
         'password'          => Hash::make($password),
         'role'              => 'admin',
     ]);
-    Mail::to($data['email'])->send(new RegisterMail($user,$password));
+    Mail::to($data['email'])->send(new AdminRegisterEmail($user,$password));
     return redirect()->route('login')->with('admin_register','Your Password is send in your register Email id');
     }
 
@@ -105,7 +106,6 @@ class AdminController extends Controller
                 'image' => $file_name.'.'.$file_extension,
                ]);
           }
-
        }
         return redirect()->back()->with('admin_picture','Profile Picture updated Successfully');
     }
@@ -136,8 +136,8 @@ class AdminController extends Controller
         'gender'            =>  'Please Enter Gender',
     ]);
         $auth_id = Auth::id();
-        $name = Auth::user()->first_name;
-        $admin_id = Admin::where('first_name',$name)->first()->id;
+        $a_email = Auth::user()->email;
+        $admin_id = Admin::where('email',$a_email)->first()->id;
 
         // Update users Table
         $user = User::find($auth_id)->update([
@@ -145,7 +145,7 @@ class AdminController extends Controller
             'last_name'     => $data['last_name'],
             'phone'         => $data['phone'],
         ]);
-        
+
         // Update admins table
         $admin = Admin::find($admin_id)->update([
             'first_name'    => $data['first_name'],
@@ -156,7 +156,6 @@ class AdminController extends Controller
             'gender'        => $data['gender'],
         ]);
 
-        // $admin_profile = User::find(Auth::id())->update($data);
         return redirect()->route('admin.profile')->with('admin_profile_update', 'Profile Update Successfully....');
     }
 
@@ -176,7 +175,7 @@ class AdminController extends Controller
         return view('department.department',compact('dept','d_count','search'));
      }
 
-     public function save_department(Request $request)
+    public function save_department(Request $request)
      {
         $data = $request->validate([
             'd_name' => ['required','string','min:3','max:150','unique:departments,d_name']
@@ -189,10 +188,10 @@ class AdminController extends Controller
      }
 
     public function edit_department(Request $request, $id)
-    {
+     {
         $dept = Department::find($id);
         return view('department.department_edit',compact('dept'));
-    }
+     }
 
     public function update_department(Request $request, $id)
      {
@@ -216,4 +215,29 @@ class AdminController extends Controller
          }
         return redirect()->route('departments')->with('delete_department', 'Department Deleted Successfully......');
      }
+
+    public function change_password()
+    {
+      return view('admin.change_password');
+    }
+
+    public function admin_save_change_password(Request $request)
+    {
+        $data = $request->validate([
+            'current_password'       => ['required', 'string'],
+            'new_password'           => ['required', 'string', 'max:16', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'],
+        ]);
+
+        $user = User::find(Auth::id());
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors('Current password does not match!');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password_confirmation)
+        ]);
+        // session()->flash('new_password','The password is changed....');
+        Mail::to($user['email'])->send(new ChangeNewPasswordMail($user,$data['new_password']));
+        return redirect()->route('admin.dashboard')->with('change_password','Your Password Has Changed.The New Change Password Is Send Your Registered Email id. Please Logout Your Site And Continue Your Work');
+    }
 }

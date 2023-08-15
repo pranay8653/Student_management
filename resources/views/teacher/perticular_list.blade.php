@@ -1,28 +1,7 @@
 @extends('layout.application')
-@section('page_title', 'Show Teacher')
+@section('page_title', 'Perticular List')
 @section('teachers','active')
 @section('content')
-
-@if(session('department_edit'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{session('department_edit')}}
-    </div>
-@endif
-@if(session('teacher_registration'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{session('teacher_registration')}}
-    </div>
-@endif
-@if(session('teacher_update'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{session('teacher_update')}}
-    </div>
-@endif
-@if(session('teacher_delete'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{session('teacher_delete')}}
-    </div>
-@endif
 
 <div class="container-fluid">
 
@@ -32,13 +11,13 @@
                     <div class="card-body">
                         <div class="table-responsive" >
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a href="{{ route('teacher.pdf.list') }}" class="btn btn-outline-success m-2">Export All In PDF</a>
-                                <a href="{{ route('export.teacher') }}" class="btn btn-outline-secondary m-2">Export All In Excel</a>
-                                <a href="{{ route('create.teacher') }}" class="btn btn-outline-info m-2">Add Teacher</a>
+                                <a href="{{ route('teacher.particular.list.pdf',['id' => $department->id]) }}" class="btn btn-outline-success m-2">Export This Into PDF</a>
+                                <a href="{{ route('show.teacher') }}" class="btn btn-outline-info m-2">Return To Main List</a>
                             </div>
 
-                            <h1 class="display-5" > Total Number Of <span style="color: #d21a80">{{ $count }}</span> Teachers Of <span style="color: #d21a80">{{ $dept_count }}</span> Departments </h1>
-                            <h1 class="display-5" > Teacher Lists</h1>
+                            <h1 class="display-6" > Department Name: {{ $department->d_name }}</h1>
+                            <h1 class="h4" >Total Number Of Teachers:<span style="color: #d21a80"> {{ $teacher_count }}</span> Of <span style="color: #d21a80">"{{ $department->d_name }}"</span> Department's </h1>
+
                                 <table class="table table-bordered" id="dataTable"  cellspacing="0">
                                     <thead style="color: #d21a80; font-family: 'Bebas Neue', cursive;">
                                         <tr>
@@ -76,9 +55,7 @@
                                         <td>{{ $items->dob }} </td>
                                         <td>{{ \Carbon\Carbon::parse($items->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }} </td>
                                         <td>{{ $items->gender }} </td>
-                                        <td style="color: #002b80; font-family: 'Bebas Neue', cursive;">
-                                            <a href="{{ route('teacher.particular.list',['id' => $items->department->id]) }}">{{ $items->department->d_name }}</a>
-                                        </td>
+                                        <td>{{ $items->department->d_name }} </td>
                                         <td style="color: #002b80; font-family: 'Bebas Neue', cursive;">
                                             <a href="{{ route('edit.teacher',['id' => $items->id]) }}" class="btn btn-warning" >Edit </a>
                                             <a href="{{ route('delete.teacher',['id' => $items->id]) }}" class="btn btn-danger" >Delete </a>
@@ -101,17 +78,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 mx-auto">
-                <h2>List Of Departments </h2>
-                @foreach ($dept as $item)
-                  <ul>
-                    <li style="color:#d21a80">
-                        <a href="{{ route('teacher.particular.list',['id' => $item-> id]) }}">{{ $item->d_name }}</a>
-                    </li>
-                  </ul>
-                 @endforeach
-            </div>
         </div>
-    </div>
+
 </div>
 @endsection

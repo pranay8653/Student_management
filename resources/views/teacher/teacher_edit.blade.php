@@ -14,7 +14,7 @@
                     <div class="p-5">
                         <a href="{{ route('show.teacher') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4" style="font-family: 'Lucida Handwriting', cursive;">Registration Of Teacher Account!</h1>
+                            <h1 class="h4 text-gray-900 mb-4" style="font-family: 'Lucida Handwriting', cursive;">Edit Teacher Account!</h1>
                         </div>
 
                         @if ($errors->any())
@@ -27,33 +27,33 @@
                         </div>
                           @endif
 
-                        <form action="{{ route('save.teacher') }}" method="POST" name="myForm" onsubmit="return validation()" class="user">
+                        <form action="{{ route('update.teacher',['id' => $teacher->id]) }}" method="POST" name="myForm" onsubmit="return validation()" class="user">
                             @csrf
-
+                            @method('PUT')
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="text" class="form-control form-control-user" id="FirstName"
-                                        placeholder="First Name" name="first_name" value="{{ old('first_name') }}" >
+                                        placeholder="First Name" name="first_name" value="{{ $teacher->first_name }}" value="{{ old('first_name') }}" >
 
                                         <span id="firstnameerror" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-user" id="LastName"
-                                        placeholder="Last Name" name="last_name" value="{{ old('last_name') }}">
+                                        placeholder="Last Name" name="last_name" value="{{ $teacher->last_name }}" value="{{ old('last_name') }}">
                                         <span id="lastnameerror" class="text-danger  "></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <input type="email" class="form-control form-control-user" id="Email"
-                                    placeholder="Email Address" name="email" value="{{ old('email') }}">
+                                    placeholder="Email Address" name="email" value="{{ $teacher->email }}" value="{{ old('email') }}" >
                                     <span id="emailerror" class="text-danger  "></span>
                             </div>
 
                             <div class="form-group">
                                 <label for="aadress"> </label>
                                 <textarea type="text" class="form-control form-control-user" id="Address" cols="30" rows="3"
-                                placeholder="Enter Your Address" name="address">{{ old('address') }}</textarea>
+                                placeholder="Enter Your Address" name="address">{{ $teacher->address }}"{{ old('address') }}</textarea>
 
                                 <span id="addresserror" class="text-danger"></span>
 
@@ -61,12 +61,12 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="text" class="form-control form-control-user"
-                                        id="PhoneNumber" placeholder="Enter Your Phone Number" name="phone" value="{{ old('phone') }}" onkeypress="return isNumber(event)">
+                                        id="PhoneNumber" placeholder="Enter Your Phone Number" name="phone" value="{{ $teacher->phone }}" value="{{ old('phone') }}" onkeypress="return isNumber(event)">
                                         <span id="phoneerror" class="text-danger  "></span>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="date" class="form-control form-control-user"
-                                        id="dob" name="dob" value="{{ old('dob') }}">
+                                        id="dob" name="dob" value="{{ $teacher->dob }}" value="{{ old('dob') }}">
                                         <span id="doberror" class="text-danger  "></span>
                                 </div>
                             </div>
@@ -76,11 +76,11 @@
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <label for="">Gender: </label>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="radio" id="" name="gender" value="male" checked>
+                                        <input type="radio" id="" name="gender" value="male" {{ $teacher->gender == 'male' ? 'checked' : '' }}>
                                         <label for="male ">Male</label>
-                                        <input type="radio" id="" name="gender" value="female">
+                                        <input type="radio" id="" name="gender" value="female" {{ $teacher->gender == 'female' ? 'checked' : '' }}>
                                         <label for="female ">Female</label>
-                                        <input type="radio" id="" name="gender" value="others">
+                                        <input type="radio" id="" name="gender" value="others" {{ $teacher->gender == 'others' ? 'checked' : '' }}>
                                         <label for="others">Other</label>
                                     </div>
                                 </div>
@@ -89,14 +89,14 @@
                                     <select name="department_id"  id="selectoption" class="form-control  ">
                                         <option value="">Please Select</option>
                                         @foreach ($dept as $department )
-                                        <option value="{{ $department->id }}">{{ $department->d_name }}</option>
+                                        <option value="{{ $department->id }}"{{ $department->id == $teacher->department_id  ? 'selected' : '' }}>{{ $department->d_name }}</option>
                                         @endforeach
                                     </select>
-                                        <span id="selecterror" class="text-danger  "></span>
+                                        <span id="selecterror" class="text-danger"></span>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-user btn-block">Register Account </button>
+                            <button type="submit" class="btn btn-primary btn-user btn-block">Update Account </button>
                         </form>
 
                         <hr>

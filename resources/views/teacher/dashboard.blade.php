@@ -1,6 +1,6 @@
 @extends('layout.application')
-@section('page_title', 'Admin dashboard')
-@section('admin_dashboard','active')
+@section('page_title', 'Teacher dashboard')
+@section('teacher_dashboard','active')
 @section('content')
 @if(session('after_login'))
 <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -12,5 +12,5 @@
     {{session('change_password')}}
 @endif
 </div>
-    Admin dashboard
+    Teacher's dashboard
 @endsection
