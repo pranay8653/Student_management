@@ -41,6 +41,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/edit/department/{id}',[AdminController::class,'edit_department'])->name('edit.department');
         Route::put('/admin/update/department/{id}',[AdminController::class,'update_department'])->name('update.department');
         // Route::get('/admin/delete/department/{id}',[AdminController::class,'department_delete'])->name('delete.department');
+        Route::post('/admin/import/department/',[AdminController::class,'department_import'])->name('import.department');
 
         //teacher
         Route::get('/admin/create/teacher',[TeacherController::class,'teacher'])->name('create.teacher');

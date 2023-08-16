@@ -21,8 +21,11 @@
     </div>
 @endif
 
-
-
+@if(session('import_excel'))
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        {{session('import_excel')}}
+    </div>
+@endif
             @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -81,7 +84,6 @@
                                 <tr>
                                     <th>Name of Departments</th>
                                     <th>Action</th>
-
                                 </tr>
                             </thead>
                             <tfoot style="color: #d21a80; font-family: 'Bebas Neue', cursive;">
@@ -99,12 +101,24 @@
                                     {{-- <a href="{{ route('delete.department',['id' =>$department->id ]) }}" class="btn btn-danger" >Delete </a> --}}
                                   </td>
                                </tr>
-
-
                                @endforeach
-
                             </tbody>
                         </table>
+
+                        <div class="row">
+                            <h1>Import Department Name</h1>
+                            <div class="col-md-9">
+                            <form action="{{ route('import.department') }} " method="POST" enctype="multipart/form-data" >
+                                @csrf
+                                    <input type="file" name="file" class="form-control" >
+                                    <p style="color: #e70c10;" > Only Upload .xlsx, .xls Excel File </p>
+                                </div>
+                                <div class="col-md-3">
+                                        <button type="submit" class="btn btn-warning" > Import File</button>
+                                </div>
+                            </form>
+                        </div>
+
                         <div >
                             <p >
                                 {{ $dept->render('pagination::bootstrap-4') }}
@@ -114,11 +128,9 @@
                             Showing{{ $dept->firstItem() }} to {{ $dept->lastItem() }} of
                             {{ $dept->total() }} entries
                         </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @endsection
