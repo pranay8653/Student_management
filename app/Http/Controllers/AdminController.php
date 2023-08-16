@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportDepartment;
 use App\Mail\AdminRegisterEmail;
 use App\Mail\ChangeNewPasswordMail;
 use App\Models\Admin;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class AdminController extends Controller
 {
@@ -240,4 +243,15 @@ class AdminController extends Controller
         Mail::to($user['email'])->send(new ChangeNewPasswordMail($user,$data['new_password']));
         return redirect()->route('admin.dashboard')->with('change_password','Your Password Has Changed.The New Change Password Is Send Your Registered Email id. Please Logout Your Site And Continue Your Work');
     }
+
+    public function department_import(Request $request)
+     {
+        $data = $request->validate([
+            'file' => ['required', 'mimes:xlsx,xls,xlx', 'max:4069']
+        ],[
+            'file' => 'Please Enter .xlsx, .xls, .xlx Excel File',
+        ]);
+        Excel::import(new ImportDepartment, $request->file('file'));
+        return redirect()->back()->with('import_excel','Excel Files Uploaded Successfully');
+     }
 }
