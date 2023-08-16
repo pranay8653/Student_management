@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,10 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/teacher/pdf', [TeacherController::class, 'teacher_list_pdf'])->name('teacher.pdf.list');
         Route::get('/admin/teacher/particular/lists/{id}', [TeacherController::class, 'perticular_list'])->name('teacher.particular.list');
         Route::get('/admin/teacher/particular/lists/pdf/{id}', [TeacherController::class, 'perticular_list_pdf'])->name('teacher.particular.list.pdf');
+
+        //student
+        Route::get('/admin/create/student',[StudentController::class,'index'])->name('create.student');
+        Route::post('/admin/save/student',[StudentController::class,'student_save_data'])->name('save.student');
     });
 
     // Access Both Admin & Teacher
