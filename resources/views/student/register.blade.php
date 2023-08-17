@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-user" id="marks_2"
-                                        placeholder="Enter 12th Class Obtained" name="hs_marks" value="{{ old('hs_marks') }}" onkeypress="return isNumber(event)">
+                                        placeholder="Enter Best Of five Subject 12th Class Obtained Marks" name="hs_marks" value="{{ old('hs_marks') }}" onkeypress="return isNumber(event)">
                                         <span id="12thnumbererror" class="text-danger  "></span>
                                 </div>
                             </div>
@@ -152,9 +152,9 @@
 
 
             // regex pattern
-            var fnamecheck = /^[A-Za-z. ]{3,20}$/;
-            var lnamecheck = /^[A-Za-z. ]{3,20}$/;
-            var gnamecheck = /^[A-Za-z. ]{3,40}$/;
+            var fnamecheck = /^[A-Za-z. ]{3,50}$/;
+            var lnamecheck = /^[A-Za-z. ]{3,50}$/;
+            var gnamecheck = /^[A-Za-z. ]{3,50}$/;
             var emailcheck = /^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,4}$/;
             var addresscheck = /^[A-Za-z: A-Za-z0-9(A-Za-z0-9)\S][^~!@#$%^]{3,300}$/;
             var phonecheck = /^[0-9]{10}$/;
