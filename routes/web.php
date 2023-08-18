@@ -63,6 +63,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/student/particular/lists/{id}', [StudentController::class, 'perticular_list'])->name('student.particular.list');
         Route::get('/admin/edit/student/{id}',[StudentController::class,'edit_student'])->name('edit.student');
         Route::put('/admin/update/student/{id}',[StudentController::class,'update_student'])->name('update.student');
+        Route::get('/admin/delete/student/{id}',[StudentController::class,'student_delete'])->name('delete.student');
     });
 
     // Access Both Admin & Teacher

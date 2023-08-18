@@ -89,11 +89,11 @@ class TeacherController extends Controller
             ->orwhere('phone','LIKE', "%$search%")
             ->orwhere('address','LIKE', "%$search%")
             ->orwhere('dob','LIKE', "%$search%")
-            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+            ->orwhere('gender','LIKE', "%$search%")->orderBy('created_at', 'DESC')->paginate(5);
         }
         else
         {
-            $teacher = Teacher::with('department')->paginate(4);
+            $teacher = Teacher::with('department')->orderBy('created_at', 'DESC')->paginate(4);
         }
         $count =  Teacher::count();
         $dept = Department::get();
@@ -198,11 +198,11 @@ class TeacherController extends Controller
             ->orwhere('phone','LIKE', "%$search%")
             ->orwhere('address','LIKE', "%$search%")
             ->orwhere('dob','LIKE', "%$search%")
-            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+            ->orwhere('gender','LIKE', "%$search%")->orderBy('created_at', 'DESC')->paginate(5);
         }
         else
         {
-        $teacher = $department->teachers()->paginate(4);
+        $teacher = $department->teachers()->orderBy('created_at', 'DESC')->paginate(4);
         }
         $teacher_count = $department->teachers()->count();
         return view('teacher.perticular_list',compact('department','teacher','teacher_count'));

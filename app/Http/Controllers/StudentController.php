@@ -101,11 +101,11 @@ class StudentController extends Controller
         ->orwhere('guardian_number','LIKE', "%$search%")
         ->orwhere('address','LIKE', "%$search%")
         ->orwhere('dob','LIKE', "%$search%")
-        ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+        ->orwhere('gender','LIKE', "%$search%")->orderBy('created_at', 'DESC')->paginate(4);
     }
     else
     {
-        $student = Student::with('department')->paginate(4);
+        $student = Student::with('department')->orderBy('created_at', 'DESC')->paginate(4);
     }
     $count =  Student::count();
     $dept = Department::get();
@@ -128,11 +128,11 @@ class StudentController extends Controller
             ->orwhere('guardian_number','LIKE', "%$search%")
             ->orwhere('address','LIKE', "%$search%")
             ->orwhere('dob','LIKE', "%$search%")
-            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+            ->orwhere('gender','LIKE', "%$search%")->orderBy('created_at', 'DESC')->paginate(5);
         }
         else
         {
-        $student = $department->students()->paginate(4);
+        $student = $department->students()->orderBy('created_at', 'DESC')->paginate(4);
         }
         $student_count = $department->students()->count();
         return view('student.perticular_list',compact('department','student','student_count'));
@@ -212,7 +212,19 @@ class StudentController extends Controller
         $dept_name = Department::where('id',$dep_id)->first()->d_name;
 
         Mail::to($data['email'])->send(new StudentModifyMail($student_id,$dept_name));
-        return redirect()->route('show.student')->with('teacher_update', 'Teacher Account Updated Successfully And Details Are Send Registered Email Account');
+        return redirect()->route('show.student')->with('teacher_update', 'Student Account Updated Successfully And Details Are Send Registered Email Account');
+     }
+
+     public function student_delete($id)
+     {
+         // First Deleted users table data
+         $data = Student::find($id)->email;
+         $user = User::where('email', $data)->first()->delete();
+
+         // Before deleted users data.Then delete teacher table
+         $t_id = Student::find($id);
+         $t_id->delete();
+     return redirect()->route('show.student')->with('teacher_delete', 'Deleted Student Successfully......');
      }
 
 }

@@ -76,7 +76,7 @@
                                         <td>{{ $items->hs_percentage }} </td>
                                         <td style="color: #002b80; font-family: 'Bebas Neue', cursive;">
                                             <a href="{{ route('edit.student',['id' => $items->id]) }}" class="btn btn-warning" >Edit </a>
-                                            {{-- <a href="{{ route('delete.teacher',['id' => $items->id]) }}" class="btn btn-danger" >Delete </a> --}}
+                                            <a href="{{ route('delete.student',['id' => $items->id]) }}" class="btn btn-danger" >Delete </a>
                                         </td>
                                     </tr>
                                     @endforeach
