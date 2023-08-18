@@ -1,6 +1,6 @@
 @extends('layout.application')
 @section('page_title', 'Show Teacher')
-@section('teachers','active')
+@section('student','active')
 @section('content')
 
 <div class="container">
@@ -12,9 +12,9 @@
                 {{-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> --}}
                 <div class="col-lg-12">
                     <div class="p-5">
-                        <a href="{{ route('show.teacher') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a href="{{ route('show.student') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4" style="font-family: 'Lucida Handwriting', cursive;">Edit Teacher Account!</h1>
+                            <h1 class="h4 text-gray-900 mb-4" style="font-family: 'Lucida Handwriting', cursive;">Edit Student Account!</h1>
                         </div>
 
                         @if ($errors->any())
@@ -27,33 +27,47 @@
                         </div>
                           @endif
 
-                        <form action="{{ route('update.teacher',['id' => $teacher->id]) }}" method="POST" name="myForm" onsubmit="return validation()" class="user">
+                        <form action="{{ route('update.student',['id' => $student->id]) }}" method="POST" name="myForm" onsubmit="return validation()" class="user">
                             @csrf
                             @method('PUT')
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="text" class="form-control form-control-user" id="FirstName"
-                                        placeholder="First Name" name="first_name" value="{{ $teacher->first_name }}" value="{{ old('first_name') }}" >
+                                        placeholder="First Name" name="first_name" value="{{ $student->first_name }}" value="{{ old('first_name') }}" >
 
                                         <span id="firstnameerror" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-user" id="LastName"
-                                        placeholder="Last Name" name="last_name" value="{{ $teacher->last_name }}" value="{{ old('last_name') }}">
+                                        placeholder="Last Name" name="last_name" value="{{ $student->last_name }}" value="{{ old('last_name') }}">
                                         <span id="lastnameerror" class="text-danger  "></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="text" class="form-control form-control-user" id="GuardianName"
+                                        placeholder="Enter Guardian Name" name="guardian_name" value="{{ $student->guardian_name }}" value="{{ old('guardian_name') }}" >
+
+                                        <span id="guardianerror" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-user" id="GuardianPhoneNumber"
+                                        placeholder="Enter Guardian Phone Number" name="guardian_number" value="{{ $student->guardian_number }}" value="{{ old('guardian_number') }}" onkeypress="return isNumber(event)">
+                                        <span id="guardiannumbererror" class="text-danger  "></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <input type="email" class="form-control form-control-user" id="Email"
-                                    placeholder="Email Address" name="email" value="{{ $teacher->email }}" value="{{ old('email') }}" >
+                                    placeholder="Email Address" name="email" value="{{ $student->email }}" value="{{ old('email') }}" >
                                     <span id="emailerror" class="text-danger  "></span>
                             </div>
 
                             <div class="form-group">
                                 <label for="aadress"> </label>
                                 <textarea type="text" class="form-control form-control-user" id="Address" cols="30" rows="3"
-                                placeholder="Enter Your Address" name="address">{{ $teacher->address }}"{{ old('address') }}</textarea>
+                                placeholder="Enter Your Address" name="address">{{ $student->address }}"{{ old('address') }}</textarea>
 
                                 <span id="addresserror" class="text-danger"></span>
 
@@ -61,12 +75,12 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="text" class="form-control form-control-user"
-                                        id="PhoneNumber" placeholder="Enter Your Phone Number" name="phone" value="{{ $teacher->phone }}" value="{{ old('phone') }}" onkeypress="return isNumber(event)">
+                                        id="PhoneNumber" placeholder="Enter Your Phone Number" name="phone" value="{{ $student->phone }}" value="{{ old('phone') }}" onkeypress="return isNumber(event)">
                                         <span id="phoneerror" class="text-danger  "></span>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="date" class="form-control form-control-user"
-                                        id="dob" name="dob" value="{{ $teacher->dob }}" value="{{ old('dob') }}">
+                                        id="dob" name="dob" value="{{ $student->dob }}" value="{{ old('dob') }}">
                                         <span id="doberror" class="text-danger  "></span>
                                 </div>
                             </div>
@@ -76,11 +90,11 @@
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <label for="">Gender: </label>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="radio" id="" name="gender" value="male" {{ $teacher->gender == 'male' ? 'checked' : '' }}>
+                                        <input type="radio" id="" name="gender" value="male" {{ $student->gender == 'male' ? 'checked' : '' }}>
                                         <label for="male ">Male</label>
-                                        <input type="radio" id="" name="gender" value="female" {{ $teacher->gender == 'female' ? 'checked' : '' }}>
+                                        <input type="radio" id="" name="gender" value="female" {{ $student->gender == 'female' ? 'checked' : '' }}>
                                         <label for="female ">Female</label>
-                                        <input type="radio" id="" name="gender" value="others" {{ $teacher->gender == 'others' ? 'checked' : '' }}>
+                                        <input type="radio" id="" name="gender" value="others" {{ $student->gender == 'others' ? 'checked' : '' }}>
                                         <label for="others">Other</label>
                                     </div>
                                 </div>
@@ -89,10 +103,24 @@
                                     <select name="department_id"  id="selectoption" class="form-control  ">
                                         <option value="">Please Select</option>
                                         @foreach ($dept as $department )
-                                        <option value="{{ $department->id }}"{{ $department->id == $teacher->department_id  ? 'selected' : '' }}>{{ $department->d_name }}</option>
+                                        <option value="{{ $department->id }}"{{ $department->id == $student->department_id  ? 'selected' : '' }}>{{ $department->d_name }}</option>
                                         @endforeach
                                     </select>
                                         <span id="selecterror" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="text" class="form-control form-control-user" id="marks_1"
+                                        placeholder="Enter 10th Class Obtained" name="marks_10th" value="{{ $student->marks_10th }}" value="{{ old('marks_10th') }}" onkeypress="return isNumber(event)">
+
+                                        <span id="10thnumbererror" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-user" id="marks_2"
+                                        placeholder="Enter Best Of five Subject 12th Class Obtained Marks" name="hs_marks" value="{{ $student->hs_marks }}" value="{{ old('hs_marks') }}" onkeypress="return isNumber(event)">
+                                        <span id="12thnumbererror" class="text-danger  "></span>
                                 </div>
                             </div>
 
@@ -117,11 +145,16 @@
             var PhoneNumber = document.forms["myForm"]["PhoneNumber"].value;
             var dob = document.forms["myForm"]["dob"].value;
             var selectoption = document.forms["myForm"]["selectoption"].value;
+            var GuardianName = document.forms["myForm"]["GuardianName"].value;
+            var GuardianPhoneNumber = document.forms["myForm"]["GuardianPhoneNumber"].value;
+            var marks_1 = document.forms["myForm"]["marks_1"].value;
+            var marks_2 = document.forms["myForm"]["marks_2"].value;
 
 
             // regex pattern
-            var fnamecheck = /^[A-Za-z. ]{3,20}$/;
-            var lnamecheck = /^[A-Za-z. ]{3,20}$/;
+            var fnamecheck = /^[A-Za-z. ]{3,50}$/;
+            var lnamecheck = /^[A-Za-z. ]{3,50}$/;
+            var gnamecheck = /^[A-Za-z. ]{3,50}$/;
             var emailcheck = /^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,4}$/;
             var addresscheck = /^[A-Za-z: A-Za-z0-9(A-Za-z0-9)\S][^~!@#$%^]{3,300}$/;
             var phonecheck = /^[0-9]{10}$/;
@@ -138,6 +171,19 @@
                 document.getElementById('lastnameerror').innerHTML = " ";
                 } else {
                 document.getElementById('lastnameerror').innerHTML = "**Should not contain digits and special characters in last Name**";
+                return false;
+            }
+
+            if ( GuardianName.match(gnamecheck)) {
+                document.getElementById('guardianerror').innerHTML = " ";
+                } else {
+                document.getElementById('guardianerror').innerHTML = "**Should not contain digits and special characters in GuardianName**";
+                return false;
+            }
+            if (GuardianPhoneNumber.match(phonecheck)) {
+                document.getElementById('guardiannumbererror').innerHTML = " ";
+                } else {
+                document.getElementById('guardiannumbererror').innerHTML = "**Enter Your Guardian valid 10 digit mobile number**";
                 return false;
             }
             if (Email.match(emailcheck)) {
@@ -174,6 +220,22 @@
              {
                 document.getElementById('selecterror').innerHTML = "";
              }
+            if(marks_1 == "")
+             {
+                document.getElementById('10thnumbererror').innerHTML = "**Please Enter 10th Class Obtained Marks! **";
+            return false;
+             }else
+             {
+                document.getElementById('10thnumbererror').innerHTML = "";
+             }
+            if(marks_2 == "")
+             {
+                document.getElementById('12thnumbererror').innerHTML = "**Please Enter 12th Class Obtained Marks! **";
+            return false;
+             }else
+             {
+                document.getElementById('12thnumbererror').innerHTML = "";
+             }
 
       }
 
@@ -188,15 +250,15 @@
             }
 
         $(document).ready(function(){
-            $('#FirstName,#LastName,#Email,#Address,#PhoneNumber,#Image,#selectoption').focus(function(){
+            $('#FirstName,#LastName,#Email,#Address,#PhoneNumber,#Image,#selectoption,#GuardianName,#GuardianPhoneNumber,#marks_1,#marks_2').focus(function(){
                 $(this).css('background-color','#FFE17B');
             });
 
-            $('#FirstName,#LastName,#Email,#Address,#PhoneNumber,#Image,#selectoption ').blur(function(){
+            $('#FirstName,#LastName,#Email,#Address,#PhoneNumber,#Image,#selectoption,#GuardianName,#GuardianPhoneNumber,#marks_1,#marks_2').blur(function(){
                 $(this).css('background-color','');
             });
 
-            $('#FirstName,#LastName,#Email,#Address,#PhoneNumber,#Image').keypress(function(){
+            $('#FirstName,#LastName,#Email,#Address,#PhoneNumber,#Image,#GuardianName,#GuardianPhoneNumber,#marks_1,#marks_2').keypress(function(){
                 $(this).css('background-color','#FD8D14');
             });
         });

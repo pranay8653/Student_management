@@ -59,6 +59,10 @@ Route::middleware('auth:web')->group(function(){
         //student
         Route::get('/admin/create/student',[StudentController::class,'index'])->name('create.student');
         Route::post('/admin/save/student',[StudentController::class,'student_save_data'])->name('save.student');
+        Route::get('/admin/show/student',[StudentController::class,'show_student'])->name('show.student');
+        Route::get('/admin/student/particular/lists/{id}', [StudentController::class, 'perticular_list'])->name('student.particular.list');
+        Route::get('/admin/edit/student/{id}',[StudentController::class,'edit_student'])->name('edit.student');
+        Route::put('/admin/update/student/{id}',[StudentController::class,'update_student'])->name('update.student');
     });
 
     // Access Both Admin & Teacher

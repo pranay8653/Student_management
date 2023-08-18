@@ -34,7 +34,7 @@
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a href="{{ route('teacher.pdf.list') }}" class="btn btn-outline-success m-2">Export All In PDF</a>
                                 <a href="{{ route('export.teacher') }}" class="btn btn-outline-secondary m-2">Export All In Excel</a>
-                                <a href="{{ route('create.teacher') }}" class="btn btn-outline-info m-2">Add Teacher</a>
+                                <a href="{{ route('create.teacher') }}" class="btn btn-outline-info m-2"> <i class="fa fa-plus" aria-hidden="true"> Add Teacher</i></a>
                             </div>
 
                             <h1 class="display-5" > Total Number Of <span style="color: #d21a80">{{ $count }}</span> Teachers Of <span style="color: #d21a80">{{ $dept_count }}</span> Departments </h1>

@@ -26,8 +26,8 @@ return new class extends Migration
             $table->enum('gender',["male", "female", "others"])->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
             $table->foreign('department_id')->references('id')->on('departments');
-            $table->string('10th_marks')->nullable();
-            $table->string('10th_percentage')->nullable();
+            $table->string('marks_10th')->nullable();
+            $table->string('percentage_10th')->nullable();
             $table->string('hs_marks')->nullable();
             $table->string('hs_percentage')->nullable();
             $table->timestamps();

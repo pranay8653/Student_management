@@ -12,7 +12,7 @@
                 {{-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> --}}
                 <div class="col-lg-12">
                     <div class="p-5">
-                        <a href="#"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a href="{{ route('show.student') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4" style="font-family: 'Lucida Handwriting', cursive;">Registration Of Student Account!</h1>
                         </div>
@@ -113,7 +113,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="text" class="form-control form-control-user" id="marks_1"
-                                        placeholder="Enter 10th Class Obtained" name="10th_marks" value="{{ old('10th_marks') }}" onkeypress="return isNumber(event)">
+                                        placeholder="Enter 10th Class Obtained" name="marks_10th" value="{{ old('marks_10th') }}" onkeypress="return isNumber(event)">
 
                                         <span id="10thnumbererror" class="text-danger"></span>
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RegisterMail;
+use App\Mail\StudentModifyMail;
 use App\Models\Department;
 use App\Models\Student;
 use App\Models\User;
@@ -19,8 +20,8 @@ class StudentController extends Controller
         return view('student.register',compact('dept'));
      }
 
-     public function student_save_data(Request $request)
-     {
+    public function student_save_data(Request $request)
+        {
         $data = $request->validate([
             'first_name'       => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
             'last_name'        => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
@@ -32,7 +33,7 @@ class StudentController extends Controller
             'dob'              => ['required'],
             'gender'           => ['required'],
             'department_id'    => ['required','exists:departments,id' ],
-            '10th_marks'       => ['required'],
+            'marks_10th'       => ['required'],
             'hs_marks'         => ['required'],
         ],
     [
@@ -44,16 +45,15 @@ class StudentController extends Controller
         'address'           =>  'Please Enter Address within 3-300 But not Used ~!@#$%^ character',
         'dob'               =>  'Please Enter Date Of Birth ',
         'gender'            =>  'Please Enter Gender',
-        '10th_marks'        =>  'Please Enter 10th Class Obtained Marks',
+        'marks_10th'        =>  'Please Enter 10th Class Obtained Marks',
         'hs_marks'          =>  'Please Enter 12th Class Obtained Marks',
     ]);
-    $percentage_10th = ($request['10th_marks'] / 700) * 100;
+    $percentage_10th = ($request['marks_10th'] / 700) * 100;
     $percentage_hs = ($request['hs_marks'] / 500) * 100;
-
      // create a random password
      $password = Str::random(10);
 
-//      // create data teachers table
+     // create data teachers table
     $user = Student::create([
         'first_name'        =>$request['first_name'],
         'last_name'         =>$request['last_name'],
@@ -65,9 +65,9 @@ class StudentController extends Controller
         'dob'               =>$request['dob'],
         'gender'            =>$request['gender'],
         'department_id'     =>$request['department_id'],
-        '10th_marks'        =>$request['10th_marks'],
+        'marks_10th'        =>$request['marks_10th'],
         'hs_marks'          =>$request['hs_marks'],
-        '10th_percentage'   =>$percentage_10th,
+        'percentage_10th'   =>$percentage_10th,
         'hs_percentage'     =>$percentage_hs,
     ]);
 
@@ -84,6 +84,135 @@ class StudentController extends Controller
     $dept_name = Department::where('id',$request['department_id'])->first()->d_name;
 
     Mail::to($data['email'])->send(new RegisterMail($user,$password,$dept_name));
-    return redirect()->route('show.teacher')->with('teacher_registration','Registration Successful. Password & Others Details Are send In Your Registered Email Id');
+    return redirect()->route('show.student')->with('teacher_registration','Registration Successful. Password & Others Details Are send In Your Registered Email Id');
      }
+
+    public function show_student(Request $request)
+    {
+    $search = $request['search'] ?? "";
+    if($search != ""   )
+    {
+        $student = Student::where('first_name','LIKE', "%$search%")
+        ->orwhere('last_name','LIKE', "%$search%")
+        ->orwhere('last_name','LIKE', "%$search%")
+        ->orwhere('guardian_name','LIKE', "%$search%")
+        ->orwhere('email','LIKE', "%$search%")
+        ->orwhere('phone','LIKE', "%$search%")
+        ->orwhere('guardian_number','LIKE', "%$search%")
+        ->orwhere('address','LIKE', "%$search%")
+        ->orwhere('dob','LIKE', "%$search%")
+        ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+    }
+    else
+    {
+        $student = Student::with('department')->paginate(4);
+    }
+    $count =  Student::count();
+    $dept = Department::get();
+    $dept_count = Department::count();
+    return view('student.show_student',compact('student','count','dept','dept_count'));
+    }
+
+    public function perticular_list(Request $request,$id)
+     {
+        $department = Department::find($id);
+         $search = $request['search'] ?? "";
+        if($search != ""   )
+        {
+            $student = Student::where('first_name','LIKE', "%$search%")
+            ->orwhere('last_name','LIKE', "%$search%")
+            ->orwhere('last_name','LIKE', "%$search%")
+            ->orwhere('guardian_name','LIKE', "%$search%")
+            ->orwhere('email','LIKE', "%$search%")
+            ->orwhere('phone','LIKE', "%$search%")
+            ->orwhere('guardian_number','LIKE', "%$search%")
+            ->orwhere('address','LIKE', "%$search%")
+            ->orwhere('dob','LIKE', "%$search%")
+            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+        }
+        else
+        {
+        $student = $department->students()->paginate(4);
+        }
+        $student_count = $department->students()->count();
+        return view('student.perticular_list',compact('department','student','student_count'));
+     }
+
+    public function edit_student($id)
+    {
+    $student = Student::with('department')->find($id);
+    $dept = Department::select('id','d_name')->get();
+    return view('student.student_edit',compact('student','dept'));
+    }
+
+    public function update_student(Request $request, $id)
+     {
+        $data = $request->validate([
+            'first_name'       => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'last_name'        => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'guardian_name'    => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'email'            => ['required','string', 'email', 'max:200', 'regex:/^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,4}$/'],
+            'phone'            => ['required', 'integer', 'digits:10', 'regex:/^[0-9]{10}$/'],
+            'guardian_number'  => ['required', 'integer', 'digits:10', 'regex:/^[0-9]{10}$/'],
+            'address'          => ['required','regex:/^[A-Za-z: A-Za-z0-9(A-Za-z0-9)\S][^~!@#$%^]{3,300}$/'],
+            'dob'              => ['required'],
+            'gender'           => ['required'],
+            'department_id'    => ['required','exists:departments,id' ],
+            'marks_10th'       => ['required'],
+            'hs_marks'         => ['required'],
+        ],
+        [
+            'first_name'        => 'Please Enter First Name Within 50 Character',
+            'last_name'         =>  'Please Enter Last Name Within 50 Character',
+            'guardian_name'     =>  'Please Enter Guardian Name Within 50 Character',
+            'phone'             =>  'Please Enter 10 Digits Valid Phone number',
+            'guardian_number'   =>  'Please Enter 10 Digits Valid Guardian Phone number',
+            'address'           =>  'Please Enter Address within 3-300 But not Used ~!@#$%^ character',
+            'dob'               =>  'Please Enter Date Of Birth ',
+            'gender'            =>  'Please Enter Gender',
+            'marks_10th'        =>  'Please Enter 10th Class Obtained Marks',
+            'hs_marks'          =>  'Please Enter 12th Class Obtained Marks',
+        ]);
+
+        $percentage_10th = ($request['marks_10th'] / 700) * 100;
+        $percentage_hs = ($request['hs_marks'] / 500) * 100;
+
+        $student_id = Student::find($id);
+        $email = Student::find($id)->email;
+        $s_user_id = User::where('email',$email)->first()->id;
+
+        // Update teachers table
+        $student_id->update([
+            'first_name'        =>$data['first_name'],
+            'last_name'         =>$data['last_name'],
+            'guardian_name'     =>$data['guardian_name'],
+            'guardian_number'   =>$data['guardian_number'],
+            'email'             =>$data['email'],
+            'phone'             =>$data['phone'],
+            'address'           =>$data['address'],
+            'dob'               =>$data['dob'],
+            'gender'            =>$data['gender'],
+            'department_id'     =>$data['department_id'],
+            'marks_10th'        =>$data['marks_10th'],
+            'hs_marks'          =>$data['hs_marks'],
+            'percentage_10th'   =>$percentage_10th,
+            'hs_percentage'     =>$percentage_hs,
+        ]);
+
+        // Update users Table
+        $user = User::find($s_user_id)->update([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+            'email'         => $data['email'],
+            'phone'         => $data['phone'],
+        ]);
+
+        // Below code are Find Department Name
+        $dep_id = Student::find($id)->department_id;
+        $dept_name = Department::where('id',$dep_id)->first()->d_name;
+
+        Mail::to($data['email'])->send(new StudentModifyMail($student_id,$dept_name));
+        return redirect()->route('show.student')->with('teacher_update', 'Teacher Account Updated Successfully And Details Are Send Registered Email Account');
+     }
+
 }
