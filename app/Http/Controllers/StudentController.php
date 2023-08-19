@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentExport;
 use App\Mail\RegisterMail;
 use App\Mail\StudentModifyMail;
 use App\Models\Department;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -227,4 +229,8 @@ class StudentController extends Controller
      return redirect()->route('show.student')->with('teacher_delete', 'Deleted Student Successfully......');
      }
 
+     public function export_student()
+     {
+         return Excel::download(new StudentExport, 'Student.xlsx');
+     }
 }

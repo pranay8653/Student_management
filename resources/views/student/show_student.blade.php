@@ -32,8 +32,8 @@
                     <div class="card-body">
                         <div class="table-responsive" >
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                {{-- <a href="{{ route('teacher.pdf.list') }}" class="btn btn-outline-success m-2">Export All In PDF</a>
-                                <a href="{{ route('export.teacher') }}" class="btn btn-outline-secondary m-2">Export All In Excel</a> --}}
+                                {{-- <a href="{{ route('teacher.pdf.list') }}" class="btn btn-outline-success m-2">Export All In PDF</a> --}}
+                                <a href="{{ route('export.student') }}" class="btn btn-outline-secondary m-2">Export All In Excel</a>
                                 <a href="{{ route('create.student') }}" class="btn btn-outline-info m-2"><i class="fa fa-plus" aria-hidden="true"> Add Student</i> </a>
                             </div>
 
