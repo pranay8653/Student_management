@@ -32,14 +32,14 @@
                     <div class="card-body">
                         <div class="table-responsive" >
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                {{-- <a href="{{ route('teacher.pdf.list') }}" class="btn btn-outline-success m-2">Export All In PDF</a> --}}
+                                <a href="{{ route('student.pdf.list') }}" class="btn btn-outline-success m-2">Export All In PDF</a>
                                 <a href="{{ route('export.student') }}" class="btn btn-outline-secondary m-2">Export All In Excel</a>
                                 <a href="{{ route('create.student') }}" class="btn btn-outline-info m-2"><i class="fa fa-plus" aria-hidden="true"> Add Student</i> </a>
                             </div>
 
                             <h1 class="display-5" > Total Number Of <span style="color: #d21a80">{{ $count }}</span> Students Of <span style="color: #d21a80">{{ $dept_count }}</span> Departments </h1>
                             <h1 class="display-5" > Student Lists</h1>
-                                <table class="table table-bordered" id="dataTable"  cellspacing="0">
+                                <table class="table table-bordered table-striped" id="dataTable"  cellspacing="0">
                                     <thead style="color: #d21a80; font-family: 'Bebas Neue', cursive;">
                                         <tr>
                                             <th>Full Name of Student</th>
@@ -93,7 +93,6 @@
                                         <td style="color: #002b80; font-family: 'Bebas Neue', cursive;">
                                             <a href="{{ route('student.particular.list',['id' => $items->department->id]) }}">{{ $items->department->d_name }}</a>
                                         </td>
-                                        {{-- <td>{{ $items->department->d_name }} </td> --}}
                                         <td>{{ $items->marks_10th }} </td>
                                         <td>{{ $items->percentage_10th }} </td>
                                         <td>{{ $items->hs_marks }} </td>

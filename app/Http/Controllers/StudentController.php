@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class StudentController extends Controller
 {
@@ -217,20 +218,28 @@ class StudentController extends Controller
         return redirect()->route('show.student')->with('teacher_update', 'Student Account Updated Successfully And Details Are Send Registered Email Account');
      }
 
-     public function student_delete($id)
-     {
-         // First Deleted users table data
-         $data = Student::find($id)->email;
-         $user = User::where('email', $data)->first()->delete();
+    public function student_delete($id)
+    {
+        // First Deleted users table data
+        $data = Student::find($id)->email;
+        $user = User::where('email', $data)->first()->delete();
 
-         // Before deleted users data.Then delete teacher table
-         $t_id = Student::find($id);
-         $t_id->delete();
-     return redirect()->route('show.student')->with('teacher_delete', 'Deleted Student Successfully......');
-     }
+        // Before deleted users data.Then delete teacher table
+        $t_id = Student::find($id);
+        $t_id->delete();
+    return redirect()->route('show.student')->with('teacher_delete', 'Deleted Student Successfully......');
+    }
 
-     public function export_student()
-     {
-         return Excel::download(new StudentExport, 'Student.xlsx');
-     }
+    public function export_student()
+    {
+        return Excel::download(new StudentExport, 'Student.xlsx');
+    }
+
+    public function student_list_pdf()
+    {
+        $student = Student::with('department')->get();
+        $count =  Student::count();
+        $pdf = PDF::loadView('student.studentpdf',compact('student','count'));
+        return $pdf->download('Student.pdf');
+    }
 }
