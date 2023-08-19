@@ -66,6 +66,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/delete/student/{id}',[StudentController::class,'student_delete'])->name('delete.student');
         Route::get('/admin/student/export',[StudentController::class,'export_student'])->name('export.student');
         Route::get('/admin/student/pdf', [StudentController::class, 'student_list_pdf'])->name('student.pdf.list');
+        Route::get('/admin/student/export/particular_dept_all/{id}',[StudentController::class,'export_particular_department_excel'])->name('export.particular.dept.all.student');
     });
 
     // Access Both Admin & Teacher

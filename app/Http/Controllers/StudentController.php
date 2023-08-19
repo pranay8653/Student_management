@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ParticularListStudentExport;
 use App\Exports\StudentExport;
 use App\Mail\RegisterMail;
 use App\Mail\StudentModifyMail;
@@ -241,5 +242,10 @@ class StudentController extends Controller
         $count =  Student::count();
         $pdf = PDF::loadView('student.studentpdf',compact('student','count'));
         return $pdf->download('Student.pdf');
+    }
+
+    public function export_particular_department_excel($id)
+    {
+        return Excel::download(new ParticularListStudentExport($id), 'Particular_dept_allStudent.xlsx' );
     }
 }

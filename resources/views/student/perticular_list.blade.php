@@ -11,7 +11,7 @@
                     <div class="card-body">
                         <div class="table-responsive" >
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                {{-- <a href="{{ route('teacher.particular.list.pdf',['id' => $department->id]) }}" class="btn btn-outline-success m-2">Export This Into PDF</a> --}}
+                                <a href="{{ route('export.particular.dept.all.student',['id' => $department->id]) }}" class="btn btn-outline-success m-2">Export This Department All Into Excel Sheet</a>
                                 <a href="{{ route('show.student') }}" class="btn btn-outline-info m-2">Return To Main List</a>
                             </div>
 
