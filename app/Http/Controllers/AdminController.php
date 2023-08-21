@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Imports\ImportDepartment;
 use App\Mail\AdminRegisterEmail;
-use App\Mail\ChangeNewPasswordMail;
 use App\Models\Admin;
 use App\Models\Department;
 use App\Models\User;
@@ -240,8 +239,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->new_password_confirmation)
         ]);
         // session()->flash('new_password','The password is changed....');
-        Mail::to($user['email'])->send(new ChangeNewPasswordMail($user,$data['new_password']));
-        return redirect()->route('admin.dashboard')->with('change_password','Your Password Has Changed.The New Change Password Is Send Your Registered Email id. Please Logout Your Site And Continue Your Work');
+        return redirect()->route('admin.dashboard')->with('change_password','Your Password Has Changed. Please Logout Your Site And Continue Your Work');
     }
 
     public function department_import(Request $request)

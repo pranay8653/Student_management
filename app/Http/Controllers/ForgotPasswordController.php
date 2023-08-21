@@ -53,8 +53,6 @@ class ForgotPasswordController extends Controller
             $user->save();
             DB::table('password_resets')->where('email',$user->email)->delete();
         }
-        /** @var User $user, $email */
-        Mail::to($user['email'])->send(new AfterSaveForgotChangePasswordMail($user,$data['password']));
-        return redirect()->route('login')->with('new_password','The New password will send Your register email id');
+        return redirect()->route('login')->with('new_password','Your Password Is Successfully Changed...');
     }
 }

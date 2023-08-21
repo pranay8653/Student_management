@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exports\ExportTeacher;
 use App\Mail\AdminModifyTeacherMail;
-use App\Mail\ChangeNewPasswordMail;
 use App\Mail\RegisterMail;
 use App\Models\Department;
 use App\Models\Teacher;
@@ -326,7 +325,6 @@ class TeacherController extends Controller
             'password' => Hash::make($request->new_password_confirmation)
         ]);
         // session()->flash('new_password','The password is changed....');
-        Mail::to($user['email'])->send(new ChangeNewPasswordMail($user,$data['new_password']));
-        return redirect()->route('teacher.dashboard')->with('change_password','Your Password Has Changed.The New Change Password Is Send Your Registered Email id. Please Logout Your Site And Continue Your Work');
+        return redirect()->route('teacher.dashboard')->with('change_password','Your Password Has Changed. Please Logout Your Site And Continue Your Work');
     }
 }

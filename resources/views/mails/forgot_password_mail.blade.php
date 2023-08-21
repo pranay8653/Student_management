@@ -2,6 +2,6 @@
 <p  >This OTP Number Copy And Peast this Number And Create New Password</p>
 
 <h2  > Your email/ Login Id: '{{ $user->email }}' </h2>
-<h2  > Temporary Password is: '{{ $token }}' </h2>
+<h2  > Token: {{ $token }} </h2>
 
 <h1 style="font-family: 'Water Brush', cursive;"> So let's Change  </h1>

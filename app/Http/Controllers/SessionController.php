@@ -42,6 +42,11 @@ class SessionController extends Controller
                 session()->flash('after_login','login Successfully....');
                 return redirect()->route('teacher.dashboard');
                }
+            elseif(Auth::user()->role == 'student')
+               {
+                session()->flash('after_login','login Successfully....');
+                return redirect()->route('student.dashboard');
+               }
 
           }
           else

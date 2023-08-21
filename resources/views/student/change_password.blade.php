@@ -17,9 +17,9 @@
 
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                    <a href="{{ route('teacher.profile') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                                    <a href="{{ route('student.profile') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Teacher Password Change</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Student Password Change</h1>
                                     </div>
 
                                     @if(session('forgot_otp'))
@@ -28,7 +28,7 @@
                                             </div>
                                         @endif
 
-                                    <form action="{{ route('teacher.update.password') }}" class="sign-up-form" method="post" name="myForm" onsubmit="return validation()">
+                                    <form action="{{ route('student.update.password') }}" class="sign-up-form" method="post" name="myForm" onsubmit="return validation()">
                                         @csrf
                                         @method('PUT')
                                         @if ($errors->any())

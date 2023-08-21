@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\str;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class StudentController extends Controller
 {
@@ -247,5 +250,123 @@ class StudentController extends Controller
     public function export_particular_department_excel($id)
     {
         return Excel::download(new ParticularListStudentExport($id), 'Particular_dept_allStudent.xlsx' );
+    }
+
+    public function student_profile()
+    {
+        $profile = Auth::user();
+        $name = Auth::user()->first_name;
+        $student_data = Student::where('first_name',$name)->first();
+        return view('student.profile', compact('profile','student_data'));
+    }
+
+    public function student_profile_picture(Request $request)
+    {
+        $id = Auth::user()->id;
+        $post = User::find($id);
+        $data = $request->validate([
+            'image' => ['required', 'mimes:jpeg,png,jpg,gif,svg' ]
+        ]);
+
+        if($post)
+       {
+
+         if($request->hasfile('image'))
+          {
+            $file_path = 'upload/student/profile_picture';
+
+            if(File::exists(public_path($file_path . '/' . $post->image)))
+               {
+                 File::delete(public_path($file_path . '/' . $post->image));
+               }
+
+               $file_name = Carbon::now()->timestamp;
+               $file_extension = $request['image']->getClientOriginalExtension();
+               $request['image']->move($file_path, $file_name.'.'.$file_extension);
+               $data['image'] = $file_name.'.'.$file_extension;
+
+               $post->update([
+                'image' => $file_name.'.'.$file_extension,
+               ]);
+          }
+
+       }
+        return redirect()->back()->with('admin_picture','Profile Picture updated Successfully');
+    }
+
+    public function student_profile_edit()
+    {
+        $name = Auth::user()->first_name;
+        $student_data = student::where('first_name',$name)->first();
+        return view('student.profile_edit', compact('student_data'));
+    }
+
+    public function student_profile_update(Request $request)
+    {
+        $data = $request->validate([
+            'first_name' => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'last_name'  => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'address'    => ['required','regex:/^[A-Za-z: A-Za-z0-9(A-Za-z0-9)\S][^~!@#$%^]{3,300}$/'],
+            'guardian_name'    => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
+            'guardian_number'  => ['required', 'integer', 'digits:10', 'regex:/^[0-9]{10}$/'],
+            'dob'        => ['required'],
+            'gender'     => ['required'],
+        ],
+        [
+            'first_name'        => 'Please Enter First Name Within 50 Character',
+            'last_name'         =>  'Please Enter Last Name Name Within 50 Character',
+            'guardian_name'     =>  'Please Enter Guardian Name Within 50 Character',
+            'guardian_number'   =>  'Please Enter 10 Digits Valid Guardian Phone number',
+            'address'           =>  'Please Enter Address within 3-300 But not Used ~!@#$%^ character',
+            'dob'               =>  'Please Enter Date Of Birth ',
+            'gender'            =>  'Please Enter Gender',
+        ]);
+
+        $auth_id = Auth::id();
+        $a_email = Auth::user()->email;
+        $student_id = Student::where('email',$a_email)->first()->id;
+
+        // Update users Table
+        $user = User::find($auth_id)->update([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+        ]);
+
+        // Update students table
+        $admin = Student::find($student_id)->update([
+            'first_name'     => $data['first_name'],
+            'last_name'      => $data['last_name'],
+            'guardian_name'  =>$data['guardian_name'],
+            'guardian_number'=>$data['guardian_number'],
+            'address'        => $data['address'],
+            'dob'            => $data['dob'],
+            'gender'         => $data['gender'],
+        ]);
+
+        return redirect()->route('student.profile')->with('admin_profile_update', 'Profile Update Successfully....');
+    }
+
+    public function change_password()
+    {
+      return view('student.change_password');
+    }
+
+    public function student_save_change_password(Request $request)
+    {
+        $data = $request->validate([
+            'current_password'       => ['required', 'string'],
+            'new_password'           => ['required', 'string', 'max:16', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'],
+        ]);
+
+        $user = User::find(Auth::id());
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors('Current password does not match!');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password_confirmation)
+        ]);
+        // session()->flash('new_password','The password is changed....');
+        return redirect()->route('student.dashboard')->with('change_password','Your Password Has Changed. Please Logout Your Site And Continue Your Work');
     }
 }

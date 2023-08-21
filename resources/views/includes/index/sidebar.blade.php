@@ -51,6 +51,12 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
+    @else
+    <li class="nav-item @yield('student_dashboard')">
+        <a class="nav-link" href="{{ route('student.dashboard') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
     @endif
 
     <div class="text-center d-none d-md-inline">

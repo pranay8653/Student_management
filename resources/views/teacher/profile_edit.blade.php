@@ -34,17 +34,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="cardformlabel" for="email" style="color:blue">Email</label>
-                            <h4>{{ $teacher_data->email }}</h4>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="contact" class="cardformlabel" style="color:blue">Contact</label>
-                            <h4>{{ $teacher_data->phone }}</h4>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-12 mb-12">
                             <label class="cardformlabel" for="email" style="color:blue">Address</label>
                             <label for="aadress"> </label>
@@ -76,15 +65,9 @@
                                         <span id="doberror" class="text-danger  "></span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 mb-12">
-                            <label class="cardformlabel" for="email" style="color:blue">Age</label>
-                            <h4>{{ \Carbon\Carbon::parse($teacher_data->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }}</h4>
-                        </div>
-                    </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button class="btn btn-primary me-md-2" type="submit">Edit Your Profile</button>
-                          </div>
+                            </div>
                     </div>
                   </form>
                 </div>
