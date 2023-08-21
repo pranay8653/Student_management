@@ -13,18 +13,17 @@
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="p-5">
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Conform Create New Password</h1>
                                 </div>
 
                                 @if(session('forgot_otp'))
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            {{session('forgot_otp')}}
-                                        </div>
-                                    @endif
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{session('forgot_otp')}}
+                                    </div>
+                                @endif
 
                                 <form action="{{ route('reset.forgot.password') }}" class="sign-up-form" method="post" name="myForm" onsubmit="return validation()">
                                     @csrf
@@ -40,18 +39,21 @@
                                   @endif
 
                                     <div class="form-group">
+                                        <label style="color:brown">Enter Token</label>
                                         <input type="text" class="form-control form-control-user"
-                                             placeholder=" Enter Number From Your Email" id="token" name="token" value="{{ old('token') }}" >
+                                             placeholder="Please Enter Your Token" id="token" name="token" value="{{ old('token') }}" >
 
                                             <span id="tokenerror" class="text-danger font-weight-bold"></span>
                                     </div>
 
                                     <div class="form-group">
+                                        <label style="color:brown">Enter Password</label>
                                         <input type="password" class="form-control form-control-user"
                                             id="password" placeholder="Password" name="password">
                                             <span id="passworderror" class="text-danger font-weight-bold"></span>
                                     </div>
                                     <div class="form-group">
+                                        <label style="color:brown">Enter Confirmed Password</label>
                                         <input type="password" class="form-control form-control-user"
                                             id="password_confirmation" placeholder=" retype Password" name="password_confirmation">
                                             <span id="repetpassworderror" class="text-danger font-weight-bold"></span>

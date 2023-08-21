@@ -3,14 +3,11 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-// Route::view('/test',['admin.test']); this route checking for middleware
 Route::view('/',['login'])->name('login');
 Route::post('/save_login',[SessionController::class, 'login'])->name('post.login');
 
@@ -27,7 +24,7 @@ Route::post('/save_register',[AdminController::class, 'admin_save_data'])->name(
 Route::middleware('auth:web')->group(function(){
     Route::get('/logout',[SessionController::class, 'logout'])->name('logout');
 
-    // Only Access Admin
+    // Admin Route
     Route::group(['middleware' => ['checkuser:admin']],function(){
         Route::view('/dashboard',['admin.dashboard'])->name('admin.dashboard');
         Route::get('/admin/change_password', [AdminController::class,'change_password'])->name('admin.change.password');
@@ -54,9 +51,21 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/teacher/pdf', [TeacherController::class, 'teacher_list_pdf'])->name('teacher.pdf.list');
         Route::get('/admin/teacher/particular/lists/{id}', [TeacherController::class, 'perticular_list'])->name('teacher.particular.list');
         Route::get('/admin/teacher/particular/lists/pdf/{id}', [TeacherController::class, 'perticular_list_pdf'])->name('teacher.particular.list.pdf');
+
+        //student
+        Route::get('/admin/create/student',[StudentController::class,'index'])->name('create.student');
+        Route::post('/admin/save/student',[StudentController::class,'student_save_data'])->name('save.student');
+        Route::get('/admin/show/student',[StudentController::class,'show_student'])->name('show.student');
+        Route::get('/admin/student/particular/lists/{id}', [StudentController::class, 'perticular_list'])->name('student.particular.list');
+        Route::get('/admin/edit/student/{id}',[StudentController::class,'edit_student'])->name('edit.student');
+        Route::put('/admin/update/student/{id}',[StudentController::class,'update_student'])->name('update.student');
+        Route::get('/admin/delete/student/{id}',[StudentController::class,'student_delete'])->name('delete.student');
+        Route::get('/admin/student/export',[StudentController::class,'export_student'])->name('export.student');
+        Route::get('/admin/student/pdf', [StudentController::class, 'student_list_pdf'])->name('student.pdf.list');
+        Route::get('/admin/student/export/particular_dept_all/{id}',[StudentController::class,'export_particular_department_excel'])->name('export.particular.dept.all.student');
     });
 
-    // Access Both Admin & Teacher
+    // Access Both Admin or Teacher
     Route::group(['middleware' => ['checkuser:teacher']],function(){
         Route::view('/teacher/dashboard',['teacher.dashboard'])->name('teacher.dashboard');
         Route::get('/teacher/profile',[TeacherController::class,'teacher_profile'])->name('teacher.profile');
@@ -66,9 +75,23 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/change_password', [TeacherController::class,'change_password'])->name('teacher.change.password');
         Route::put('/teacher/update_password', [TeacherController::class,'teacher_save_change_password'])->name('teacher.update.password');
     });
+
+    // Access Both Admin or Student
+    Route::group(['middleware' => ['checkuser:student']],function(){
+        Route::view('/student/dashboard',['student.dashboard'])->name('student.dashboard');
+        Route::get('/student/profile',[StudentController::class,'student_profile'])->name('student.profile');
+        Route::put('/student/profile/picture',[StudentController::class,'student_profile_picture'])->name('student.profile.picture');
+        Route::get('/student/profile/edit',[StudentController::class,'student_profile_edit'])->name('student.profile.edit');
+        Route::put('/student/profile/update',[StudentController::class,'student_profile_update'])->name('student.profile.update');
+        Route::get('/student/change_password', [StudentController::class,'change_password'])->name('student.change.password');
+        Route::put('/student/update_password', [StudentController::class,'student_save_change_password'])->name('student.update.password');
+    });
 });
 
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+// Route::view('/test',['admin.test']); this route checking for middleware
 //this function checking for Eloquent: Relationships
 // Route::get('/check', function () {
 // $dep = department::with('users')->get() ;

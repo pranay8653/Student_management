@@ -47,15 +47,20 @@
                     </div>
                     <hr>
                     <div class="row" >
-                        <div class=" col-md-12 mb-3">
+                        <div class=" col-md-6 mb-3">
                             <label class="cardformlabel" for="name" style="color:blue">Name </label>
                             <h4>{{ $admin_data->first_name }} {{ $admin_data->last_name }}</h4>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="cardformlabel" for="email" style="color:blue">Email</label>
+                            <h4>{{ $profile->email }}</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="cardformlabel" for="email" style="color:blue">Email</label>
-                            <h4>{{ $profile->email }}</h4>
+                            <label class="cardformlabel" for="email" style="color:blue">Gender</label>
+                            <h4>{{ $admin_data->gender }}</h4>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -71,23 +76,23 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="cardformlabel" for="email" style="color:blue">Contact</label>
-                            <h4>{{ $admin_data->gender }}</h4>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
                             <label for="contact" class="cardformlabel" style="color:blue">Date Of Birth</label>
                             <h4>{{ $admin_data->dob }}</h4>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6 mb-6">
                             <label class="cardformlabel" for="email" style="color:blue">Age</label>
                             <h4>{{ \Carbon\Carbon::parse($admin_data->dob)->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') }}</h4>
                         </div>
+
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 mb-6">
-                            <label class="cardformlabel" for="email" style="color:blue">You Are a</label>
+                            <label class="cardformlabel" for="email" style="color:blue">You Are </label>
                             <h4>{{$profile->role }}</h4>
+                        </div>
+                        <div class="col-md-6 mb-6">
+                            <label class="cardformlabel" for="email" style="color:blue">Profile Created</label>
+                            <h4> {{ $profile->created_at->diffForHumans() }}</h4>
                         </div>
                     </div>
                     <hr>

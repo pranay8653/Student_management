@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+use App\Models\Student;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,19 +10,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ChangeNewPasswordMail extends Mailable
+class StudentModifyMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user,$password;
+    public $student_id, $dept_name;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, $password)
+    public function __construct(Student $student_id,$dept_name)
     {
-        $this->user = $user;
-        $this->password = $password;
+        $this->student_id  = $student_id;
+        $this->dept_name  = $dept_name;
     }
 
     /**
@@ -33,7 +33,7 @@ class ChangeNewPasswordMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Change New Password Mail',
+            subject: 'Admin Modify Student Mail',
         );
     }
 
@@ -45,10 +45,10 @@ class ChangeNewPasswordMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mails.change_new_password_mail',
-            with: [
-                'user'      => $this->user,
-                'password'  => $this->password,
+            view: 'Mails.StudentModifyMail',
+            with:   [
+                'student_id'    => $this->student_id,
+                'dept_name'     => $this->dept_name,
             ],
         );
     }

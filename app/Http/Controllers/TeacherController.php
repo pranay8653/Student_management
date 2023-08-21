@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exports\ExportTeacher;
 use App\Mail\AdminModifyTeacherMail;
-use App\Mail\ChangeNewPasswordMail;
 use App\Mail\RegisterMail;
 use App\Models\Department;
 use App\Models\Teacher;
@@ -89,11 +88,11 @@ class TeacherController extends Controller
             ->orwhere('phone','LIKE', "%$search%")
             ->orwhere('address','LIKE', "%$search%")
             ->orwhere('dob','LIKE', "%$search%")
-            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+            ->orwhere('gender','LIKE', "%$search%")->orderBy('created_at', 'DESC')->paginate(5);
         }
         else
         {
-            $teacher = Teacher::with('department')->paginate(4);
+            $teacher = Teacher::with('department')->orderBy('created_at', 'DESC')->paginate(4);
         }
         $count =  Teacher::count();
         $dept = Department::get();
@@ -198,11 +197,11 @@ class TeacherController extends Controller
             ->orwhere('phone','LIKE', "%$search%")
             ->orwhere('address','LIKE', "%$search%")
             ->orwhere('dob','LIKE', "%$search%")
-            ->orwhere('gender','LIKE', "%$search%")->paginate(5);
+            ->orwhere('gender','LIKE', "%$search%")->orderBy('created_at', 'DESC')->paginate(5);
         }
         else
         {
-        $teacher = $department->teachers()->paginate(4);
+        $teacher = $department->teachers()->orderBy('created_at', 'DESC')->paginate(4);
         }
         $teacher_count = $department->teachers()->count();
         return view('teacher.perticular_list',compact('department','teacher','teacher_count'));
@@ -326,7 +325,6 @@ class TeacherController extends Controller
             'password' => Hash::make($request->new_password_confirmation)
         ]);
         // session()->flash('new_password','The password is changed....');
-        Mail::to($user['email'])->send(new ChangeNewPasswordMail($user,$data['new_password']));
-        return redirect()->route('teacher.dashboard')->with('change_password','Your Password Has Changed.The New Change Password Is Send Your Registered Email id. Please Logout Your Site And Continue Your Work');
+        return redirect()->route('teacher.dashboard')->with('change_password','Your Password Has Changed. Please Logout Your Site And Continue Your Work');
     }
 }

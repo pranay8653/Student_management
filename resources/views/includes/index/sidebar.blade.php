@@ -23,14 +23,19 @@
 
     <li class="nav-item @yield('departments')">
         <a class="nav-link" href="{{ route('departments') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-building"></i>
             <span>Department</span></a>
     </li>
 
     <li class="nav-item @yield('teachers')">
         <a class="nav-link" href="{{ route('show.teacher') }}">
-            <i class="fa fa-user-circle" aria-hidden="true"></i>
+            <i class="fa fa fa-users" aria-hidden="true"></i>
             <span>Teachers</span></a>
+    </li>
+    <li class="nav-item @yield('student')">
+        <a class="nav-link" href="{{ route('show.student') }}">
+            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+            <span>Student</span></a>
     </li>
 
     {{-- <!-- Divider -->
@@ -43,6 +48,12 @@
     @elseif (Auth::user()->role == 'teacher')
     <li class="nav-item @yield('teacher_dashboard')">
         <a class="nav-link" href="{{ route('teacher.dashboard') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+    @else
+    <li class="nav-item @yield('student_dashboard')">
+        <a class="nav-link" href="{{ route('student.dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
