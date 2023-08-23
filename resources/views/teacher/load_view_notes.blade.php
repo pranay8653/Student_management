@@ -20,9 +20,13 @@
                             <h4>{{ $notes->studynote_title }}</h4>
                         </div>
 
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-3" >
                             <label class="cardformlabel" for="email" style="color:blue">Answer's</label>
-                            <h4>{{ $notes->studynote }}</h4>
+                            <p >
+                                <pre>
+                                {{ $notes->studynote }}
+                                </pre>
+                            </p>
                         </div>
                     </div>
                 </div>

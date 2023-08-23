@@ -360,7 +360,8 @@ class TeacherController extends Controller
        $admin = teacher::where('email',$a_email)->first();
        $notes = Studynote::where('department_id',$admin->department_id)->orderBy('created_at', 'DESC')->paginate(4);
        $notes_count = Studynote::where('department_id',$admin->department_id)->count();
-       return view('teacher.show_notes',compact('notes','notes_count'));
+       $department = Department::find($admin->department_id);
+       return view('teacher.show_notes',compact('notes','notes_count','department'));
     }
 
     public function load_more($id)
@@ -381,6 +382,13 @@ class TeacherController extends Controller
             'studynote_title'  => $request['studynote_title'],
             'studynote'        => $request['studynote'],
         ]);
-        return redirect()->route('load.notes',$request->id)->with('note_update','Notes Edit Successfully....!');
+        return redirect()->route('load.notes',$request->id)->with('note_update','Notes Edited Successfully....!');
+     }
+
+    public function delete_notes($id)
+     {
+        $notes = Studynote::find($id);
+        $notes->delete();
+        return redirect()->back()->with('delete_note','Note Deleted Successfully...!');
      }
 }

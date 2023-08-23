@@ -80,6 +80,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/load/more/{id}',[TeacherController::class,'load_more'])->name('load.notes');
         Route::get('/teacher/edit/note/{id}',[TeacherController::class,'edit_note'])->name('edit.notes');
         Route::put('/teacher/update/note/{id}',[TeacherController::class,'update_note'])->name('update.notes');
+        Route::get('/teacher/delete/note/{id}',[TeacherController::class,'delete_notes'])->name('delete.notes');
     });
 
     // Access Only Student

@@ -9,7 +9,7 @@
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
                     <a href="{{ route('load.notes',['id' =>$notes->id]) }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-                    <h2 class="card-title mb-3 text-dark" ><span style="color:rgb(240, 77, 180)">Create Note</span></h2>
+                    <h2 class="card-title mb-3 text-dark" ><span style="color:rgb(240, 77, 180)">Edit Note</span></h2>
 
                     @if ($errors->any())
                     <div class="alert alert-danger">

@@ -8,6 +8,11 @@
     {{session('create_notes')}}
 </div>
 @endif
+@if(session('delete_note'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{session('delete_note')}}
+</div>
+@endif
 
 <div class="container-fluid">
 
@@ -17,11 +22,10 @@
                 <div class="card-body">
                     <div class="table-responsive" >
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            {{-- <a href="{{ route('teacher.particular.list.pdf',['id' => $department->id]) }}" class="btn btn-outline-success m-2">Export This Into PDF</a> --}}
                             <a href="{{ route('create.notes') }}" class="btn btn-outline-primary m-2">Add Notes</a>
                         </div>
 
-                        {{-- {{-- <h1 class="display-6" > Department Name: {{ $department->d_name }}</h1> --}}
+                        <h1 class="display-6" > Department   "{{ $department->d_name }}"</h1>
                         <h1 class="h4" >Total Number Of Notes:<span style="color: #d21a80"> {{ $notes_count }}</span> </h1>
 
                             <table class="table table-bordered" id="dataTable"  cellspacing="0">
@@ -51,7 +55,7 @@
                                         <a href="{{ route('load.notes',['id' =>$items->id ])}}" class="btn btn-primary">Load More</a>
                                     </td>
                                     <td>{{\Carbon\Carbon::parse($items->created_at)->isoFormat('DD / MMM / YYYY') }} </td>
-                                    <td> <a href=" " class="btn btn-danger" >Delete </a></td>
+                                    <td> <a href="{{ route('delete.notes',['id' =>$items->id ]) }} " class="btn btn-danger" >Delete </a></td>
                                 </tr>
                                 @endforeach
 

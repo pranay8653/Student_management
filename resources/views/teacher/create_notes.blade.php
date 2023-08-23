@@ -26,7 +26,7 @@
                         <div class="col-md-12 mb-12">
                             <label class="cardformlabel" for="email" style="color:blue">Enter Question</label>
                             <label for="aadress"> </label>
-                                <textarea type="text" class="form-control form-control-user" id="Address" cols="30" rows="4"
+                                <textarea type="text" class="form-control " id="Address" cols="30" rows="4"
                                 name="studynote_title" > </textarea>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                         <div class="col-md-12 mb-12">
                             <label class="cardformlabel" for="email" style="color:blue">Enter Answer</label>
                             <label for="aadress"> </label>
-                                <textarea type="text" class="form-control form-control-user" id="Address" cols="30" rows="8"
+                                <textarea type="text" class="form-control " id="Address" cols="30" rows="8"
                                 name="studynote" > </textarea>
                         </div>
                     </div>
