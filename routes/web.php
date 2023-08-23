@@ -24,7 +24,7 @@ Route::post('/save_register',[AdminController::class, 'admin_save_data'])->name(
 Route::middleware('auth:web')->group(function(){
     Route::get('/logout',[SessionController::class, 'logout'])->name('logout');
 
-    // Admin Route
+    // Access Only Admin
     Route::group(['middleware' => ['checkuser:admin']],function(){
         Route::view('/dashboard',['admin.dashboard'])->name('admin.dashboard');
         Route::get('/admin/change_password', [AdminController::class,'change_password'])->name('admin.change.password');
@@ -65,7 +65,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/student/export/particular_dept_all/{id}',[StudentController::class,'export_particular_department_excel'])->name('export.particular.dept.all.student');
     });
 
-    // Access Both Admin or Teacher
+    // Access Only Teacher
     Route::group(['middleware' => ['checkuser:teacher']],function(){
         Route::view('/teacher/dashboard',['teacher.dashboard'])->name('teacher.dashboard');
         Route::get('/teacher/profile',[TeacherController::class,'teacher_profile'])->name('teacher.profile');
@@ -74,9 +74,15 @@ Route::middleware('auth:web')->group(function(){
         Route::put('/teacher/profile/update',[TeacherController::class,'teacher_profile_update'])->name('teacher.profile.update');
         Route::get('/teacher/change_password', [TeacherController::class,'change_password'])->name('teacher.change.password');
         Route::put('/teacher/update_password', [TeacherController::class,'teacher_save_change_password'])->name('teacher.update.password');
+        Route::get('/teacher/create/note',[TeacherController::class,'create_note'])->name('create.notes');
+        Route::post('/teacher/save/note',[TeacherController::class,'save_note'])->name('save.notes');
+        Route::get('/teacher/show/note',[TeacherController::class,'show_note'])->name('show.notes');
+        Route::get('/teacher/load/more/{id}',[TeacherController::class,'load_more'])->name('load.notes');
+        Route::get('/teacher/edit/note/{id}',[TeacherController::class,'edit_note'])->name('edit.notes');
+        Route::put('/teacher/update/note/{id}',[TeacherController::class,'update_note'])->name('update.notes');
     });
 
-    // Access Both Admin or Student
+    // Access Only Student
     Route::group(['middleware' => ['checkuser:student']],function(){
         Route::view('/student/dashboard',['student.dashboard'])->name('student.dashboard');
         Route::get('/student/profile',[StudentController::class,'student_profile'])->name('student.profile');

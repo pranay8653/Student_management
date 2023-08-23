@@ -38,12 +38,12 @@
             <span>Student</span></a>
     </li>
 
-    {{-- <!-- Divider -->
-    <hr class="sidebar-divider">
+    <!-- Divider -->
+    {{-- <hr class="sidebar-divider">
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Interface
+        Teacher
     </div> --}}
     @elseif (Auth::user()->role == 'teacher')
     <li class="nav-item @yield('teacher_dashboard')">
@@ -51,8 +51,13 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
+    <li class="nav-item @yield('notes')">
+        <a class="nav-link" href="{{ route('show.notes') }}">
+            <i class="fa fa-book"></i>
+            <span>Study Notes</span></a>
+    </li>
     @else
-    <li class="nav-item @yield('student_dashboard')">
+    <li class="nav-item @yield('notes')">
         <a class="nav-link" href="{{ route('student.dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>

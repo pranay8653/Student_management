@@ -6,6 +6,7 @@ use App\Exports\ExportTeacher;
 use App\Mail\AdminModifyTeacherMail;
 use App\Mail\RegisterMail;
 use App\Models\Department;
+use App\Models\Studynote;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -327,4 +328,59 @@ class TeacherController extends Controller
         // session()->flash('new_password','The password is changed....');
         return redirect()->route('teacher.dashboard')->with('change_password','Your Password Has Changed. Please Logout Your Site And Continue Your Work');
     }
+
+    public function create_note()
+     {
+        return view('teacher.create_notes');
+     }
+
+    public function save_note(Request $request)
+    {
+        $data = $request->validate([
+            'studynote_title'   => ['required'],
+            'studynote'         => ['required'],
+        ]);
+
+        $a_email = Auth::user()->email;
+        $admin = teacher::where('email',$a_email)->first();
+        Studynote::create([
+            'studynote_title'  => $data['studynote_title'],
+            'studynote'        => $data['studynote'],
+            'teachers_id'      => $admin->id,
+            't_first_name'     => $admin->first_name,
+            't_last_name'      => $admin->last_name,
+            'department_id'    => $admin->department_id,
+        ]);
+        return redirect()->route('show.notes')->with('create_notes','Note Created Successfully.....!');
+    }
+
+    public function show_note()
+    {
+       $a_email = Auth::user()->email;
+       $admin = teacher::where('email',$a_email)->first();
+       $notes = Studynote::where('department_id',$admin->department_id)->orderBy('created_at', 'DESC')->paginate(4);
+       $notes_count = Studynote::where('department_id',$admin->department_id)->count();
+       return view('teacher.show_notes',compact('notes','notes_count'));
+    }
+
+    public function load_more($id)
+     {
+        $notes = Studynote::find($id);
+        return view('teacher.load_view_notes',compact('notes'));
+     }
+
+    public function edit_note($id)
+     {
+        $notes = Studynote::find($id);
+        return view('teacher.edit_notes',compact('notes'));
+     }
+    public function update_note(Request $request,$id)
+     {
+        $notes = Studynote::find($id);
+        $notes->update([
+            'studynote_title'  => $request['studynote_title'],
+            'studynote'        => $request['studynote'],
+        ]);
+        return redirect()->route('load.notes',$request->id)->with('note_update','Notes Edit Successfully....!');
+     }
 }
