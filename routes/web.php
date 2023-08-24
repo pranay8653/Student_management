@@ -92,6 +92,8 @@ Route::middleware('auth:web')->group(function(){
         Route::put('/student/profile/update',[StudentController::class,'student_profile_update'])->name('student.profile.update');
         Route::get('/student/change_password', [StudentController::class,'change_password'])->name('student.change.password');
         Route::put('/student/update_password', [StudentController::class,'student_save_change_password'])->name('student.update.password');
+        Route::get('/student/show/note',[StudentController::class,'show_note'])->name('student.show.notes');
+        Route::get('/student/load/more/{id}',[StudentController::class,'load_more'])->name('student.load.notes');
     });
 });
 

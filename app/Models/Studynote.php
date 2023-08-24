@@ -14,4 +14,8 @@ class Studynote extends Model
     {
        return $this->belongsTo(Department::class);
     }
+    public function student()
+    {
+       return $this->belongsTo(student::class);
+    }
 }

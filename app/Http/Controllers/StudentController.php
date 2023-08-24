@@ -8,6 +8,8 @@ use App\Mail\RegisterMail;
 use App\Mail\StudentModifyMail;
 use App\Models\Department;
 use App\Models\Student;
+use App\Models\Studynote;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -369,4 +371,20 @@ class StudentController extends Controller
         // session()->flash('new_password','The password is changed....');
         return redirect()->route('student.dashboard')->with('change_password','Your Password Has Changed. Please Logout Your Site And Continue Your Work');
     }
+
+    public function show_note()
+    {
+       $a_email = Auth::user()->email;
+       $student = Student::where('email',$a_email)->first();
+       $notes = Studynote::where('department_id',$student->department_id)->orderBy('created_at', 'DESC')->paginate(4);
+       $notes_count = Studynote::where('department_id',$student->department_id)->count();
+       $department = Department::find($student->department_id);
+       return view('student.show_notes',compact('notes','notes_count','department'));
+    }
+
+    public function load_more($id)
+     {
+        $notes = Studynote::find($id);
+        return view('student.load_view_notes',compact('notes'));
+     }
 }

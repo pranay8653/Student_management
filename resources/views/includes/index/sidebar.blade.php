@@ -57,10 +57,15 @@
             <span>Study Notes</span></a>
     </li>
     @else
-    <li class="nav-item @yield('notes')">
+    <li class="nav-item @yield('student_dashboard')">
         <a class="nav-link" href="{{ route('student.dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
+    </li>
+    <li class="nav-item @yield('notes')">
+        <a class="nav-link" href="{{ route('student.show.notes') }}">
+            <i class="fa fa-book"></i>
+            <span>Study Notes</span></a>
     </li>
     @endif
 

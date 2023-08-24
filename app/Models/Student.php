@@ -14,4 +14,8 @@ class Student extends Model
     {
        return $this->belongsTo(Department::class);
     }
+    public function studynotes()
+    {
+       return $this->hasMany(Studynote::class);
+    }
 }
