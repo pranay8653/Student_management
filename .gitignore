@@ -15,3 +15,4 @@ yarn-error.log
 /.vscode
 /public/upload/admin/profile_picture
 /public/upload/teacher/profile_picture
+/public/upload/student/profile_picture

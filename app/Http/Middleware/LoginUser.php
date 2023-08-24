@@ -24,11 +24,11 @@ class LoginUser
             {
                 return $next($request);
             }
-            elseif($role == 'teacher' && $user->role == 'teacher' || $user->role == 'admin')
+            elseif($role == 'teacher' && $user->role == 'teacher' )
             {
                 return $next($request);
             }
-            elseif($role == 'student' && $user->role == 'student' || $user->role == 'admin')
+            elseif($role == 'student' && $user->role == 'student' )
             {
                 return $next($request);
             }
