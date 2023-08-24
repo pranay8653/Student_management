@@ -387,4 +387,11 @@ class StudentController extends Controller
         $notes = Studynote::find($id);
         return view('student.load_view_notes',compact('notes'));
      }
+
+    public function perticular_note_pdf($id)
+    {
+        $notes = Studynote::with('department')->find($id);
+        $pdf = PDF::loadView('student.study_note_pdf',compact('notes'));
+        return $pdf->download('Study_note.pdf');
+    }
 }

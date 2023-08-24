@@ -14,6 +14,10 @@
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
                     <a href="{{ route('student.show.notes') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                    {{-- <a href="" class="btn btn-primary btn-sm">Get PDF</a> --}}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ route('student.pdf.notes',['id' => $notes->id]) }}" class="btn btn-outline-primary m-2">Get Notes In PDF</a>
+                    </div>
                     <div class="row" >
                         <div class=" col-md-12 mb-3">
                             <label class="cardformlabel" for="name" style="color:blue">Question </label>
@@ -30,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="" class="btn btn-primary btn-sm">Edit Note</a>
+                <a href="{{ route('student.pdf.notes',['id' => $notes->id]) }}" class="btn btn-primary btn-sm">Get Notes In PDF</a>
             </div>
         </div>
     </div>

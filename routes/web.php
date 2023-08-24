@@ -94,6 +94,7 @@ Route::middleware('auth:web')->group(function(){
         Route::put('/student/update_password', [StudentController::class,'student_save_change_password'])->name('student.update.password');
         Route::get('/student/show/note',[StudentController::class,'show_note'])->name('student.show.notes');
         Route::get('/student/load/more/{id}',[StudentController::class,'load_more'])->name('student.load.notes');
+        Route::get('/student/perticular/note/pdf/{id}',[StudentController::class,'perticular_note_pdf'])->name('student.pdf.notes');
     });
 });
 
