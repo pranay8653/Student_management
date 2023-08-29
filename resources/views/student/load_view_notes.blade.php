@@ -51,6 +51,38 @@
         </div>
     </div>
 
+    {{--  function Of update Data via Ajax --}}
+  <!-- Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="form_data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <ul id="updateform_errlist"></ul>
+
+            <input type="text" id="edit_querry_id">
+
+          <div class="form-froup">
+            <label>Edit Querry</label>
+            <textarea id="edit_querry" cols="30" rows="4" class=" form-control" placeholder="Enter Your Querry Here"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary update_student">Save </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{{-- End edit function  Data via Ajax --}}
+
   <h6 class="mt-5 mb-3 text-center">Write Your Querry</h6>
     <div id="success_message"></div>
     <hr>
@@ -86,7 +118,7 @@
                     $.each(response.querry, function (key,item){
                         if(item.user_id == auth)
                         {
-                            $('.querry_reply').append('<h2>'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+') </h2><h5><strong>Question:</strong> '+item.querry+'</h5><button type="button"  value="'+item.user_id+'" class="edit_student_data badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.user_id+'" class="delete_student badge badge-pill badge-danger">Delete</button>');
+                            $('.querry_reply').append('<h2>'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+') </h2><h5><strong>Question:</strong> '+item.querry+'</h5><button type="button"  value="'+item.id+'" class="edit_querry badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.id+'" class="delete_student badge badge-pill badge-danger">Delete</button>');
                         }
                         else
                         {
@@ -96,6 +128,31 @@
                  }
             });
         }
+
+        // edit function vai ajax
+        $(document).on('click', '.edit_querry', function (e) {
+            e.preventDefault();
+            var querry_id = $(this).val();
+            // console.log(stu_id);
+            $('#editModal').modal('show');
+            $.ajax({
+                type: "GET",
+                url: "/edit/querry/"+querry_id,
+                success: function (response){
+                    // console.log(response);
+                    if(response.status == 404)
+                    {
+                        $("#success_message").html("");
+                        $("#success_message").addClass('alert alert-danger');
+                        $("#success_message").text(response.message);
+                    }else {
+                        // this function show old data
+                        $('#edit_querry').val(response.querry_id.querry);
+                        $('#edit_querry_id').val(querry_id);
+                    }
+                }
+            });
+        });
 
         // Add Querry
         $(document).on('click', '.add_querry', function(e) {

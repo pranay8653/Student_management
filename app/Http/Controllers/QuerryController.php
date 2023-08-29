@@ -61,7 +61,7 @@ class QuerryController extends Controller
         {
            return response()->json([
                 'status'    =>200,
-                'querry_id'   => $querry_id,
+                'querry_id' => $querry_id,
            ]);
         }
         else
