@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\QuerryController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -95,6 +96,9 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/student/show/note',[StudentController::class,'show_note'])->name('student.show.notes');
         Route::get('/student/load/more/{id}',[StudentController::class,'load_more'])->name('student.load.notes');
         Route::get('/student/perticular/note/pdf/{id}',[StudentController::class,'perticular_note_pdf'])->name('student.pdf.notes');
+        Route::post('/create/querry',[QuerryController::class,'querry_store'])->name('add.querry');
+        Route::get('/show/querry/{id}',[QuerryController::class,'showquerry']);
+        Route::get('/edit/querry/{id}',[QuerryController::class,'edit_querry']);
     });
 });
 
