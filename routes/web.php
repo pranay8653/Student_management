@@ -99,6 +99,7 @@ Route::middleware('auth:web')->group(function(){
         Route::post('/create/querry',[QuerryController::class,'querry_store'])->name('add.querry');
         Route::get('/show/querry/{id}',[QuerryController::class,'showquerry']);
         Route::get('/edit/querry/{id}',[QuerryController::class,'edit_querry']);
+        Route::put('/update/querry/{id}',[QuerryController::class,'update_querry']);
     });
 });
 

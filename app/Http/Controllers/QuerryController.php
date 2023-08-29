@@ -47,7 +47,6 @@ class QuerryController extends Controller
     {
         $querry = Querry::with('user')->where('studynotes_id', $id)->get();
         $querry_count = Querry::with('user')->where('studynotes_id', $id)->count();
-
         return response()->json([
             'querry'=>$querry,
             'querry_count'=>$querry_count,
@@ -70,6 +69,40 @@ class QuerryController extends Controller
                 'status'    =>404,
                 'message'   => 'Querry Not Found',
            ]);
+        }
+    }
+
+    public function update_querry(Request $request,$id)
+    {
+        $validator = Validator::make($request->all(),[
+            'querry'  => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'    =>400,
+                'errors'    =>$validator->messages(),
+            ]);
+        }
+        else
+        {
+            $querry_id = Querry::find($id);
+            if($querry_id)
+            {
+                $querry_id->querry = $request->input('querry');
+                $querry_id->update();
+                return response()->json([
+                    'status'    =>200,
+                    'message'   => 'Data updated Succesfully',
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'status'    =>404,
+                    'message'   => 'Data Not Found',
+                ]);
+            }
         }
     }
 }
