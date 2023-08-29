@@ -105,4 +105,13 @@ class QuerryController extends Controller
             }
         }
     }
+    public function delete_querry($id)
+    {
+        $querry_id = Querry::find($id);
+        $querry_id->delete();
+        return response()->json([
+            'status'    =>200,
+            'message'   => 'Your Querry Deleted Succesfully',
+        ]);
+    }
 }

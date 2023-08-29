@@ -44,6 +44,7 @@
             <input type="hidden" value="{{ Auth::id() }}" class="log_user_id form-control">
             <h3><center>Querries</center></h3>
             <div class="d-flex justify-content-center"><strong>Total Querries:</strong><strong style="color: blue"><div class="total_querry"></div></strong></div>
+            <div id="success_message"></div>
             {{-- <div class="display-flex"></div> --}}
             <div class="querry_reply">
             </div>
@@ -81,14 +82,37 @@
 
 {{-- End edit function  Data via Ajax --}}
 
+{{--  function Of delete Data via Ajax --}}
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="form_data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Your Querry</h5>
+        </div>
+        <div class="modal-body">
+
+             <input type="hidden" id="delete_stu_id">
+            <h4>Are You sure ? Want to Delete Your Querry ?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary delete_querry">Yes </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{{-- End Insert function delete Data via Ajax --}}
+
   <h6 class="mt-5 mb-3 text-center">Write Your Querry</h6>
-    <div id="success_message"></div>
     <hr>
     <form id="add_quuerry_data">
         <ul id="saveform_errlist"></ul>
         <div class="form-row">
             <div class="col-12 form-group">
-                {{-- <input type="hidden" name="slug" value=" "> --}}
                 <textarea id="" cols="30" rows="4" class="querry form-control" placeholder="Enter Your Querry Here"></textarea>
             </div>
             <div class="form-group col-12">
@@ -105,7 +129,7 @@
         function showquerry()
         {
             var note_id = $('.note_id').val();
-            var auth = $('.log_user_id').val(); // find login user
+            var auth = $('.log_user_id').val(); // find login user id
             $.ajax({
                 type: "GET",
                 url: "/show/querry/"+note_id,
@@ -116,9 +140,9 @@
 
                     $.each(response.querry, function (key,item){
 
-                        if(item.user_id == auth)
+                        if(item.user_id == auth) // this if function written as only login user can modify
                         {
-                            $('.querry_reply').append('<h2>'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+') </h2><h5><strong>Question:</strong> '+item.querry+'</h5><button type="button"  value="'+item.id+'" class="edit_querry badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.id+'" class="delete_student badge badge-pill badge-danger">Delete</button>');
+                            $('.querry_reply').append('<h2>'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+') </h2><h5><strong>Question:</strong> '+item.querry+'</h5><button type="button"  value="'+item.id+'" class="edit_querry badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.id+'" class="delete_querry_data badge badge-pill badge-danger">Delete</button>');
                         }
                         else
                         {
@@ -136,7 +160,6 @@
                 'querry': $('.querry').val(),
                 'studynotes_id': $('.note_id').val(),
             }
-            // console.log(data);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -148,7 +171,6 @@
                 data: data,
                 datatype: "json",
                 success: function (response){
-                    // console.log(response);
                     if(response.status == 400)
                      {
                         $("#saveform_errlist").html("");
@@ -244,6 +266,35 @@
                         $('.update_student').text("Update");
                         showquerry(); // after add data. show data list
                      }
+                }
+            });
+        });
+
+        // delete data via ajax
+        $(document).on('click','.delete_querry_data', function (e) {
+            e.preventDefault();
+            var delete_querry_id = $(this).val();
+            $('#delete_stu_id').val(delete_querry_id);
+            $('#deleteModal').modal('show');
+        });
+        $(document).on('click','.delete_querry', function (e) {
+            e.preventDefault(); // this function used not reload the page
+            var delete_querry_id = $('#delete_stu_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/delete/querry/"+delete_querry_id,
+                success: function (response){
+                    $("#success_message").addClass('alert alert-success');
+                    $("#success_message").text(response.message);
+                    $('#deleteModal').modal('hide');   // for hide model
+                    showquerry(); // show function . dono't write this, so not show data
                 }
             });
         });
