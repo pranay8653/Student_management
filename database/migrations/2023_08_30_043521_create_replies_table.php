@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('querry_id')->nullable();
             $table->foreign('querry_id')->references('id')->on('querries')->onDelete('cascade');
             $table->text('reply')->nullable();
+            $table->string('user_role')->nullable();
             $table->timestamps();
         });
     }

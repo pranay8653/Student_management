@@ -89,6 +89,8 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/edit/querry/{id}',[ReplyController::class,'edit_querry']);
         Route::put('/teacher/update/querry/{id}',[ReplyController::class,'update_querry']);
         Route::get('/teacher/delete/querry/{id}',[ReplyController::class,'delete_querry']);
+        Route::get('/teacher/open/reply/{id}',[ReplyController::class,'reply_open']);
+        Route::post('/teacher/querry/reply',[ReplyController::class,'reply_querry']);
     });
 
     // Access Only Student

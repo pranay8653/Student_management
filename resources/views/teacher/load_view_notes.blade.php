@@ -102,7 +102,36 @@
 
 {{-- End Insert function delete Data via Ajax --}}
 
+{{--  function Of update Data via Ajax --}}
+  <!-- Modal -->
+  <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="add_reply_data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Reply </h5>
+        </div>
+        <div class="modal-body">
 
+            <ul id="Replyform_errlist"></ul>
+
+            <input type="hidden" id="querry_id">
+
+          <div class="form-froup">
+            <label>Add Reply</label>
+            <textarea id="querry_reply_data" cols="30" rows="4" class="add_reply form-control" placeholder="Enter Your Reply Here"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary add_reply">Reply </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{{-- End edit function  Data via Ajax --}}
 
     <h6 class="mt-5 mb-3 text-center">Write Instruction here</h6>
     <hr>
@@ -149,6 +178,83 @@
                  }
             });
         }
+
+        //open reply panel function vai ajax
+        $(document).on('click', '.reply', function (e) {
+            e.preventDefault();
+            var querry_id = $(this).val();
+            // console.log(querry_id);
+            $('#replyModal').modal('show');
+            $.ajax({
+                type: "GET",
+                url: "/teacher/open/reply/"+querry_id,
+                success: function (response){
+                    // console.log(response);
+                    if(response.status == 404)
+                    {
+                        $("#success_message").html("");
+                        $("#success_message").addClass('alert alert-danger');
+                        $("#success_message").text(response.message);
+                    }else {
+                        // this function show old data
+                        $('#edit_querry').val(response.querry_id.querry);
+                        $('#querry_id').val(querry_id);
+                    }
+                }
+            });
+        });
+
+        // Add Reply function via ajax
+        $(document).on('click', '.add_reply', function(e) {
+            e.preventDefault();
+            var querry_id = $('#querry_id').val();
+            var data = {
+                'reply': $('#querry_reply_data').val(),
+                'querry_id' : querry_id,
+                'studynotes_id': $('.note_id').val(),
+            }
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/teacher/querry/reply",
+                data: data,
+                datatype: "json",
+                success: function (response){
+                    // console.log(response);
+                    if(response.status == 404)
+                      {
+                        $("#Replyform_errlist").html("");
+                        $("#success_message").addClass('alert alert-success');
+                        $("#success_message").text(response.message);
+                      }
+                    else if( response.status == 400)
+                     {
+                        $("#Replyform_errlist").html("");
+                        $("#Replyform_errlist").addClass('alert alert-danger');
+                        // $.each is jquerry foreach loop
+                        $.each(response.errors, function (key, err_values) {
+                            $('#Replyform_errlist').append('<li>'+err_values+'</li>');
+                        });
+                     }
+                      else
+                     {
+                        $('#add_reply_data').trigger('reset');
+                        $("#Replyform_errlist").html("");
+                        $("#success_message").html("");
+                        $("#success_message").addClass('alert alert-success');
+                        $("#success_message").text(response.message);
+                        $('#replyModal').modal('hide');   // for hide model
+                        // showquerry(); // after add data. show data list
+                     }
+                }
+            });
+        });
 
 
         // Add Querry

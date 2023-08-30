@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Querry;
+use App\Models\Reply;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -111,5 +112,56 @@ class ReplyController extends Controller
             'status'    =>200,
             'message'   => 'Your Querry Deleted Succesfully',
         ]);
+    }
+
+    public function reply_open($id)
+    {
+        $querry_id = Querry::find($id);
+        if($querry_id)
+        {
+           return response()->json([
+                'status'    =>200,
+                'querry_id' => $querry_id,
+           ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'    =>404,
+                'message'   => 'Querry Not Found',
+           ]);
+        }
+    }
+
+    public function reply_querry(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'reply'  => 'required',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'    =>400,
+                'errors'    =>$validator->messages(),
+            ]);
+        }
+        else
+        {
+            $auth_user = Auth::user()->email;
+            $user = User::where('email',$auth_user)->first();
+            Reply::create([
+                'user_id'           => $user->id,
+                'studynotes_id'     => $request->studynotes_id,
+                'querry_id'         => $request->querry_id,
+                'user_role'         => $user->role,
+                'reply'             => $request->reply,
+            ]);
+
+            return response()->json([
+                'status'    =>200,
+                'message'   => 'Data Added Succesfully',
+            ]);
+        }
     }
 }
