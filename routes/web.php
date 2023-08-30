@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\QuerryController;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -82,6 +83,12 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/edit/note/{id}',[TeacherController::class,'edit_note'])->name('edit.notes');
         Route::put('/teacher/update/note/{id}',[TeacherController::class,'update_note'])->name('update.notes');
         Route::get('/teacher/delete/note/{id}',[TeacherController::class,'delete_notes'])->name('delete.notes');
+
+        Route::post('/teacher/create/instruction',[ReplyController::class,'store_instruction']);
+        Route::get('/teacher/show/querry/{id}',[ReplyController::class,'showquerry']);
+        Route::get('/teacher/edit/querry/{id}',[ReplyController::class,'edit_querry']);
+        Route::put('/teacher/update/querry/{id}',[ReplyController::class,'update_querry']);
+        Route::get('/teacher/delete/querry/{id}',[ReplyController::class,'delete_querry']);
     });
 
     // Access Only Student

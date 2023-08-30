@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('querries', function (Blueprint $table) {
+        Schema::create('replies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('studynotes_id')->nullable();
             $table->foreign('studynotes_id')->references('id')->on('studynotes')->onDelete('cascade');
-            $table->text('querry');
-            $table->string('user_role')->nullable();
+            $table->unsignedBigInteger('querry_id')->nullable();
+            $table->foreign('querry_id')->references('id')->on('querries')->onDelete('cascade');
+            $table->text('reply')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('querries');
+        Schema::dropIfExists('replies');
     }
 };

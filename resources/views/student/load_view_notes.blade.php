@@ -42,8 +42,8 @@
     <div class="row">
         <div class="col-12">
             <input type="hidden" value="{{ Auth::id() }}" class="log_user_id form-control">
-            <h3><center>Querries</center></h3>
-            <div class="d-flex justify-content-center"><strong>Total Querries:</strong><strong style="color: blue"><div class="total_querry"></div></strong></div>
+            <h3><center>Conversation</center></h3>
+            <div class="d-flex justify-content-center"><strong>Total Conversation:</strong><strong style="color: blue"><div class="total_querry"></div></strong></div>
             <div id="success_message"></div>
             {{-- <div class="display-flex"></div> --}}
             <div class="querry_reply">
@@ -58,7 +58,7 @@
       <div class="modal-content">
         <form id="form_data">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Update Your Querry</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Update Your Conversation</h5>
         </div>
         <div class="modal-body">
 
@@ -67,7 +67,7 @@
             <input type="hidden" id="edit_querry_id">
 
           <div class="form-froup">
-            <label>Edit Your Querry</label>
+            <label>Edit Your Conversation</label>
             <textarea id="edit_querry" cols="30" rows="4" class="update_querry form-control" placeholder="Enter Your Querry Here"></textarea>
           </div>
         </div>
@@ -89,12 +89,12 @@
       <div class="modal-content">
         <form id="form_data">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete Your Querry</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Delete Your Conversation</h5>
         </div>
         <div class="modal-body">
 
              <input type="hidden" id="delete_stu_id">
-            <h4>Are You sure ? Want to Delete Your Querry ?</h4>
+            <h4>Are You sure ? Want to Delete Your Conversation ?</h4>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
