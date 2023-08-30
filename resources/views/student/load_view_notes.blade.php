@@ -142,11 +142,11 @@
 
                         if(item.user_id == auth) // this if function written as only login user can modify
                         {
-                            $('.querry_reply').append('<h2>'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+') </h2><h5><strong>Question:</strong> '+item.querry+'</h5><button type="button"  value="'+item.id+'" class="edit_querry badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.id+'" class="delete_querry_data badge badge-pill badge-danger">Delete</button>');
+                            $('.querry_reply').append('<div class="media"> <div class="media-body"> <h3 class="mt-0">'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+')</h3> <p><strong>Question: </strong>'+item.querry+'</p> <button type="button"  value="'+item.id+'" class="edit_querry badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.id+'" class="delete_querry_data badge badge-pill badge-danger">Delete</button> </div> </div>');
                         }
                         else
                         {
-                            $('.querry_reply').append('<h2>'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+') </h2><h5><strong>Question:</strong> '+item.querry+'</h5>');
+                            $('.querry_reply').append('<div class="media"> <div class="media-body"> <h3 class="mt-0">'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+')</h3> <p><strong>Question: </strong>'+item.querry+'</p></div> </div>');
                         }
                     });
                  }

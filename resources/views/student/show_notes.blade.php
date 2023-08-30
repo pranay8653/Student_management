@@ -31,6 +31,7 @@
                                         <th>Answers</th>
                                         <th>Techer's Name</th>
                                         <th>Created At</th>
+                                        <th>Total Conversation</th>
                                     </tr>
                                 </thead>
                                 <tfoot style="color: #d21a80; font-family: 'Bebas Neue', cursive;">
@@ -39,6 +40,7 @@
                                         <th>Answers</th>
                                         <th>Techer's Name</th>
                                         <th>Created At</th>
+                                        <th>Total Conversation</th>
 
 
                                     </tr>
@@ -52,6 +54,11 @@
                                     </td>
                                     <td>{{ $items->t_first_name }} {{ $items->t_last_name }}</td>
                                     <td>{{\Carbon\Carbon::parse($items->created_at)->isoFormat('DD / MMM / YYYY') }} </td>
+                                    {{-- total Conversation --}}
+                                    @php
+                                        {{  $querry_count = DB::table('querries')->where('studynotes_id',$items->id)->count();  }}
+                                    @endphp
+                                    <td>{{$querry_count}} </td>
                                 </tr>
                                 @endforeach
 
