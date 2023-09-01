@@ -16,7 +16,7 @@
                     <a href="{{ route('show.notes') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     <div class="row" >
                         <div class=" col-md-12 mb-3">
-                            <input type="text" value="{{ $notes->id }}" class="note_id form-control">
+                            <input type="hidden" value="{{ $notes->id }}" class="note_id form-control">
                             <label class="cardformlabel" for="name" style="color:blue">Question </label>
                             <h4>{{ $notes->studynote_title }}</h4>
                         </div>
@@ -41,8 +41,13 @@
             <h3><center>Conversation</center></h3>
             <div class="d-flex justify-content-center"><strong>Total Conversation:</strong><strong style="color: blue"><div class="total_querry"></div></strong></div>
             <div id="success_message"></div>
-            {{-- <div class="display-flex"></div> --}}
-            <div class="querry_reply">
+
+                <div class="media-body">
+                    <div class="media-body">
+                        <div class="querry_reply"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -53,7 +58,7 @@
       <div class="modal-content">
         <form id="form_data">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Update Your Conversation</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Update Your Instruction</h5>
         </div>
         <div class="modal-body">
 
@@ -62,7 +67,7 @@
             <input type="hidden" id="edit_querry_id">
 
           <div class="form-froup">
-            <label>Edit Your Conversation</label>
+            <label>Edit Your Instruction</label>
             <textarea id="edit_querry" cols="30" rows="4" class="update_querry form-control" placeholder="Enter Your Querry Here"></textarea>
           </div>
         </div>
@@ -84,16 +89,16 @@
       <div class="modal-content">
         <form id="form_data">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete Your Conversation</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Delete Your Instruction</h5>
         </div>
         <div class="modal-body">
 
              <input type="hidden" id="delete_stu_id">
-            <h4>Are You sure ? Want to Delete Your Conversation ?</h4>
+            <h4>Are You sure ? Want to Delete Your Instruction ?</h4>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary delete_querry">Yes </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-warning delete_querry">Yes </button>
         </div>
         </form>
       </div>
@@ -109,7 +114,7 @@
       <div class="modal-content">
         <form id="add_reply_data">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Reply </h5>
+          <h5 class="modal-title" id="exampleModalLabel"> Teacher's Reply </h5>
         </div>
         <div class="modal-body">
 
@@ -123,7 +128,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-primary add_reply">Reply </button>
         </div>
         </form>
@@ -160,20 +165,29 @@
                 type: "GET",
                 url: "/teacher/show/querry/"+note_id,
                 success: function (response){
-                    var countquerry = response.querry_count;   // querry_count is response
+                    var countquerry = response.count_conversation;   // querry_count is response
                         $('.total_querry').text(countquerry); // print Single value Show
                         $('.querry_reply').html("");
-
+                        var s_role = "student";
                     $.each(response.querry, function (key,item){
 
                         if(item.user_id == auth) // this if function written as only login user can modify
                         {
-                            $('.querry_reply').append('<div class="media"> <div class="media-body"> <h3 class="mt-0">'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+')</h3> <p><strong>Question: </strong>'+item.querry+'</p> <button type="button"  value="'+item.id+'" class="edit_querry badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.id+'" class="delete_querry_data badge badge-pill badge-danger">Delete</button> </div> </div>');
+                            $('.querry_reply').append('<hr><h2 class="mt-0"><strong>'+item.user_role+'</strong></h2> <h5><strong>Instruction: </strong>'+item.querry+'</h5><button type="button"  value="'+item.id+'" class="edit_querry badge badge-pill badge-info">Edit</button> <button type="button" value="'+item.id+'" class="delete_querry_data badge badge-pill badge-danger">Delete</button> ');
                         }
-                        else
+                        else if(item.user_role ==  s_role)
                         {
-                            $('.querry_reply').append('<div class="media"> <div class="media-body"> <h3 class="mt-0">'+item.user.first_name+' '+item.user.last_name+'('+item.user_role+')</h3> <p><strong>Question: </strong>'+item.querry+'</p><button type="button" value="'+item.id+'" class="reply badge badge-pill badge-secondary">Reply</button> </div> </div>');
+                            $('.querry_reply').append('<hr><h2 class="mt-0">'+item.user.first_name+' '+item.user.last_name+'(<strong>'+item.user_role+'</strong>)</h2> <h5><strong>Queries: </strong>'+item.querry+'</h5> <button type="button" value="'+item.id+'" class="reply badge badge-pill badge-secondary">Reply</button> </div> ');
                         }
+
+                        // nested if
+                        $.each(item.replies, function (key1,item1) // replies is relatioship name
+                        {
+                            // $('.querry_reply').append('<p><strong>answer: </strong>'+item1.reply+'</p>');
+                            $('.querry_reply').append('<div class="media-body align-items-center"> <h2 class="mt-0"><strong>'+item1.user_role+'</strong></h2> </><p><strong>Answer: </strong>'+item1.reply+'</p> </div>');
+
+                        });
+
                     });
                  }
             });
@@ -250,7 +264,7 @@
                         $("#success_message").addClass('alert alert-success');
                         $("#success_message").text(response.message);
                         $('#replyModal').modal('hide');   // for hide model
-                        // showquerry(); // after add data. show data list
+                        showquerry(); // after add data. show data list
                      }
                 }
             });

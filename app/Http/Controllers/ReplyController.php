@@ -44,11 +44,13 @@ class ReplyController extends Controller
     }
     public function showquerry($id)
     {
-        $querry = Querry::with('user')->where('studynotes_id', $id)->get();
+        $querry = Querry::with('replies')->with('user')->where('studynotes_id', $id)->get();
         $querry_count = Querry::with('user')->where('studynotes_id', $id)->count();
+        $reply_count = Reply::where('studynotes_id', $id)->count();
+        $count_conversation =  $querry_count + $reply_count;
         return response()->json([
             'querry'=>$querry,
-            'querry_count'=>$querry_count,
+            'count_conversation'=>$count_conversation,
         ]);
     }
 
@@ -92,7 +94,7 @@ class ReplyController extends Controller
                 $querry_id->update();
                 return response()->json([
                     'status'    =>200,
-                    'message'   => 'Data updated Succesfully',
+                    'message'   => 'Instruction updated Succesfully',
                 ]);
             }
             else
@@ -110,7 +112,7 @@ class ReplyController extends Controller
         $querry_id->delete();
         return response()->json([
             'status'    =>200,
-            'message'   => 'Your Querry Deleted Succesfully',
+            'message'   => 'Your Instruction Deleted Succesfully',
         ]);
     }
 

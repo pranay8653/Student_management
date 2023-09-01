@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <div class="table-responsive" >
                         <h1 class="display-6" > Department   "{{ $department->d_name }}"</h1>
-                        <h1 class="h4" >Total Number Of Notes:<span style="color: #d21a80"> {{ $notes_count }}</span> </h1>
+                        <h1 class="h4" >Total Number Of Study Notes:<span style="color: #d21a80"> {{ $notes_count }}</span> </h1>
 
                             <table class="table table-bordered" id="dataTable"  cellspacing="0">
                                 <thead style="color: #d21a80; font-family: 'Bebas Neue', cursive;">
@@ -56,9 +56,12 @@
                                     <td>{{\Carbon\Carbon::parse($items->created_at)->isoFormat('DD / MMM / YYYY') }} </td>
                                     {{-- total Conversation --}}
                                     @php
-                                        {{  $querry_count = DB::table('querries')->where('studynotes_id',$items->id)->count();  }}
+                                        {{  $querry_count = DB::table('querries')->where('studynotes_id',$items->id)->count();
+                                            $reply_count =   DB::table('replies')->where('studynotes_id',$items->id)->count();
+                                            $count_conversation =  $querry_count + $reply_count;
+                                        }}
                                     @endphp
-                                    <td>{{$querry_count}} </td>
+                                    <td>{{$count_conversation}} </td>
                                 </tr>
                                 @endforeach
 

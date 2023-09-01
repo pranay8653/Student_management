@@ -9,4 +9,10 @@ class Reply extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id','studynotes_id','querry_id','reply','user_role'];
+
+    public function querry()
+    {
+        return $this->belongsTo(Querry::class);
+    }
+
 }
