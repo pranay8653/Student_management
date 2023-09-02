@@ -166,4 +166,67 @@ class ReplyController extends Controller
             ]);
         }
     }
+
+    public function edit_reply($id)
+    {
+        $reply_id = Reply::find($id);
+        if($reply_id)
+        {
+           return response()->json([
+                'status'    =>200,
+                'reply_id' => $reply_id,
+           ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'    =>404,
+                'message'   => 'Reply Not Found',
+           ]);
+        }
+    }
+
+    public function update_reply(Request $request,$id)
+    {
+        $validator = Validator::make($request->all(),[
+            'reply'  => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'    =>400,
+                'errors'    =>$validator->messages(),
+            ]);
+        }
+        else
+        {
+            $reply_id = Reply::find($id);
+            if($reply_id)
+            {
+                $reply_id->reply = $request->input('reply');
+                $reply_id->update();
+                return response()->json([
+                    'status'    =>200,
+                    'message'   => 'Reply updated Succesfully',
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'status'    =>404,
+                    'message'   => 'Data Not Found',
+                ]);
+            }
+        }
+    }
+
+    public function delete_reply($id)
+    {
+        $querry_id = Reply::find($id);
+        $querry_id->delete();
+        return response()->json([
+            'status'    =>200,
+            'message'   => 'Your Reply Deleted Succesfully',
+        ]);
+    }
 }

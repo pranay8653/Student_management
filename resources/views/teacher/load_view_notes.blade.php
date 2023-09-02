@@ -138,6 +138,88 @@
 
 {{-- End edit function  Data via Ajax --}}
 
+{{--  function Of update Reply via Ajax --}}
+  <!-- Modal -->
+  <div class="modal fade" id="teacherReplyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="form_data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Your Reply</h5>
+        </div>
+        <div class="modal-body">
+
+            <ul id="updateform_errlist"></ul>
+
+            <input type="hidden" id="edit_reply_id">
+
+          <div class="form-froup">
+            <label>Edit Your Reply</label>
+            <textarea id="edit_reply_data" cols="30" rows="4" class="update_reply_data form-control" placeholder="Enter Your Reply Here"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary update_reply">Update Your Reply </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{{-- End edit Reply Function via Ajax --}}
+
+{{--  function Of delete teacher reply via Ajax --}}
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="form_data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Your Instruction</h5>
+        </div>
+        <div class="modal-body">
+
+             <input type="hidden" id="delete_stu_id">
+            <h4>Are You sure ? Want to Delete Your Instruction ?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-warning delete_querry">Yes </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{{-- End Insert function delete teacher reply via Ajax --}}
+
+{{--  function Of delete Reply via Ajax --}}
+  <!-- Modal -->
+  <div class="modal fade" id="deleteReplyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="form_data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Your Reply</h5>
+        </div>
+        <div class="modal-body">
+
+             <input type="text" id="delete_reply_id">
+            <h4>Are You sure ? Want to Delete Your Instruction ?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-warning delete_reply_data">Yes </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{{-- End Insert function delete Reply via Ajax --}}
+
+
     <h6 class="mt-5 mb-3 text-center">Write Instruction here</h6>
     <hr>
     <form id="add_quuerry_data">
@@ -184,7 +266,7 @@
                         $.each(item.replies, function (key1,item1) // replies is relatioship name
                         {
                             // $('.querry_reply').append('<p><strong>answer: </strong>'+item1.reply+'</p>');
-                            $('.querry_reply').append('<div class="media-body align-items-center"> <h2 class="mt-0"><strong>'+item1.user_role+'</strong></h2> </><p><strong>Answer: </strong>'+item1.reply+'</p> </div>');
+                            $('.querry_reply').append('<div class="media-body align-items-center"> <h2 class="mt-0"><strong>'+item1.user_role+'</strong></h2> </><p><strong>Answer: </strong>'+item1.reply+'</p> </div><button type="button"  value="'+item1.id+'" class="edit_reply badge badge-pill badge-info">Edit</button> <button type="button" value="'+item1.id+'" class="delete_reply badge badge-pill badge-danger">Delete</button>');
 
                         });
 
@@ -310,7 +392,7 @@
             });
         });
 
-        //edit function vai ajax
+        //edit function using ajax
         $(document).on('click', '.edit_querry', function (e) {
             e.preventDefault();
             var querry_id = $(this).val();
@@ -416,6 +498,82 @@
                 }
             });
         });
+
+        //edit Your Reply function using ajax
+        $(document).on('click', '.edit_reply', function (e) {
+            e.preventDefault();
+            var reply_id = $(this).val();
+            // console.log(stu_id);
+            $('#teacherReplyModal').modal('show');
+            $.ajax({
+                type: "GET",
+                url: "/teacher/edit/reply/"+reply_id,
+                success: function (response){
+                    // console.log(response);
+                    if(response.status == 404)
+                    {
+                        $("#success_message").html("");
+                        $("#success_message").addClass('alert alert-danger');
+                        $("#success_message").text(response.message);
+                    }else {
+                        // this function show old data
+                        $('#edit_reply_data').val(response.reply_id.reply);
+                        $('#edit_reply_id').val(reply_id);
+                    }
+                }
+            });
+        });
+
+        // Update Reply function via ajax
+        $(document).on('click', '.update_reply', function(e) {
+            e.preventDefault();
+            var reply_id = $('#edit_reply_id').val();
+            var data = {
+                'reply': $('#edit_reply_data').val(),
+            }
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "PUT",
+                url: "/teacher/update/reply/"+reply_id,
+                data: data,
+                datatype: "json",
+                success: function (response){
+                    // console.log(response);
+                    if( response.status == 400)
+                     {
+                        $("#updateform_errlist").html("");
+                        $("#updateform_errlist").addClass('alert alert-danger');
+                        // $.each is jquerry foreach loop
+                        $.each(response.errors, function (key, err_values) {
+                            $('#updateform_errlist').append('<li>'+err_values+'</li>');
+                        });
+                     }
+                     else if(response.status == 404)
+                      {
+                        $("#updateform_errlist").html("");
+                        $("#success_message").addClass('alert alert-success');
+                        $("#success_message").text(response.message);
+                      }
+                      else
+                     {
+                        $("#updateform_errlist").html("");
+                        $("#success_message").html("");
+                        $("#success_message").addClass('alert alert-success');
+                        $("#success_message").text(response.message);
+                        $('#teacherReplyModal').modal('hide');   // for hide model
+                        showquerry(); // after add data. show data list
+                     }
+                }
+            });
+        });
+
+
     });
 </script>
 @endsection
