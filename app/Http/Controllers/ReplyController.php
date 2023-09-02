@@ -38,16 +38,18 @@ class ReplyController extends Controller
 
             return response()->json([
                 'status'    =>200,
-                'message'   => 'Data Added Succesfully',
+                'message'   => 'Instruction Added Succesfully',
             ]);
         }
     }
+
     public function showquerry($id)
     {
         $querry = Querry::with('replies')->with('user')->where('studynotes_id', $id)->get();
         $querry_count = Querry::with('user')->where('studynotes_id', $id)->count();
         $reply_count = Reply::where('studynotes_id', $id)->count();
         $count_conversation =  $querry_count + $reply_count;
+
         return response()->json([
             'querry'=>$querry,
             'count_conversation'=>$count_conversation,
@@ -78,6 +80,7 @@ class ReplyController extends Controller
         $validator = Validator::make($request->all(),[
             'querry'  => 'required',
         ]);
+
         if($validator->fails())
         {
             return response()->json([
@@ -110,6 +113,7 @@ class ReplyController extends Controller
     {
         $querry_id = Querry::find($id);
         $querry_id->delete();
+
         return response()->json([
             'status'    =>200,
             'message'   => 'Your Instruction Deleted Succesfully',
@@ -162,7 +166,7 @@ class ReplyController extends Controller
 
             return response()->json([
                 'status'    =>200,
-                'message'   => 'Data Added Succesfully',
+                'message'   => 'Reply Added Succesfully',
             ]);
         }
     }
@@ -191,6 +195,7 @@ class ReplyController extends Controller
         $validator = Validator::make($request->all(),[
             'reply'  => 'required',
         ]);
+
         if($validator->fails())
         {
             return response()->json([
@@ -224,6 +229,7 @@ class ReplyController extends Controller
     {
         $querry_id = Reply::find($id);
         $querry_id->delete();
+        
         return response()->json([
             'status'    =>200,
             'message'   => 'Your Reply Deleted Succesfully',

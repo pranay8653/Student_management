@@ -4,10 +4,11 @@
 @section('content')
 
 @if(session('note_update'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{session('note_update')}}
-                        </div>
-                    @endif
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session('note_update')}}
+    </div>
+@endif
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 mx-auto">
@@ -35,6 +36,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <input type="hidden" value="{{ Auth::id() }}" class="log_user_id form-control">
@@ -51,7 +53,8 @@
             </div>
         </div>
     </div>
-    {{--  function Of update Data via Ajax --}}
+
+    {{--  function Of update Instruction  via Ajax --}}
   <!-- Modal -->
   <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -63,7 +66,6 @@
         <div class="modal-body">
 
             <ul id="updateform_errlist"></ul>
-
             <input type="hidden" id="edit_querry_id">
 
           <div class="form-froup">
@@ -79,10 +81,9 @@
       </div>
     </div>
   </div>
+{{-- End function Of update Instruction via Ajax --}}
 
-{{-- End edit function  Data via Ajax --}}
-
-{{--  function Of delete Data via Ajax --}}
+{{--  function Of delete Instruction via Ajax --}}
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -92,7 +93,6 @@
           <h5 class="modal-title" id="exampleModalLabel">Delete Your Instruction</h5>
         </div>
         <div class="modal-body">
-
              <input type="hidden" id="delete_stu_id">
             <h4>Are You sure ? Want to Delete Your Instruction ?</h4>
         </div>
@@ -104,10 +104,9 @@
       </div>
     </div>
   </div>
+{{-- End Function Of delete Instruction via Ajax --}}
 
-{{-- End Insert function delete Data via Ajax --}}
-
-{{--  function Of update Data via Ajax --}}
+{{--  function Of Add Teacher's Reply via Ajax --}}
   <!-- Modal -->
   <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -119,7 +118,6 @@
         <div class="modal-body">
 
             <ul id="Replyform_errlist"></ul>
-
             <input type="hidden" id="querry_id">
 
           <div class="form-froup">
@@ -135,10 +133,9 @@
       </div>
     </div>
   </div>
+{{-- End function Of Add Teacher's Reply via Ajax --}}
 
-{{-- End edit function  Data via Ajax --}}
-
-{{--  function Of update Reply via Ajax --}}
+{{--  function Of Teacher's Reply update via Ajax --}}
   <!-- Modal -->
   <div class="modal fade" id="teacherReplyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -166,33 +163,7 @@
       </div>
     </div>
   </div>
-
-{{-- End edit Reply Function via Ajax --}}
-
-{{--  function Of delete teacher reply via Ajax --}}
-  <!-- Modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="form_data">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete Your Instruction</h5>
-        </div>
-        <div class="modal-body">
-
-             <input type="hidden" id="delete_stu_id">
-            <h4>Are You sure ? Want to Delete Your Instruction ?</h4>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-warning delete_querry">Yes </button>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-{{-- End Insert function delete teacher reply via Ajax --}}
+{{-- End function Of Teacher's Reply update via Ajax --}}
 
 {{--  function Of delete Reply via Ajax --}}
   <!-- Modal -->
@@ -204,9 +175,8 @@
           <h5 class="modal-title" id="exampleModalLabel">Delete Your Reply</h5>
         </div>
         <div class="modal-body">
-
-             <input type="text" id="delete_reply_id">
-            <h4>Are You sure ? Want to Delete Your Instruction ?</h4>
+             <input type="hidden" id="delete_reply_id">
+            <h4>Are You sure ? Want to Delete Your Reply ?</h4>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -216,10 +186,9 @@
       </div>
     </div>
   </div>
+{{-- End function Of delete Reply via Ajax --}}
 
-{{-- End Insert function delete Reply via Ajax --}}
-
-
+    {{-- Enter Teacher Instruction --}}
     <h6 class="mt-5 mb-3 text-center">Write Instruction here</h6>
     <hr>
     <form id="add_quuerry_data">
@@ -322,7 +291,6 @@
                 data: data,
                 datatype: "json",
                 success: function (response){
-                    // console.log(response);
                     if(response.status == 404)
                       {
                         $("#Replyform_errlist").html("");
@@ -338,7 +306,7 @@
                             $('#Replyform_errlist').append('<li>'+err_values+'</li>');
                         });
                      }
-                      else
+                    else
                      {
                         $('#add_reply_data').trigger('reset');
                         $("#Replyform_errlist").html("");
@@ -351,7 +319,6 @@
                 }
             });
         });
-
 
         // Add Querry
         $(document).on('click', '.add_instruction', function(e) {
@@ -503,7 +470,6 @@
         $(document).on('click', '.edit_reply', function (e) {
             e.preventDefault();
             var reply_id = $(this).val();
-            // console.log(stu_id);
             $('#teacherReplyModal').modal('show');
             $.ajax({
                 type: "GET",
@@ -544,7 +510,6 @@
                 data: data,
                 datatype: "json",
                 success: function (response){
-                    // console.log(response);
                     if( response.status == 400)
                      {
                         $("#updateform_errlist").html("");
@@ -573,7 +538,35 @@
             });
         });
 
+        // delete data via ajax
+        $(document).on('click','.delete_reply', function (e) {
+            e.preventDefault();
+            var delete_reply_id = $(this).val();
+            $('#delete_reply_id').val(delete_reply_id);
+            $('#deleteReplyModal').modal('show');
+        });
 
+        $(document).on('click','.delete_reply_data', function (e) {
+            e.preventDefault(); // this function used not reload the page
+            var delete_reply_id = $('#delete_reply_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/teacher/delete/reply/"+delete_reply_id,
+                success: function (response){
+                    $("#success_message").addClass('alert alert-success');
+                    $("#success_message").text(response.message);
+                    $('#deleteReplyModal').modal('hide');   // for hide model
+                    showquerry(); // show function . dono't write this, so not show data
+                }
+            });
+        });
     });
 </script>
 @endsection
