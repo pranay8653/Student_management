@@ -233,6 +233,11 @@ class StudentController extends Controller
         // Before deleted users data.Then delete teacher table
         $t_id = Student::find($id);
         $t_id->delete();
+
+        return response()->json([
+            'status'    =>200,
+            'message'   => 'Student Details Deleted Succesfully',
+        ]);
     return redirect()->route('show.student')->with('teacher_delete', 'Deleted Student Successfully......');
     }
 

@@ -170,6 +170,11 @@ class TeacherController extends Controller
         // Before deleted users data.Then delete teacher table
         $t_id = Teacher::find($id);
         $t_id->delete();
+        
+        return response()->json([
+            'status'    =>200,
+            'message'   => 'Teacher Details Deleted Succesfully',
+        ]);
     return redirect()->route('show.teacher')->with('teacher_delete', 'Deleted Teacher Successfully......');
     }
 
