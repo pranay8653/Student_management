@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('studynote_title');
             $table->text('studynote');
             $table->unsignedBigInteger('teachers_id')->nullable();
-            $table->foreign('teachers_id')->references('id')->on('teachers');
+            $table->foreign('teachers_id')->references('id')->on('teachers')->onDelete('cascade');;
             $table->string('t_first_name')->nullable();
             $table->string('t_last_name')->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
