@@ -389,6 +389,10 @@ class TeacherController extends Controller
      {
         $notes = Studynote::find($id);
         $notes->delete();
-        return redirect()->back()->with('delete_note','Note Deleted Successfully...!');
+        return response()->json([
+            'status'    =>200,
+            'message'   => 'Your Study Note Deleted Succesfully',
+        ]);
+        // return redirect()->back()->with('delete_note','Note Deleted Successfully...!');
      }
 }
