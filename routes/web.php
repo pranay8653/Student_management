@@ -83,7 +83,6 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/edit/note/{id}',[TeacherController::class,'edit_note'])->name('edit.notes');
         Route::put('/teacher/update/note/{id}',[TeacherController::class,'update_note'])->name('update.notes');
         Route::get('/teacher/delete/note/{id}',[TeacherController::class,'delete_notes'])->name('delete.notes');
-
         Route::post('/teacher/create/instruction',[ReplyController::class,'store_instruction']);
         Route::get('/teacher/show/querry/{id}',[ReplyController::class,'showquerry']);
         Route::get('/teacher/edit/querry/{id}',[ReplyController::class,'edit_querry']);
