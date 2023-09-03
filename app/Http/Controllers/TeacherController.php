@@ -33,7 +33,7 @@ class TeacherController extends Controller
              'first_name'       => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
              'last_name'        => ['required','regex:/^[A-Za-z. ]{3,50}$/'],
              'email'            => ['required','string', 'email', 'max:200', 'unique:users,email','regex:/^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,4}$/'],
-             'phone'            => ['required', 'integer', 'digits:10', 'regex:/^[0-9]{10}$/'],
+             'phone'            => ['required', 'integer', 'digits:10', 'regex:/^[0-9]{10}$/','unique:users,phone',],
              'address'          => ['required','regex:/^[A-Za-z: A-Za-z0-9(A-Za-z0-9)\S][^~!@#$%^]{3,300}$/'],
              'dob'              => ['required'],
              'gender'           => ['required'],
@@ -43,6 +43,7 @@ class TeacherController extends Controller
          'first_name'        => 'Please Enter First Name Within 50 Character',
          'last_name'         =>  'Please Enter Last Name Name Within 50 Character',
          'phone'             =>  'Please Enter 10 Digits Valid Phone number',
+         'phone.unique'      =>  'The Mobile Number has already been taken. Please Check And Donot enter same Mobile Number',
          'address'           =>  'Please Enter Address within 3-300 But not Used ~!@#$%^ character',
          'dob'               =>  'Please Enter Date Of Birth ',
          'gender'            =>  'Please Enter Gender',
@@ -170,7 +171,7 @@ class TeacherController extends Controller
         // Before deleted users data.Then delete teacher table
         $t_id = Teacher::find($id);
         $t_id->delete();
-        
+
         return response()->json([
             'status'    =>200,
             'message'   => 'Teacher Details Deleted Succesfully',
