@@ -1,5 +1,5 @@
 @extends('layout.application')
-@section('page_title', 'Show Teacher')
+@section('page_title', 'Teacher List')
 @section('teachers','active')
 @section('content')
 

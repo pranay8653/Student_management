@@ -28,7 +28,7 @@ Route::middleware('auth:web')->group(function(){
 
     // Access Only Admin
     Route::group(['middleware' => ['checkuser:admin']],function(){
-        Route::view('/dashboard',['admin.dashboard'])->name('admin.dashboard');
+        Route::get('/dashboard',[AdminController::class,'admin_dashboard'])->name('admin.dashboard');
         Route::get('/admin/change_password', [AdminController::class,'change_password'])->name('admin.change.password');
         Route::put('/update_change_password', [AdminController::class,'admin_save_change_password'])->name('admin.update.password');
         Route::get('/admin/profile',[AdminController::class,'admin_profile'])->name('admin.profile');
@@ -69,7 +69,7 @@ Route::middleware('auth:web')->group(function(){
 
     // Access Only Teacher
     Route::group(['middleware' => ['checkuser:teacher']],function(){
-        Route::view('/teacher/dashboard',['teacher.dashboard'])->name('teacher.dashboard');
+        Route::get('/teacher/dashboard',[TeacherController::class,'teacher_dashboard'])->name('teacher.dashboard');
         Route::get('/teacher/profile',[TeacherController::class,'teacher_profile'])->name('teacher.profile');
         Route::put('/teacher/profile/picture',[TeacherController::class,'teacher_profile_picture'])->name('teacher.profile.picture');
         Route::get('/teacher/profile/edit',[TeacherController::class,'teacher_profile_edit'])->name('teacher.profile.edit');
@@ -97,7 +97,7 @@ Route::middleware('auth:web')->group(function(){
 
     // Access Only Student
     Route::group(['middleware' => ['checkuser:student']],function(){
-        Route::view('/student/dashboard',['student.dashboard'])->name('student.dashboard');
+        Route::get('/student/dashboard',[StudentController::class,'student_dashboard'])->name('student.dashboard');
         Route::get('/student/profile',[StudentController::class,'student_profile'])->name('student.profile');
         Route::put('/student/profile/picture',[StudentController::class,'student_profile_picture'])->name('student.profile.picture');
         Route::get('/student/profile/edit',[StudentController::class,'student_profile_edit'])->name('student.profile.edit');

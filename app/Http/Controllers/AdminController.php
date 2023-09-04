@@ -6,6 +6,8 @@ use App\Imports\ImportDepartment;
 use App\Mail\AdminRegisterEmail;
 use App\Models\Admin;
 use App\Models\Department;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -19,6 +21,15 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
+    public function admin_dashboard()
+    {
+        $a_email = Auth::user()->email;
+        $admin = Admin::where('email',$a_email)->first();
+        $department = Department::all()->count();
+        $student = Student::all()->count();
+        $teacher = Teacher::all()->count();
+        return view('admin.dashboard',compact('admin','department','student','teacher'));
+    }
     public function index()
      {
         return view('admin.register');

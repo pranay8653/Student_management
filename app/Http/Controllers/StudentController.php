@@ -23,6 +23,16 @@ use Illuminate\Support\Facades\File;
 
 class StudentController extends Controller
 {
+    public function student_dashboard()
+    {
+        $a_email = Auth::user()->email;
+       $student = Student::where('email',$a_email)->first();
+       $notes = Studynote::where('department_id',$student->department_id)->orderBy('created_at', 'DESC')->get();
+       $notes_count = Studynote::where('department_id',$student->department_id)->count();
+       $student_count = Student::where('department_id',$student->department_id)->count();
+       $teacher_count = Teacher::where('department_id',$student->department_id)->count();
+        return view('student.dashboard',compact('notes_count','student_count','teacher_count','notes','student'));
+    }
     public function index()
      {
         $dept = Department::select('id','d_name')->get();

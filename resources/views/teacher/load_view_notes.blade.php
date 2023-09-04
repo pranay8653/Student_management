@@ -15,6 +15,16 @@
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
                     <a href="{{ route('show.notes') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="cardformlabel" for="name" style="color:blue">Study Note's Created by: </label>
+                        </div>
+                        <div class="col-6">
+                            <h4><strong>{{ $notes->t_first_name }} {{ $notes->t_last_name }}</strong></h4>
+                        </div>
+                    </div>
+
                     <div class="row" >
                         <div class=" col-md-12 mb-3">
                             <input type="hidden" value="{{ $notes->id }}" class="note_id form-control">
@@ -33,6 +43,14 @@
                     </div>
                 </div>
                 <a href="{{ route('edit.notes',['id' => $notes->id]) }}" class="btn btn-primary btn-sm">Edit Note</a>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="cardformlabel" for="name" style="color:blue">Study Note's Created by: </label>
+                </div>
+                <div class="col-6">
+                    <h4><strong>{{ $notes->t_first_name }} {{ $notes->t_last_name }}</strong></h4>
+                </div>
             </div>
         </div>
     </div>

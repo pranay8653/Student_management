@@ -6,6 +6,7 @@ use App\Exports\ExportTeacher;
 use App\Mail\AdminModifyTeacherMail;
 use App\Mail\RegisterMail;
 use App\Models\Department;
+use App\Models\Student;
 use App\Models\Studynote;
 use App\Models\Teacher;
 use App\Models\User;
@@ -21,6 +22,16 @@ use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
+    public function teacher_dashboard()
+     {
+        $a_email = Auth::user()->email;
+        $teacher = Teacher::where('email',$a_email)->first();
+        $notes = Studynote::where('department_id',$teacher->department_id)->orderBy('created_at', 'DESC')->get();
+        $notes_count = Studynote::where('department_id',$teacher->department_id)->count();
+        $teacher_count = Teacher::where('department_id',$teacher->department_id)->count();
+        $student_count = Student::where('department_id',$teacher->department_id)->count();
+        return view('teacher.dashboard',compact('teacher','notes','notes_count','teacher_count','student_count'));
+     }
     public function teacher()
      {
         $dept = Department::select('id','d_name')->get();
