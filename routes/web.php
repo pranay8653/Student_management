@@ -69,6 +69,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/create/result',[ResultController::class,'create_result'])->name('create.result');
         Route::post('/get_department',[ResultController::class,'getDepartment']);
         Route::post('/save_result',[ResultController::class,'save_result']);
+        Route::get('/admin/export/result',[ResultController::class,'export_result'])->name('export.result');
     });
 
     // Access Only Teacher

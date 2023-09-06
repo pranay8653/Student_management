@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
+use App\Exports\StudentResultExport;
 use App\Models\Result;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ResultController extends Controller
 {
     public function create_result(Request $request)
     {
         $student = Student::get();
-        $result = Result::with('department_name')->paginate(5);
-       return view('admin.create_result',compact('student','result'));
+        $result = Result::with('department_name')->orderBy('created_at', 'DESC')->paginate(5);
+        return view('admin.create_result',compact('student','result'));
     }
 
     public function getDepartment(Request $request )
@@ -27,7 +28,6 @@ class ResultController extends Controller
             $html  ='<option value="'.$list->department->id.'">'.$list->department->d_name.'</option>';
          }
         echo $html;
-
     }
 
     public function save_result(Request $request)
@@ -43,6 +43,7 @@ class ResultController extends Controller
             'sub_6'       => 'required',
             'sub_7'       => 'required',
         ]);
+
         if($validator->fails())
         {
             return response()->json([
@@ -88,6 +89,7 @@ class ResultController extends Controller
              {
                 $gread = "failed";
              }
+
             Result::create([
                 'student_id'    => $request['student_id'],
                 'dept_id'       => $request['dept_id'],
@@ -110,4 +112,8 @@ class ResultController extends Controller
         ]);
     }
 
+    public function export_result()
+    {
+        return Excel::download(new StudentResultExport, 'Result.xlsx');
+    }
 }

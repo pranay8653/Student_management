@@ -17,9 +17,8 @@
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#resultModal">
-                            Create Student result
-                        </button>
+                        <a href="{{ route('export.result') }}" class="btn btn-outline-secondary m-2">Export All In Excel</a>
+                        <button type="button" class="btn btn-outline-info m-2" data-bs-toggle="modal" data-bs-target="#resultModal"> Create Student result  </button>
                     </div>
                     <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <form  id="form_data">
@@ -71,31 +70,20 @@
                                             <input type="text"  class="sub7 form-control"  placeholder="Enter Marks of Subject 7">
                                         </div>
 
-
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary add_result">Create</button>
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </form>
                     </div>
+
                     <ul id="saveform_errlist"></ul>
                     <div id="success_message"></div>
-
+                    <h1 class="display-5" > Student Result Lists</h1>
                     <div class="table-responsive" >
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <div id="success_message"></div>
-                            {{-- <a href="{{ route('create.notes') }}" class="btn btn-outline-primary m-2">Add Notes</a> --}}
-                        </div>
-
-                        {{-- <h1 class="display-6" > Department   "{{ $department->d_name }}"</h1>
-                        <h1 class="h4" >Total Number Of Study Notes:<span style="color: #d21a80"> {{ $notes_count }}</span> </h1> --}}
-                        <ul id="saveform_errlist"></ul>
-
                             <table class="table table-bordered" id="dataTable"  cellspacing="0">
                                 <thead style="color: #d21a80; font-family: 'Bebas Neue', cursive;">
                                     <tr>
@@ -232,6 +220,9 @@
                         $("#success_message").addClass('alert alert-success');
                         $("#success_message").text(response.message);
                         $('#resultModal').modal('hide');
+                        setTimeout(function(){// wait for 3 secs(2)
+                           window.location.reload(); // then reload the page.(3)
+                       }, 3000);
                      }
                 }
             });
