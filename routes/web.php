@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\QuerryController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -93,6 +94,9 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/edit/reply/{id}',[ReplyController::class,'edit_reply']);
         Route::put('/teacher/update/reply/{id}',[ReplyController::class,'update_reply']);
         Route::get('/teacher/delete/reply/{id}',[ReplyController::class,'delete_reply']);
+        Route::get('/teache/create/result',[ResultController::class,'create_result'])->name('create.result');
+        Route::post('/get_department',[ResultController::class,'getDepartment']);
+        Route::post('/save_result',[ResultController::class,'save_result']);
     });
 
     // Access Only Student
