@@ -13,7 +13,8 @@ class ResultController extends Controller
     public function create_result(Request $request)
     {
         $student = Student::get();
-       return view('admin.create_result',compact('student'));
+        $result = Result::with('department_name')->paginate(5);
+       return view('admin.create_result',compact('student','result'));
     }
 
     public function getDepartment(Request $request )
@@ -33,14 +34,14 @@ class ResultController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'student_id'  => 'required',
-            'dept_id'  => 'required',
-            'sub_1'  => 'required',
-            'sub_2'  => 'required',
-            'sub_3'  => 'required',
-            'sub_4'  => 'required',
-            'sub_5'  => 'required',
-            'sub_6'  => 'required',
-            'sub_7'  => 'required',
+            'dept_id'     => 'required',
+            'sub_1'       => 'required',
+            'sub_2'       => 'required',
+            'sub_3'       => 'required',
+            'sub_4'       => 'required',
+            'sub_5'       => 'required',
+            'sub_6'       => 'required',
+            'sub_7'       => 'required',
         ]);
         if($validator->fails())
         {
@@ -89,17 +90,17 @@ class ResultController extends Controller
              }
             Result::create([
                 'student_id'    => $request['student_id'],
-                'dept_id'    => $request['dept_id'],
-                'sub_1'    => $request['sub_1'],
-                'sub_2'    => $request['sub_2'],
-                'sub_3'    => $request['sub_3'],
-                'sub_4'    => $request['sub_4'],
-                'sub_5'    => $request['sub_5'],
-                'sub_6'    => $request['sub_6'],
-                'sub_7'    => $request['sub_7'],
-                'total'    =>  $total_number,
+                'dept_id'       => $request['dept_id'],
+                'sub_1'         => $request['sub_1'],
+                'sub_2'         => $request['sub_2'],
+                'sub_3'         => $request['sub_3'],
+                'sub_4'         => $request['sub_4'],
+                'sub_5'         => $request['sub_5'],
+                'sub_6'         => $request['sub_6'],
+                'sub_7'         => $request['sub_7'],
+                'total'         =>  $total_number,
                 'percentage'    =>  $avg_number,
-                'grade'     => $gread,
+                'grade'         => $gread,
             ]);
         }
 
