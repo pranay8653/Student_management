@@ -81,6 +81,11 @@
             <i class="fa fa-book"></i>
             <span>Study Notes</span></a>
     </li>
+    <li class="nav-item @yield('result')">
+        <a class="nav-link" href="{{ route('student.result') }}">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span>Result</span></a>
+    </li>
     @endif
 
 

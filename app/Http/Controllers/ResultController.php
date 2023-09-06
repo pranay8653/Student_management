@@ -129,8 +129,19 @@ class ResultController extends Controller
         return view('teacher.show_result',compact('result'));
     }
 
+    // teacher show result
+    public function show_result_student()
+    {
+        $a_email = Auth::user()->email;
+        $teacher = Student::where('email',$a_email)->first();
+        $result = Result::with('department_name')->where('dept_id',$teacher->department_id)->orderBy('created_at', 'DESC')->paginate(5);
+        return view('student.show_result',compact('result'));
+    }
+
     public function export_result_perticular_department()
     {
         return Excel::download(new PerticularDepartmentStudentResult(), 'Result.xlsx');
     }
+
+    
 }
