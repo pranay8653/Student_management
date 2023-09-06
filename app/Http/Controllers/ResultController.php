@@ -13,7 +13,7 @@ class ResultController extends Controller
     public function create_result(Request $request)
     {
         $student = Student::get();
-       return view('teacher.create_result',compact('student'));
+       return view('admin.create_result',compact('student'));
     }
 
     public function getDepartment(Request $request )

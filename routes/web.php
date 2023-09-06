@@ -66,6 +66,9 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/student/export',[StudentController::class,'export_student'])->name('export.student');
         Route::get('/admin/student/pdf', [StudentController::class, 'student_list_pdf'])->name('student.pdf.list');
         Route::get('/admin/student/export/particular_dept_all/{id}',[StudentController::class,'export_particular_department_excel'])->name('export.particular.dept.all.student');
+        Route::get('/admin/create/result',[ResultController::class,'create_result'])->name('create.result');
+        Route::post('/get_department',[ResultController::class,'getDepartment']);
+        Route::post('/save_result',[ResultController::class,'save_result']);
     });
 
     // Access Only Teacher
@@ -94,9 +97,6 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/edit/reply/{id}',[ReplyController::class,'edit_reply']);
         Route::put('/teacher/update/reply/{id}',[ReplyController::class,'update_reply']);
         Route::get('/teacher/delete/reply/{id}',[ReplyController::class,'delete_reply']);
-        Route::get('/teache/create/result',[ResultController::class,'create_result'])->name('create.result');
-        Route::post('/get_department',[ResultController::class,'getDepartment']);
-        Route::post('/save_result',[ResultController::class,'save_result']);
     });
 
     // Access Only Student
