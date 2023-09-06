@@ -71,7 +71,7 @@ Route::middleware('auth:web')->group(function(){
         Route::post('/save_result',[ResultController::class,'save_result']);
         Route::get('/admin/export/result',[ResultController::class,'export_result'])->name('export.result');
     });
-
+    
     // Access Only Teacher
     Route::group(['middleware' => ['checkuser:teacher']],function(){
         Route::get('/teacher/dashboard',[TeacherController::class,'teacher_dashboard'])->name('teacher.dashboard');
@@ -99,6 +99,7 @@ Route::middleware('auth:web')->group(function(){
         Route::put('/teacher/update/reply/{id}',[ReplyController::class,'update_reply']);
         Route::get('/teacher/delete/reply/{id}',[ReplyController::class,'delete_reply']);
         Route::get('/teacher/show/result',[ResultController::class,'show_result'])->name('result.show');
+        Route::get('/teacher/export/result/particular/department',[ResultController::class,'export_result_perticular_department'])->name('export.result.particular.department');
     });
 
     // Access Only Student

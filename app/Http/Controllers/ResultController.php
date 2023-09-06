@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ParticularListStudentExport;
+use App\Exports\PerticularDepartmentStudentResult;
 use App\Exports\StudentResultExport;
 use App\Models\Result;
 use App\Models\Student;
@@ -125,5 +127,10 @@ class ResultController extends Controller
         $teacher = Teacher::where('email',$a_email)->first();
         $result = Result::with('department_name')->where('dept_id',$teacher->department_id)->orderBy('created_at', 'DESC')->paginate(5);
         return view('teacher.show_result',compact('result'));
+    }
+
+    public function export_result_perticular_department()
+    {
+        return Excel::download(new PerticularDepartmentStudentResult(), 'Result.xlsx');
     }
 }

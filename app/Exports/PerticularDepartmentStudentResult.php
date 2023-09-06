@@ -1,21 +1,24 @@
 <?php
 
 namespace App\Exports;
-
-use App\Models\Result;
 use Carbon\Carbon;
+use App\Models\Result;
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class StudentResultExport implements FromCollection, WithHeadings, WithMapping
+class PerticularDepartmentStudentResult implements FromCollection, WithHeadings, WithMapping
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return Result::with('department_name')->with('student')->get();
+        $a_email = Auth::user()->email;
+        $teacher = Teacher::where('email',$a_email)->first();
+        return Result::with('department_name')->with('student')->where('dept_id',$teacher->department_id)->get();
     }
 
     public function map($result) : array {
@@ -56,5 +59,4 @@ class StudentResultExport implements FromCollection, WithHeadings, WithMapping
             'Created'
         ];
     }
-
 }
