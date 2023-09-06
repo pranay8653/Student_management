@@ -65,6 +65,11 @@
             <i class="fa fa-book"></i>
             <span>Study Notes</span></a>
     </li>
+    <li class="nav-item @yield('result')">
+        <a class="nav-link" href="{{ route('result.show') }}">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span>Result</span></a>
+    </li>
     @else
     <li class="nav-item @yield('student_dashboard')">
         <a class="nav-link" href="{{ route('student.dashboard') }}">

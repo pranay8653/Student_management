@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Exports\StudentResultExport;
 use App\Models\Result;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -115,5 +117,13 @@ class ResultController extends Controller
     public function export_result()
     {
         return Excel::download(new StudentResultExport, 'Result.xlsx');
+    }
+    // teacher show result
+    public function show_result()
+    {
+        $a_email = Auth::user()->email;
+        $teacher = Teacher::where('email',$a_email)->first();
+        $result = Result::with('department_name')->where('dept_id',$teacher->department_id)->orderBy('created_at', 'DESC')->paginate(5);
+        return view('teacher.show_result',compact('result'));
     }
 }
