@@ -18,7 +18,19 @@ class ResultController extends Controller
     public function create_result(Request $request)
     {
         $student = Student::get();
-        $result = Result::with('department_name')->orderBy('created_at', 'DESC')->paginate(5);
+        $search = $request['search'] ?? "";
+        if($search != "")
+        {
+            $result = Result::with('department_name')->with('student')->orderBy('created_at', 'DESC')
+                ->whereHas('department_name', function ($query) use ($search){
+                $query->where('d_name','LIKE', "%$search%");
+            })->orwhereHas('student', function ($query) use ($search){ $query
+                ->where('first_name','LIKE', "%$search%")->orwhere('last_name','LIKE', "%$search%");})->paginate(5);
+        }
+        else
+        {
+            $result = Result::with('department_name')->orderBy('created_at', 'DESC')->paginate(5);
+        }
         return view('admin.create_result',compact('student','result'));
     }
 
@@ -143,5 +155,5 @@ class ResultController extends Controller
         return Excel::download(new PerticularDepartmentStudentResult(), 'Result.xlsx');
     }
 
-    
+
 }
