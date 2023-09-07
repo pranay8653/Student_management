@@ -133,11 +133,22 @@ class ResultController extends Controller
         return Excel::download(new StudentResultExport, 'Result.xlsx');
     }
     // teacher show result
-    public function show_result()
+    public function show_result(Request $request)
     {
         $a_email = Auth::user()->email;
         $teacher = Teacher::where('email',$a_email)->first();
-        $result = Result::with('department_name')->where('dept_id',$teacher->department_id)->orderBy('created_at', 'DESC')->paginate(5);
+        $search = $request['search'] ?? "";
+        if($search != "")
+        {
+            $result = Result::with('student')->where('dept_id',$teacher->department_id)->orderBy('created_at', 'DESC')->whereHas('student', function ($query) use ($search)
+            { $query
+                ->where('first_name','LIKE', "%$search%")->orwhere('last_name','LIKE', "%$search%");
+            })->paginate(5);
+        }
+        else
+        {
+            $result = Result::with('department_name')->where('dept_id',$teacher->department_id)->orderBy('created_at', 'DESC')->paginate(5);
+        }
         return view('teacher.show_result',compact('result'));
     }
 
