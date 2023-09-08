@@ -57,6 +57,7 @@
                                     <tr>
                                         <th>Question</th>
                                         <th>Answers</th>
+                                        <th>Note Created </th>
                                         <th>Created At</th>
                                         <th>Actions</th>
                                         <th>Total Conversation</th>
@@ -66,6 +67,7 @@
                                     <tr>
                                         <th>Question</th>
                                         <th>Answers</th>
+                                        <th>Note Created </th>
                                         <th>Created At</th>
                                         <th>Actions</th>
                                         <th>Total Conversation</th>
@@ -79,6 +81,7 @@
                                         <a href="{{ route('load.notes',['id' =>$items->id ])}}" class="btn btn-primary">Load More</a>
                                     </td>
 
+                                    <td>{{ $items->t_first_name }} {{ $items->t_last_name }} </td>
                                     <td>{{\Carbon\Carbon::parse($items->created_at)->isoFormat('DD / MMM / YYYY') }} </td>
                                     <td> <button type="button" value="{{ $items->id }}" class="delete_note btn btn-danger">Delete</button></td>
                                      @php

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\QuerryController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -28,7 +29,7 @@ Route::middleware('auth:web')->group(function(){
 
     // Access Only Admin
     Route::group(['middleware' => ['checkuser:admin']],function(){
-        Route::view('/dashboard',['admin.dashboard'])->name('admin.dashboard');
+        Route::get('/dashboard',[AdminController::class,'admin_dashboard'])->name('admin.dashboard');
         Route::get('/admin/change_password', [AdminController::class,'change_password'])->name('admin.change.password');
         Route::put('/update_change_password', [AdminController::class,'admin_save_change_password'])->name('admin.update.password');
         Route::get('/admin/profile',[AdminController::class,'admin_profile'])->name('admin.profile');
@@ -65,11 +66,15 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/admin/student/export',[StudentController::class,'export_student'])->name('export.student');
         Route::get('/admin/student/pdf', [StudentController::class, 'student_list_pdf'])->name('student.pdf.list');
         Route::get('/admin/student/export/particular_dept_all/{id}',[StudentController::class,'export_particular_department_excel'])->name('export.particular.dept.all.student');
+        Route::get('/admin/create/result',[ResultController::class,'create_result'])->name('create.result');
+        Route::post('/get_department',[ResultController::class,'getDepartment']);
+        Route::post('/save_result',[ResultController::class,'save_result']);
+        Route::get('/admin/export/result',[ResultController::class,'export_result'])->name('export.result');
     });
 
     // Access Only Teacher
     Route::group(['middleware' => ['checkuser:teacher']],function(){
-        Route::view('/teacher/dashboard',['teacher.dashboard'])->name('teacher.dashboard');
+        Route::get('/teacher/dashboard',[TeacherController::class,'teacher_dashboard'])->name('teacher.dashboard');
         Route::get('/teacher/profile',[TeacherController::class,'teacher_profile'])->name('teacher.profile');
         Route::put('/teacher/profile/picture',[TeacherController::class,'teacher_profile_picture'])->name('teacher.profile.picture');
         Route::get('/teacher/profile/edit',[TeacherController::class,'teacher_profile_edit'])->name('teacher.profile.edit');
@@ -93,11 +98,13 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/teacher/edit/reply/{id}',[ReplyController::class,'edit_reply']);
         Route::put('/teacher/update/reply/{id}',[ReplyController::class,'update_reply']);
         Route::get('/teacher/delete/reply/{id}',[ReplyController::class,'delete_reply']);
+        Route::get('/teacher/show/result',[ResultController::class,'show_result'])->name('result.show');
+        Route::get('/teacher/export/result/particular/department',[ResultController::class,'export_result_perticular_department'])->name('export.result.particular.department');
     });
 
     // Access Only Student
     Route::group(['middleware' => ['checkuser:student']],function(){
-        Route::view('/student/dashboard',['student.dashboard'])->name('student.dashboard');
+        Route::get('/student/dashboard',[StudentController::class,'student_dashboard'])->name('student.dashboard');
         Route::get('/student/profile',[StudentController::class,'student_profile'])->name('student.profile');
         Route::put('/student/profile/picture',[StudentController::class,'student_profile_picture'])->name('student.profile.picture');
         Route::get('/student/profile/edit',[StudentController::class,'student_profile_edit'])->name('student.profile.edit');
@@ -112,6 +119,8 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/edit/querry/{id}',[QuerryController::class,'edit_querry']);
         Route::put('/update/querry/{id}',[QuerryController::class,'update_querry']);
         Route::get('/delete/querry/{id}',[QuerryController::class,'delete_querry']);
+        Route::get('/show/result',[ResultController::class,'show_result_student'])->name('student.result');
+        Route::get('/result',[ResultController::class,'download_result'])->name('download.result');
     });
 });
 

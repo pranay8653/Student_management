@@ -1,5 +1,5 @@
 @extends('layout.application')
-@section('page_title', 'Create Department')
+@section('page_title', 'Department List')
 @section('departments','active')
 @section('content')
 

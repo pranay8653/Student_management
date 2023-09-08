@@ -32,6 +32,10 @@
             <i class="fa fa fa-users" aria-hidden="true"></i>
             <span>Teachers</span></a>
     </li>
+    <hr class="sidebar-divider">
+     <div class="sidebar-heading">
+       <center> Student</center>
+    </div>
     <li class="nav-item @yield('student')">
         <a class="nav-link" href="{{ route('show.student') }}">
             <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -39,12 +43,17 @@
     </li>
 
     <!-- Divider -->
-    {{-- <hr class="sidebar-divider">
+
+     <li class="nav-item @yield('result')">
+        <a class="nav-link" href="{{ route('create.result') }}">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span>Result</span></a>
+    </li>
 
     <!-- Heading -->
-    <div class="sidebar-heading">
+    {{-- <div class="sidebar-heading">
         Teacher
-    </div> --}}
+    </div>  --}}
     @elseif (Auth::user()->role == 'teacher')
     <li class="nav-item @yield('teacher_dashboard')">
         <a class="nav-link" href="{{ route('teacher.dashboard') }}">
@@ -55,6 +64,11 @@
         <a class="nav-link" href="{{ route('show.notes') }}">
             <i class="fa fa-book"></i>
             <span>Study Notes</span></a>
+    </li>
+    <li class="nav-item @yield('result')">
+        <a class="nav-link" href="{{ route('result.show') }}">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span>Result</span></a>
     </li>
     @else
     <li class="nav-item @yield('student_dashboard')">
@@ -67,7 +81,13 @@
             <i class="fa fa-book"></i>
             <span>Study Notes</span></a>
     </li>
+    <li class="nav-item @yield('result')">
+        <a class="nav-link" href="{{ route('student.result') }}">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span>Result</span></a>
+    </li>
     @endif
+
 
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

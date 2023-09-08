@@ -1,5 +1,5 @@
 @extends('layout.application')
-@section('page_title', 'Show Teacher')
+@section('page_title', 'Teacher List')
 @section('teachers','active')
 @section('content')
 
@@ -99,21 +99,6 @@
                                     Showing{{ $teacher->firstItem() }} to {{ $teacher->lastItem() }} of
                                     {{ $teacher->total() }} entries
                                 </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="col-md-12 mx-auto">
-                        <h2 style="color: #d21a80; font-family: 'Bebas Neue', cursive; text-align:center">List Of Departments </h2>
-                        <div class="table-responsive" >
-                            <table class="table table-bordered" id="dataTable"  cellspacing="0">
-                                <tbody style="font-family: 'Fjalla One', sans-serif;">
-                                    <tr>
-                                        @foreach ($dept as $item)
-                                                <td><a href="{{ route('teacher.particular.list',['id' => $item-> id]) }}">{{ $item->d_name }}</a></td>
-                                         @endforeach
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
