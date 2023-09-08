@@ -17,7 +17,7 @@
             <div class="card mb-4 py-3 border-bottom-info">
                 <div class="card-body">
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="" class="btn btn-outline-secondary m-2">Export All In Excel</a>
+                        <a href="{{ route('download.result') }}" class="btn btn-outline-secondary m-2">Get Your Result</a>
                         </div>
 
                     <ul id="saveform_errlist"></ul>

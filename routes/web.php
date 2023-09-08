@@ -120,6 +120,7 @@ Route::middleware('auth:web')->group(function(){
         Route::put('/update/querry/{id}',[QuerryController::class,'update_querry']);
         Route::get('/delete/querry/{id}',[QuerryController::class,'delete_querry']);
         Route::get('/show/result',[ResultController::class,'show_result_student'])->name('student.result');
+        Route::get('/result',[ResultController::class,'download_result'])->name('download.result');
     });
 });
 

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ResultController extends Controller
 {
@@ -166,5 +167,14 @@ class ResultController extends Controller
         return Excel::download(new PerticularDepartmentStudentResult(), 'Result.xlsx');
     }
 
-
+    public function download_result()
+    {
+        $auth_id = Auth::user()->email;
+        $student = Student::where('email',$auth_id)->first();
+        $result = Result::with('department_name')->with('student')->where('student_id',$student->id)->get();
+        // dd($result);
+        // return view('student.result',compact('result'));
+        $pdf = PDF::loadView('student.result',compact('result'));
+         return $pdf->download('MarksSheet.pdf');
+    }
 }
