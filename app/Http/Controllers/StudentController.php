@@ -112,25 +112,26 @@ class StudentController extends Controller
     $search = $request['search'] ?? "";
     if($search != ""   )
     {
-        $student = Student::where('first_name','LIKE', "%$search%")
-        ->orwhere('last_name','LIKE', "%$search%")
-        ->orwhere('last_name','LIKE', "%$search%")
-        ->orwhere('guardian_name','LIKE', "%$search%")
-        ->orwhere('email','LIKE', "%$search%")
-        ->orwhere('phone','LIKE', "%$search%")
-        ->orwhere('guardian_number','LIKE', "%$search%")
-        ->orwhere('address','LIKE', "%$search%")
-        ->orwhere('dob','LIKE', "%$search%")
-        ->orwhere('gender','LIKE', "%$search%")->orderBy('created_at', 'DESC')->paginate(4);
+        $student = Student::with('department')->whereHas('department', function ($query) use ($search){
+            $query ->where('d_name','LIKE', "%$search%");
+        })->orwhere('first_name','LIKE', "%$search%")
+            ->orwhere('last_name','LIKE', "%$search%")
+            ->orwhere('guardian_name','LIKE', "%$search%")
+            ->orwhere('email','LIKE', "%$search%")
+            ->orwhere('phone','LIKE', "%$search%")
+            ->orwhere('guardian_number','LIKE', "%$search%")
+            ->orwhere('address','LIKE', "%$search%")
+            ->orwhere('dob','LIKE', "%$search%")
+            ->orwhere('gender','LIKE', "%$search%")
+        ->orderBy('created_at', 'DESC')->paginate(4);
     }
     else
     {
         $student = Student::with('department')->orderBy('created_at', 'DESC')->paginate(4);
     }
     $count =  Student::count();
-    $dept = Department::get();
     $dept_count = Department::count();
-    return view('student.show_student',compact('student','count','dept','dept_count'));
+    return view('student.show_student',compact('student','count','dept_count'));
     }
 
     public function perticular_list(Request $request,$id)

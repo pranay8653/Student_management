@@ -95,7 +95,9 @@ class TeacherController extends Controller
         $search = $request['search'] ?? "";
         if($search != ""   )
         {
-            $teacher = Teacher::where('first_name','LIKE', "%$search%")
+            $teacher = Teacher::with('department')->whereHas('department', function ($query) use ($search){
+                $query ->where('d_name','LIKE', "%$search%");
+            })->orwhere('first_name','LIKE', "%$search%")
             ->orwhere('last_name','LIKE', "%$search%")
             ->orwhere('email','LIKE', "%$search%")
             ->orwhere('phone','LIKE', "%$search%")
@@ -108,9 +110,8 @@ class TeacherController extends Controller
             $teacher = Teacher::with('department')->orderBy('created_at', 'DESC')->paginate(4);
         }
         $count =  Teacher::count();
-        $dept = Department::get();
         $dept_count = Department::count();
-        return view('teacher.show_teacher',compact('teacher','count','dept','dept_count'));
+        return view('teacher.show_teacher',compact('teacher','count','dept_count'));
      }
 
     public function edit_teacher($id)
